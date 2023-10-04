@@ -1,0 +1,19 @@
+.container > form {
+	border: 2px solid #dee2e6;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+#output {
+	background-color: #f2f2f2;
+	min-height: 30px;
+	font-style: italic;
+}
+
+label[for=input] {
+	width: 4%;
+}
