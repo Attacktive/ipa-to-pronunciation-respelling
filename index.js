@@ -7,7 +7,7 @@ function focusOnInput() {
 	input.select();
 }
 
-function onInput(event) {
+function onInput() {
 	const input = document.querySelector("#input");
 	const button = document.querySelector("#run");
 
