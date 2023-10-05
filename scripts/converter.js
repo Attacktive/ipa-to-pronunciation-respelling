@@ -36,7 +36,7 @@ function tokenize(ipa) {
 		}
 
 		if (!foundMatch) {
-			throw Error(`${ipa} contains an invalid or unsupported character!`);
+			throw Error(`${ipa} contains unsupported symbol(s) around: "${ipa.charAt(i)}".`);
 		}
 	}
 
