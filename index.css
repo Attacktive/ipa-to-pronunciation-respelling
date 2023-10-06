@@ -1,11 +1,10 @@
-.container > form {
-	border: 2px solid #dee2e6;
-	border-top-left-radius: 0.25rem;
-	border-top-right-radius: 0.25rem;
-}
-
 h1, h2 {
 	text-align: center;
+}
+
+#input-form, #output {
+	border: 2px solid #dee2e6;
+	border-radius: 0.5rem;
 }
 
 #output {
