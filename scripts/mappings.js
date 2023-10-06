@@ -73,4 +73,6 @@ mappings.set("ʒ", "zh");
 
 // miscellaneous
 mappings.set("/", "");
+mappings.set("[", "");
+mappings.set("]", "");
 mappings.set(" ", " ");
