@@ -53,6 +53,33 @@ function run() {
 	output.textContent = result;
 }
 
+function copy() {
+	const output = document.querySelector("#output");
+
+	navigator.clipboard.writeText(output.textContent)
+		.then(() => {
+			const message = `"${output.textContent}" is successfully copied to the clipboard. 😁`;
+
+			console.debug(message);
+			showToast(message);
+		});
+}
+
+/**
+ * @param { string } message
+ * @param { number? } delay <code>6666</code> by default ☠
+ */
+function showToast(message, delay) {
+	const toastBody = document.querySelector("#toast-body");
+	toastBody.textContent = message;
+
+	const options = { delay: delay ?? 6666 };
+
+	const toastElement = document.querySelector("#toast");
+	const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+	toast.show(options);
+}
+
 addEventListener("load", loaded);
 
 const forms = document.querySelectorAll("form");
@@ -66,3 +93,6 @@ input.addEventListener("keydown", onKeydown);
 
 const button = document.querySelector("#run");
 button.addEventListener("click", run);
+
+const copyButton = document.querySelector("#copy");
+copyButton.addEventListener("click", copy);
