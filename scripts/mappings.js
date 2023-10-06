@@ -76,3 +76,5 @@ mappings.set("/", "");
 mappings.set("[", "");
 mappings.set("]", "");
 mappings.set(" ", " ");
+
+const STRESS_MARK = "ˈ";

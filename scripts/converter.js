@@ -5,15 +5,31 @@
 function convert(ipa) {
 	const tokens = tokenize(ipa);
 
+	let stressed = false;
 	return tokens.map(token => {
-		const converted = mappings.get(token);
-		if (Array.isArray(converted)) {
-			// TODO: express one-to-many mapping
-			return converted[0];
+		if (token === STRESS_MARK) {
+			stressed = true;
+			return null;
 		}
+
+		let converted;
+		const mapped = mappings.get(token);
+		if (Array.isArray(mapped)) {
+			// TODO: express one-to-many mapping
+			converted = mapped[0];
+		} else {
+			converted = mapped;
+		}
+
+		if (stressed) {
+			converted = converted.toUpperCase();
+		}
+
+		stressed = false;
 
 		return converted;
 	})
+	.filter(chunk => chunk !== null)
 	.join("");
 }
 
@@ -23,7 +39,7 @@ function convert(ipa) {
  */
 function tokenize(ipa) {
 	const result = [];
-	const validChunks = Array.from(mappings.keys());
+	const validChunks = [...mappings.keys(), STRESS_MARK];
 
 	for (let i = 0; i < ipa.length;) {
 		let foundMatch = false;
