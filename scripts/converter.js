@@ -12,6 +12,10 @@ function convert(ipa) {
 			return null;
 		}
 
+		if (token === SECONDARY_STRESS_MARK) {
+			return null;
+		}
+
 		let converted;
 		const mapped = mappings.get(token);
 		if (Array.isArray(mapped)) {
@@ -25,6 +29,7 @@ function convert(ipa) {
 			converted = converted.toUpperCase();
 		}
 
+		// TODO: make stressed back to false only when the entire syllable ends.
 		stressed = false;
 
 		return converted;
@@ -39,7 +44,7 @@ function convert(ipa) {
  */
 function tokenize(ipa) {
 	const result = [];
-	const validChunks = [...mappings.keys(), STRESS_MARK];
+	const validChunks = [...mappings.keys(), STRESS_MARK, SECONDARY_STRESS_MARK];
 
 	for (let i = 0; i < ipa.length;) {
 		let foundMatch = false;

@@ -78,3 +78,4 @@ mappings.set("]", "");
 mappings.set(" ", " ");
 
 const STRESS_MARK = "ˈ";
+const SECONDARY_STRESS_MARK = "ˌ";
