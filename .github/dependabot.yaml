@@ -13,3 +13,11 @@ updates:
       - "CI/CD"
     commit-message:
       prefix: ci
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "CI/CD"
+    commit-message:
+      prefix: ci

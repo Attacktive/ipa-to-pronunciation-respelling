@@ -1,0 +1,31 @@
+{
+	"name": "ipa-to-pronunciation-respelling",
+	"version": "1.0.0",
+	"description": "Respells IPA (International Phonetic Alphabet).",
+	"scripts": {
+		"build": "webpack",
+		"deploy": "gh-pages -d dist"
+	},
+	"author": "Attacktive",
+	"license": "MIT",
+	"keywords": [
+		"ipa",
+		"English",
+		"pronunciation",
+		"respelling"
+	],
+	"dependencies": {
+		"bootstrap": "^5.3.2"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.23.3",
+		"@babel/register": "^7.22.15",
+		"@types/bootstrap": "^5.2.9",
+		"copy-webpack-plugin": "^11.0.0",
+		"gh-pages": "^6.0.0",
+		"ts-loader": "^9.5.1",
+		"typescript": "^5.2.2",
+		"webpack": "^5.89.0",
+		"webpack-cli": "^5.1.4"
+	}
+}

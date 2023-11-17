@@ -66,10 +66,7 @@ consonants.set("j", "y");
 consonants.set("z", "z");
 consonants.set("ʒ", "zh");
 
-/**
- * @type {Map<string, string | string[]>}
- */
-const mappings = new Map([...vowels, ...consonants]);
+export const mappings = new Map([...vowels, ...consonants]);
 
 // miscellaneous
 mappings.set("/", "");
@@ -77,5 +74,5 @@ mappings.set("[", "");
 mappings.set("]", "");
 mappings.set(" ", " ");
 
-const STRESS_MARK = "ˈ";
-const SECONDARY_STRESS_MARK = "ˌ";
+export const STRESS_MARK = "ˈ";
+export const SECONDARY_STRESS_MARK = "ˌ";
