@@ -1,8 +1,6 @@
-/**
- * @param { string } ipa
- * @return { string }
- */
-function convert(ipa) {
+import { mappings, SECONDARY_STRESS_MARK, STRESS_MARK } from "./mappings";
+
+export function convert(ipa: string) {
 	const tokens = tokenize(ipa);
 
 	let stressed = false;
@@ -38,11 +36,7 @@ function convert(ipa) {
 	.join("");
 }
 
-/**
- * @param { string } ipa
- * @return { string[] }
- */
-function tokenize(ipa) {
+export function tokenize(ipa: string) {
 	const result = [];
 	const validChunks = [...mappings.keys(), STRESS_MARK, SECONDARY_STRESS_MARK];
 
