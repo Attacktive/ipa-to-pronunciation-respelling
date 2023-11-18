@@ -6,8 +6,17 @@
 		"build": "webpack",
 		"deploy": "gh-pages -d dist"
 	},
-	"author": "Attacktive",
+	"author": {
+		"name": "Attacktive",
+		"email": "tribute2pantera@gmail.com",
+		"url": "http://attacktive.xyz"
+	},
 	"license": "MIT",
+	"homepage": "https://github.com/Attacktive/ipa-to-pronunciation-respelling.git",
+	"bugs": {
+		"url": "https://github.com/Attacktive/ipa-to-pronunciation-respelling/issues",
+		"email": "tribute2pantera@gmail.com"
+	},
 	"keywords": [
 		"ipa",
 		"English",
