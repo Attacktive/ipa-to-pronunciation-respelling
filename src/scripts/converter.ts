@@ -40,7 +40,7 @@ export function convert(ipa: string) {
 	.join("");
 }
 
-export function tokenize(ipa: string) {
+function tokenize(ipa: string) {
 	const result = [];
 
 	for (let i = 0; i < ipa.length;) {

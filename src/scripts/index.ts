@@ -1,5 +1,6 @@
 import Toast from "bootstrap/js/dist/toast";
 import { convert } from "./converter";
+import { syllabify } from "./syllables";
 import { consonants, vowels, STRESS_MARK } from "./mappings";
 
 function loaded() {
@@ -79,13 +80,14 @@ function run() {
 
 	try {
 		result = convert(input.value);
+		result = syllabify(input.value);
 	} catch (error) {
 		console.error(error);
 
 		result = (error as Error).message;
 	}
 
-	output.textContent = result;
+	output.textContent = JSON.stringify(result);
 }
 
 function copy() {

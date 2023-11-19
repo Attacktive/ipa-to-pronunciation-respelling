@@ -78,3 +78,15 @@ export const vowels = [...vowelMappings.keys()];
 export const acceptedSymbols = ["/", "[", "]", " "];
 
 export const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
+
+export const onsetPatterns = [
+	"pl", "bl", "kl", "ɡl", "pr", "br", "tr", "dr", "kr", "ɡr", "tw", "dw", "ɡw", "kw", "pw",
+	"fl", "sl", "θl", "ʃl", "fr", "θr", "ʃr", "hw", "sw", "θw", "vw",
+	"pj", "bj", "tj", "dj", "kj", "ɡj", "mj", "nj", "fj", "vj", "θj", "sj", "zj", "hj", "lj",
+	"sp", "st", "sk",
+	"sm", "sn",
+	"sf", "sθ",
+	"spl", "skl", "spr", "str", "skr", "skw", "spj", "stj", "skj",
+	"smj",
+	"sfr"
+];
