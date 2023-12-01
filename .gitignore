@@ -79,3 +79,6 @@ fabric.properties
 
 dist
 node_modules
+
+**/.DS_Store
+**/._.DS_Store
