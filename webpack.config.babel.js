@@ -1,16 +1,21 @@
 import path from "path";
-import CopyPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import autoprefixer from "autoprefixer";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 module.exports = {
 	mode: "production",
 	entry: {
-		converter: path.resolve(__dirname, "src", "scripts", "converter.ts"),
-		index: path.resolve(__dirname, "src", "scripts", "index.ts"),
-		mappings: path.resolve(__dirname, "src", "scripts", "mappings.ts"),
+		main: path.resolve(__dirname, "src", "static", "main.js")
 	},
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "scripts/[name].js"
+		filename: "main.js"
+	},
+	devServer: {
+		static: path.resolve(__dirname, "dist"),
+		port: 8080,
+		hot: true
 	},
 	resolve: {
 		extensions: [".ts", ".js"]
@@ -21,16 +26,36 @@ module.exports = {
 				test: /\.tsx?$/,
 				loader: "ts-loader",
 				exclude: /node_modules/
+			},
+			{
+				test: /\.(scss)$/,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader
+					},
+					{
+						// Interprets `@import` and `url()` like `import/require()` and will resolve them
+						loader: "css-loader"
+					},
+					{
+						// Loader for webpack to process CSS with PostCSS
+						loader: "postcss-loader",
+						options: {
+							postcssOptions: {
+								plugins: [autoprefixer]
+							}
+						}
+					},
+					{
+						// Loads a SASS/SCSS file and compiles it to CSS
+						loader: "sass-loader"
+					}
+				]
 			}
 		]
 	},
 	plugins: [
-		new CopyPlugin({
-			patterns: [
-				{ from: "src/static" },
-				{ from: "node_modules/bootstrap/dist/css/bootstrap.min.css", to: "bootstrap/dist/css/bootstrap.min.css"},
-				{ from: "node_modules/bootstrap/dist/js/bootstrap.min.js", to: "bootstrap/dist/js/bootstrap.min.js"}
-			]
-		})
+		new HtmlWebpackPlugin({ template: path.resolve(__dirname, "src", "index.html") }),
+		new MiniCssExtractPlugin()
 	]
 };

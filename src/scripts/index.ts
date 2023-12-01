@@ -1,4 +1,4 @@
-import bootstrap from "bootstrap";
+import { Toast } from "bootstrap";
 import { convert } from "./converter";
 
 function loaded() {
@@ -67,7 +67,7 @@ function showToast(message: string) {
 	toastBody.textContent = message;
 
 	const toastElement = document.querySelector("#toast") as HTMLElement;
-	const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+	const toast = Toast.getOrCreateInstance(toastElement);
 	toast.show();
 }
 
