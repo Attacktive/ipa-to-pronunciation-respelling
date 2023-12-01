@@ -27,7 +27,9 @@ module.exports = {
 	plugins: [
 		new CopyPlugin({
 			patterns: [
-				{ from: "src/static" }
+				{ from: "src/static" },
+				{ from: "node_modules/bootstrap/dist/css/bootstrap.min.css", to: "bootstrap/dist/css/bootstrap.min.css"},
+				{ from: "node_modules/bootstrap/dist/js/bootstrap.min.js", to: "bootstrap/dist/js/bootstrap.min.js"}
 			]
 		})
 	]
