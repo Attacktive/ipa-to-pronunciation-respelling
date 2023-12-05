@@ -1,13 +1,54 @@
 import { Toast } from "bootstrap";
 import { convert } from "./converter";
+import { consonants, vowels, STRESS_MARK } from "./mappings";
 
 function loaded() {
 	focusOnInput();
+	drawInputButtons();
 }
 
 function focusOnInput() {
 	const input = document.querySelector("#input") as HTMLInputElement;
 	input.select();
+}
+
+function drawInputButtons() {
+	const input = document.querySelector("#input") as HTMLInputElement;
+
+	const onButtonClick = (event: MouseEvent) => {
+		const target = event.target as HTMLButtonElement;
+
+		const start = input.selectionStart ?? input.value.length;
+		const end = input.selectionEnd ?? input.value.length;
+
+		input.setRangeText(target.innerText, start, end);
+
+		const newSelection = end + target.innerText.length;
+		input.selectionStart = newSelection;
+		input.selectionEnd = newSelection;
+	};
+
+	const consonantInputButtonArea = document.querySelector("#input-button-area-consonants") as HTMLDivElement;
+	for (const consonant of [...consonants, STRESS_MARK]) {
+		const button = document.createElement("button");
+		button.type = "button";
+		button.innerText = consonant;
+		button.className = "col input-button";
+		button.onclick = onButtonClick;
+
+		consonantInputButtonArea.appendChild(button);
+	}
+
+	const vowelInputButtonArea = document.querySelector("#input-button-area-vowels") as HTMLDivElement;
+	for (const vowel of vowels) {
+		const button = document.createElement("button");
+		button.type = "button";
+		button.innerText = vowel;
+		button.className = "col input-button";
+		button.onclick = onButtonClick;
+
+		vowelInputButtonArea.appendChild(button);
+	}
 }
 
 function onInput() {

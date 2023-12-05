@@ -1,4 +1,4 @@
-import { mappings, SECONDARY_STRESS_MARK, STRESS_MARK } from "./mappings";
+import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK } from "./mappings";
 
 export function convert(ipa: string) {
 	const tokens = tokenize(ipa);
@@ -15,7 +15,7 @@ export function convert(ipa: string) {
 		}
 
 		let converted;
-		const mapped = mappings.get(token);
+		const mapped = mappings.get(token)!!;
 		if (Array.isArray(mapped)) {
 			// TODO: express one-to-many mapping
 			converted = mapped[0];
@@ -38,7 +38,6 @@ export function convert(ipa: string) {
 
 export function tokenize(ipa: string) {
 	const result = [];
-	const validChunks = [...mappings.keys(), STRESS_MARK, SECONDARY_STRESS_MARK];
 
 	for (let i = 0; i < ipa.length;) {
 		let foundMatch = false;
