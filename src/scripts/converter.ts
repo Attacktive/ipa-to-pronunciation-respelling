@@ -15,12 +15,14 @@ export function convert(ipa: string) {
 		}
 
 		let converted;
-		const mapped = mappings.get(token)!;
+		const mapped = mappings.get(token);
 		if (Array.isArray(mapped)) {
 			// TODO: express one-to-many mapping
 			converted = mapped[0];
-		} else {
+		} else if (typeof mapped === "string") {
 			converted = mapped;
+		} else {
+			throw Error(`Token "${token}" has no mapping!`);
 		}
 
 		if (stressed) {
