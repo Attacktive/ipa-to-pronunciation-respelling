@@ -18,3 +18,9 @@ h1, h2 {
 label[for=input] {
 	width: 4%;
 }
+
+#input-button-area button.input-button {
+	display: inline-block;
+	flex-grow: 0;
+	margin: 2px;
+}
