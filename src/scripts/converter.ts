@@ -15,7 +15,7 @@ export function convert(ipa: string) {
 		}
 
 		let converted;
-		const mapped = mappings.get(token)!!;
+		const mapped = mappings.get(token)!;
 		if (Array.isArray(mapped)) {
 			// TODO: express one-to-many mapping
 			converted = mapped[0];
