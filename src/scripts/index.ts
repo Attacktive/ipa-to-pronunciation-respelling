@@ -1,4 +1,4 @@
-import { Toast } from "bootstrap";
+import Toast from "bootstrap/js/dist/toast";
 import { convert } from "./converter";
 import { consonants, vowels, STRESS_MARK } from "./mappings";
 
