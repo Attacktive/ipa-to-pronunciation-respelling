@@ -21,11 +21,8 @@ function drawInputButtons() {
 		const start = input.selectionStart ?? input.value.length;
 		const end = input.selectionEnd ?? input.value.length;
 
-		input.setRangeText(target.innerText, start, end);
-
-		const newSelectionStart = end + target.innerText.length + 1;
-		input.selectionStart = newSelectionStart;
-		input.selectionEnd = newSelectionStart;
+		input.focus();
+		input.setRangeText(target.innerText, start, end, "end");
 	};
 
 	const consonantInputButtonArea = document.querySelector("#input-button-area-consonants") as HTMLDivElement;
