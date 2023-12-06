@@ -74,10 +74,7 @@ export const SECONDARY_STRESS_MARK = "ˌ";
 export const consonants = [...consonantMappings.keys()];
 export const vowels = [...vowelMappings.keys()];
 
-export const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK];
-
 // miscellaneous
-validChunks.push("/");
-validChunks.push("[");
-validChunks.push("]");
-validChunks.push(" ");
+export const acceptedSymbols = ["/", "[", "]", " "];
+
+export const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];

@@ -1,4 +1,4 @@
-import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK } from "./mappings";
+import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols } from "./mappings";
 
 export function convert(ipa: string) {
 	const tokens = tokenize(ipa);
@@ -21,6 +21,8 @@ export function convert(ipa: string) {
 			converted = mapped[0];
 		} else if (typeof mapped === "string") {
 			converted = mapped;
+		} else if (acceptedSymbols.includes(token)) {
+			converted = token;
 		} else {
 			throw Error(`Token "${token}" has no mapping!`);
 		}
