@@ -29,7 +29,7 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.23.6",
-		"@babel/register": "^7.22.15",
+		"@babel/register": "^7.23.7",
 		"@types/bootstrap": "^5.2.10",
 		"autoprefixer": "^10.4.16",
 		"css-loader": "^6.8.1",
