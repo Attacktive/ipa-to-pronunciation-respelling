@@ -30,7 +30,7 @@ function drawInputButtons() {
 		const button = document.createElement("button");
 		button.type = "button";
 		button.innerText = consonant;
-		button.className = "col input-button";
+		button.className = "col btn btn-secondary input-button";
 		button.onclick = onButtonClick;
 
 		consonantInputButtonArea.appendChild(button);
@@ -41,7 +41,7 @@ function drawInputButtons() {
 		const button = document.createElement("button");
 		button.type = "button";
 		button.innerText = vowel;
-		button.className = "col input-button";
+		button.className = "col btn btn-secondary input-button";
 		button.onclick = onButtonClick;
 
 		vowelInputButtonArea.appendChild(button);
