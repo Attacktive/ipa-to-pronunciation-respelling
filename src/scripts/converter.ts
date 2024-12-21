@@ -81,6 +81,27 @@ function processToken(token: string, currentSyllable: string[], isStressed: bool
 	};
 }
 
+function tokenize(ipa: string) {
+	const result = [];
+
+	for (let i = 0; i < ipa.length;) {
+		let foundMatch = false;
+		for (const chunk of validChunks) {
+			if (ipa.startsWith(chunk, i)) {
+				result.push(chunk);
+				i += chunk.length;
+				foundMatch = true;
+			}
+		}
+
+		if (!foundMatch) {
+			throw Error(`${ipa} contains unsupported symbol(s) around: "${ipa.charAt(i)}".`);
+		}
+	}
+
+	return result;
+}
+
 export function convert(ipa: string) {
 	const tokens = tokenize(ipa);
 	const syllableBoundaries = findSyllableBoundaries(tokens);
@@ -109,25 +130,4 @@ export function convert(ipa: string) {
 	}
 
 	return result.join("");
-}
-
-export function tokenize(ipa: string) {
-	const result = [];
-
-	for (let i = 0; i < ipa.length;) {
-		let foundMatch = false;
-		for (const chunk of validChunks) {
-			if (ipa.startsWith(chunk, i)) {
-				result.push(chunk);
-				i += chunk.length;
-				foundMatch = true;
-			}
-		}
-
-		if (!foundMatch) {
-			throw Error(`${ipa} contains unsupported symbol(s) around: "${ipa.charAt(i)}".`);
-		}
-	}
-
-	return result;
 }
