@@ -1,5 +1,10 @@
 import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks } from "./mappings";
 
+interface SyllableState {
+	currentSyllable: string[];
+	isStressed: boolean;
+}
+
 function getSonority(token: string): number {
 	return sonorityRanks.get(token) ?? 0;
 }
@@ -22,76 +27,85 @@ function findSyllableBoundaries(tokens: string[]): number[] {
 	return boundaries;
 }
 
+function convertToken(token: string): string {
+	const mapped = mappings.get(token);
+	if (Array.isArray(mapped)) {
+		return mapped[0];
+	} else if (typeof mapped === "string") {
+		return mapped;
+	}
+
+	if (acceptedSymbols.includes(token)) {
+		return token;
+	}
+
+	throw Error(`Token "${token}" has no mapping!`);
+}
+
+function handleStressedSyllable(syllable: string[], isStressed: boolean): string {
+	if (syllable.length === 0) {
+		return "";
+	}
+
+	const syllableText = syllable.join("");
+	return isStressed? syllableText.toUpperCase() : syllableText;
+}
+
+function processToken(token: string, currentSyllable: string[], isStressed: boolean, result: string[]): SyllableState {
+	if (token === STRESS_MARK) {
+		const syllableText = handleStressedSyllable(currentSyllable, isStressed);
+		if (syllableText) {
+			result.push(syllableText);
+		}
+
+		return { currentSyllable: [], isStressed: true };
+	}
+
+	if (token === SECONDARY_STRESS_MARK) {
+		return { currentSyllable, isStressed };
+	}
+
+	if (token === " ") {
+		const syllableText = handleStressedSyllable(currentSyllable, isStressed);
+		if (syllableText) {
+			result.push(syllableText);
+		}
+
+		result.push(" ");
+		return { currentSyllable: [], isStressed: false };
+	}
+
+	return {
+		currentSyllable: [...currentSyllable, convertToken(token)],
+		isStressed
+	};
+}
+
 export function convert(ipa: string) {
 	const tokens = tokenize(ipa);
 	const syllableBoundaries = findSyllableBoundaries(tokens);
+	const result: string[] = [];
 
-	const result = [];
-	let currentSyllable = [];
-	let isStressed = false;
+	let state: SyllableState = {
+		currentSyllable: [],
+		isStressed: false
+	};
 
 	for (let i = 0; i < tokens.length; i++) {
-		const token = tokens[i];
-
-		if (token === STRESS_MARK) {
-			if (currentSyllable.length > 0) {
-				const syllableText = currentSyllable.join("");
-				const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
-
-				result.push(stressedSyllableText);
-				currentSyllable = [];
-			}
-
-			isStressed = true;
-			continue;
-		}
-
-		if (token === SECONDARY_STRESS_MARK) {
-			continue;  // ignore secondary stress
-		}
-
-		if (token === " ") {
-			if (currentSyllable.length > 0) {
-				const syllableText = currentSyllable.join("");
-				const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
-
-				result.push(stressedSyllableText);
-				currentSyllable = [];
-			}
-
-			result.push(" ");
-			isStressed = false;
-			continue;
-		}
-
-		let converted;
-		const mapped = mappings.get(token);
-		if (Array.isArray(mapped)) {
-			converted = mapped[0];
-		} else if (typeof mapped === "string") {
-			converted = mapped;
-		} else if (acceptedSymbols.includes(token)) {
-			converted = token;
-		} else {
-			throw Error(`Token "${token}" has no mapping!`);
-		}
-
-		currentSyllable.push(converted);
+		state = processToken(tokens[i], state.currentSyllable, state.isStressed, result);
 
 		if (syllableBoundaries.includes(i)) {
-			const syllableText = currentSyllable.join("");
-			const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
-
-			result.push(stressedSyllableText);
-			currentSyllable = [];
+			const syllableText = handleStressedSyllable(state.currentSyllable, state.isStressed);
+			if (syllableText) {
+				result.push(syllableText);
+			}
+			state.currentSyllable = [];
 		}
 	}
 
-	if (currentSyllable.length > 0) {
-		const syllableText = currentSyllable.join("");
-		const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
-
-		result.push(stressedSyllableText);
+	const finalSyllable = handleStressedSyllable(state.currentSyllable, state.isStressed);
+	if (finalSyllable) {
+		result.push(finalSyllable);
 	}
 
 	return result.join("");
