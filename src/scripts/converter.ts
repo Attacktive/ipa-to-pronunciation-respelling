@@ -1,23 +1,72 @@
-import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols } from "./mappings";
+import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks } from "./mappings";
+
+function getSonority(token: string): number {
+	return sonorityRanks.get(token) ?? 0;
+}
+
+function findSyllableBoundaries(tokens: string[]): number[] {
+	const boundaries: number[] = [];
+	let prevSonority = getSonority(tokens[0]);
+
+	for (let i = 1; i < tokens.length - 1; i++) {
+		const currSonority = getSonority(tokens[i]);
+		const nextSonority = getSonority(tokens[i + 1]);
+
+		if (currSonority <= prevSonority && currSonority <= nextSonority) {
+			boundaries.push(i);
+		}
+
+		prevSonority = currSonority;
+	}
+
+	return boundaries;
+}
 
 export function convert(ipa: string) {
 	const tokens = tokenize(ipa);
+	const syllableBoundaries = findSyllableBoundaries(tokens);
 
-	let stressed = false;
-	return tokens.map(token => {
+	const result = [];
+	let currentSyllable = [];
+	let isStressed = false;
+
+	for (let i = 0; i < tokens.length; i++) {
+		const token = tokens[i];
+
 		if (token === STRESS_MARK) {
-			stressed = true;
-			return null;
+			if (currentSyllable.length > 0) {
+				const syllableText = currentSyllable.join("");
+				const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
+
+				result.push(stressedSyllableText);
+				currentSyllable = [];
+			}
+
+			isStressed = true;
+			continue;
 		}
 
 		if (token === SECONDARY_STRESS_MARK) {
-			return null;
+			continue;  // ignore secondary stress
+		}
+
+		if (token === " ") {
+			if (currentSyllable.length > 0) {
+				const syllableText = currentSyllable.join("");
+				const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
+
+				result.push(stressedSyllableText);
+				currentSyllable = [];
+			}
+
+			result.push(" ");
+			isStressed = false;
+			continue;
 		}
 
 		let converted;
 		const mapped = mappings.get(token);
 		if (Array.isArray(mapped)) {
-			// TODO: express one-to-many mapping
 			converted = mapped[0];
 		} else if (typeof mapped === "string") {
 			converted = mapped;
@@ -27,17 +76,25 @@ export function convert(ipa: string) {
 			throw Error(`Token "${token}" has no mapping!`);
 		}
 
-		if (stressed) {
-			converted = converted.toUpperCase();
+		currentSyllable.push(converted);
+
+		if (syllableBoundaries.includes(i)) {
+			const syllableText = currentSyllable.join("");
+			const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
+
+			result.push(stressedSyllableText);
+			currentSyllable = [];
 		}
+	}
 
-		// TODO: make stressed back to false only when the entire syllable ends.
-		stressed = false;
+	if (currentSyllable.length > 0) {
+		const syllableText = currentSyllable.join("");
+		const stressedSyllableText = isStressed? syllableText.toUpperCase() : syllableText;
 
-		return converted;
-	})
-	.filter(chunk => chunk !== null)
-	.join("");
+		result.push(stressedSyllableText);
+	}
+
+	return result.join("");
 }
 
 export function tokenize(ipa: string) {
