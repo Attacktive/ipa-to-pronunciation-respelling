@@ -1,11 +1,12 @@
 {
 	"name": "ipa-to-pronunciation-respelling",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Respells IPA (International Phonetic Alphabet).",
 	"scripts": {
 		"serve": "webpack serve",
 		"build": "webpack",
-		"deploy": "gh-pages -d dist"
+		"deploy": "gh-pages -d dist",
+		"lint": "eslint ."
 	},
 	"author": {
 		"name": "Attacktive",
@@ -30,10 +31,16 @@
 	"devDependencies": {
 		"@babel/preset-env": "^7.26.0",
 		"@babel/register": "^7.25.9",
+		"@eslint/eslintrc": "^3.2.0",
+		"@eslint/js": "^9.17.0",
 		"@types/bootstrap": "^5.2.10",
+		"@typescript-eslint/eslint-plugin": "^8.18.1",
+		"@typescript-eslint/parser": "^8.18.1",
 		"autoprefixer": "^10.4.20",
 		"css-loader": "^7.1.2",
+		"eslint": "^9.17.0",
 		"gh-pages": "^6.2.0",
+		"globals": "^15.14.0",
 		"html-webpack-plugin": "^5.6.3",
 		"mini-css-extract-plugin": "^2.9.2",
 		"postcss-loader": "^8.1.1",
