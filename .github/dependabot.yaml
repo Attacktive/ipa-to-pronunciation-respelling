@@ -21,3 +21,12 @@ updates:
       - "CI/CD"
     commit-message:
       prefix: 'ci'
+    groups:
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@eslint/js'
+      typescript-eslint:
+        patterns:
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'

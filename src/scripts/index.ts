@@ -26,16 +26,17 @@ function drawInputButtons() {
 	};
 
 	const consonantInputButtonArea = document.querySelector("#input-button-area-consonants") as HTMLDivElement;
-	[...consonants, STRESS_MARK].map(consonant => {
-		const button = document.createElement("button");
-		button.type = "button";
-		button.innerText = consonant;
-		button.className = "col btn btn-secondary input-button";
-		button.onclick = onButtonClick;
+	[...consonants, STRESS_MARK]
+		.map(consonant => {
+			const button = document.createElement("button");
+			button.type = "button";
+			button.innerText = consonant;
+			button.className = "col btn btn-secondary input-button";
+			button.onclick = onButtonClick;
 
-		return button;
-	})
-	.forEach(button => consonantInputButtonArea.appendChild(button));
+			return button;
+		})
+		.forEach(button => consonantInputButtonArea.appendChild(button));
 
 	const vowelInputButtonArea = document.querySelector("#input-button-area-vowels") as HTMLDivElement;
 	vowels.map(vowel => {
@@ -47,7 +48,7 @@ function drawInputButtons() {
 
 		return button;
 	})
-	.forEach(button => vowelInputButtonArea.appendChild(button));
+		.forEach(button => vowelInputButtonArea.appendChild(button));
 }
 
 function onInput() {
@@ -94,12 +95,12 @@ function copy() {
 	const output = document.querySelector("#output") as HTMLElement;
 
 	navigator.clipboard.writeText(output.textContent as string)
-	.then(() => {
-		const message = `"${output.textContent}" is successfully copied to the clipboard. 😁`;
+		.then(() => {
+			const message = `"${output.textContent}" is successfully copied to the clipboard. 😁`;
 
-		console.debug(message);
-		showToast(message);
-	});
+			console.debug(message);
+			showToast(message);
+		});
 }
 
 function showToast(message: string) {
