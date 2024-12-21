@@ -11,17 +11,18 @@ function getSonority(token: string): number {
 
 function findSyllableBoundaries(tokens: string[]): number[] {
 	const boundaries: number[] = [];
-	let prevSonority = getSonority(tokens[0]);
+
+	let previousSonority = getSonority(tokens[0]);
 
 	for (let i = 1; i < tokens.length - 1; i++) {
-		const currSonority = getSonority(tokens[i]);
+		const currentSonority = getSonority(tokens[i]);
 		const nextSonority = getSonority(tokens[i + 1]);
 
-		if (currSonority <= prevSonority && currSonority <= nextSonority) {
+		if (currentSonority <= previousSonority && currentSonority <= nextSonority) {
 			boundaries.push(i);
 		}
 
-		prevSonority = currSonority;
+		previousSonority = currentSonority;
 	}
 
 	return boundaries;
@@ -30,6 +31,7 @@ function findSyllableBoundaries(tokens: string[]): number[] {
 function convertToken(token: string): string {
 	const mapped = mappings.get(token);
 	if (Array.isArray(mapped)) {
+		// fixme
 		return mapped[0];
 	} else if (typeof mapped === "string") {
 		return mapped;
@@ -120,6 +122,7 @@ export function convert(ipa: string) {
 			if (syllableText) {
 				result.push(syllableText);
 			}
+
 			state.currentSyllable = [];
 		}
 	}
