@@ -44,9 +44,19 @@ consonantMappings.set("ʣ", "dz");
 consonantMappings.set("ʤ", "j");
 consonantMappings.set("ʦ", "ts");
 consonantMappings.set("ʧ", "ch");
+consonantMappings.set("ɢ", "g");
+consonantMappings.set("ʔ", "");
+consonantMappings.set("c", "k");
+consonantMappings.set("ɟ", "g");
+consonantMappings.set("q", "k");
+consonantMappings.set("χ", "kh");
+consonantMappings.set("ʁ", "r");
+consonantMappings.set("ħ", "h");
+consonantMappings.set("ʕ", "");
 
 const vowelMappings: Map<string, string | string[]> = new Map();
 vowelMappings.set("æ", "a");
+vowelMappings.set("ɑ", "ah");
 vowelMappings.set("ɑː", "ah");
 vowelMappings.set("ɛər", "air");
 vowelMappings.set("ɑːr", "ar");
@@ -97,6 +107,12 @@ vowelMappings.set("ɞ", "uh");
 vowelMappings.set("ɐ", "uh");
 vowelMappings.set("ɚ", "er");
 vowelMappings.set("ɝ", "ur");
+vowelMappings.set("ɔ", "aw");
+vowelMappings.set("a", "ah");
+vowelMappings.set("ɑ̃", "on");
+vowelMappings.set("ɛ̃", "an");
+vowelMappings.set("ɔ̃", "on");
+vowelMappings.set("œ̃", "un");
 
 export const mappings: Map<string, string | string[]> = new Map([...consonantMappings, ...vowelMappings]);
 
