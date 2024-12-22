@@ -2,6 +2,12 @@
 	"name": "ipa-to-pronunciation-respelling",
 	"version": "2.0.1",
 	"description": "Respells IPA (International Phonetic Alphabet).",
+	"scripts": {
+		"serve": "webpack serve",
+		"build": "webpack",
+		"deploy": "gh-pages -d dist",
+		"lint": "eslint ."
+	},
 	"author": {
 		"name": "Attacktive",
 		"email": "tribute2pantera@gmail.com",
@@ -19,14 +25,8 @@
 		"pronunciation",
 		"respelling"
 	],
-	"type": "module",
-	"scripts": {
-		"serve": "webpack serve",
-		"build": "webpack",
-		"deploy": "gh-pages -d dist",
-		"lint": "eslint ."
-	},
 	"dependencies": {
+		"daisyui": "^2.51.5",
 		"tailwindcss": "^3.3.0"
 	},
 	"devDependencies": {
@@ -43,7 +43,6 @@
 		"globals": "^15.14.0",
 		"html-webpack-plugin": "^5.6.3",
 		"mini-css-extract-plugin": "^2.9.2",
-		"postcss": "^8.4.49",
 		"postcss-loader": "^8.1.1",
 		"sass": "^1.83.0",
 		"sass-loader": "^16.0.4",
