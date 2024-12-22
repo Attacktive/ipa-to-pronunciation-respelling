@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import autoprefixer from "autoprefixer";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-module.exports = {
+export default {
 	mode: "production",
 	entry: {
 		main: path.resolve(__dirname, "src", "static", "main.js")

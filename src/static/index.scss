@@ -1,5 +1,5 @@
-@import "tailwindcss/tailwind.css";
-@import "daisyui/dist/full.css";
+@tailwind base;
+@tailwind components;
 
 h1, h2 {
 	@apply text-center;
