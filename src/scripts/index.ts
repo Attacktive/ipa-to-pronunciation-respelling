@@ -1,4 +1,3 @@
-import Toast from "bootstrap/js/dist/toast";
 import { convert } from "./converter";
 import { consonants, vowels, STRESS_MARK } from "./mappings";
 
@@ -31,7 +30,7 @@ function drawInputButtons() {
 			const button = document.createElement("button");
 			button.type = "button";
 			button.innerText = consonant;
-			button.className = "col btn btn-secondary input-button";
+			button.className = "col btn btn-secondary btn-xs input-button";
 			button.onclick = onButtonClick;
 
 			return button;
@@ -43,7 +42,7 @@ function drawInputButtons() {
 		const button = document.createElement("button");
 		button.type = "button";
 		button.innerText = vowel;
-		button.className = "col btn btn-secondary input-button";
+		button.className = "col btn btn-secondary btn-xs input-button";
 		button.onclick = onButtonClick;
 
 		return button;
@@ -104,12 +103,10 @@ function copy() {
 }
 
 function showToast(message: string) {
-	const toastBody = document.querySelector("#toast-body") as HTMLElement;
-	toastBody.textContent = message;
-
-	const toastElement = document.querySelector("#toast") as HTMLElement;
-	const toast = Toast.getOrCreateInstance(toastElement);
-	toast.show();
+	const toast = document.querySelector("#toast-body") as HTMLSpanElement;
+	toast.innerText = message;
+	toast.classList.remove("hidden");
+	setTimeout(() => toast.classList.add("hidden"), 3000);
 }
 
 addEventListener("load", loaded);

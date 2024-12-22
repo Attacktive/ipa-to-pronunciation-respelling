@@ -1,36 +1,17 @@
-// Configuration
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
-
-// Layout & components
-@import "bootstrap/scss/root";
-@import "bootstrap/scss/reboot";
-@import "bootstrap/scss/containers";
-@import "bootstrap/scss/grid";
-@import "bootstrap/scss/forms";
-@import "bootstrap/scss/buttons";
-@import "bootstrap/scss/toasts";
-
-// Utilities
-@import "bootstrap/scss/utilities/api";
+@import "tailwindcss/tailwind.css";
+@import "daisyui/dist/full.css";
 
 h1, h2 {
-	text-align: center;
+	@apply text-center;
 }
 
 #input-form, #output {
-	border: 2px solid #dee2e6;
-	border-radius: 0.5rem;
+	@apply border-2 border-gray-300 rounded-lg;
 }
 
 #output {
-	background-color: #f2f2f2;
+	@apply bg-gray-200 italic;
 	min-height: 30px;
-	font-style: italic;
 }
 
 label[for=input] {

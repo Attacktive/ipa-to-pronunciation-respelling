@@ -26,14 +26,14 @@
 		"respelling"
 	],
 	"dependencies": {
-		"bootstrap": "^5.3.3"
+		"daisyui": "^2.51.5",
+		"tailwindcss": "^3.3.0"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.26.0",
 		"@babel/register": "^7.25.9",
 		"@eslint/eslintrc": "^3.2.0",
 		"@eslint/js": "^9.17.0",
-		"@types/bootstrap": "^5.2.10",
 		"@typescript-eslint/eslint-plugin": "^8.18.1",
 		"@typescript-eslint/parser": "^8.18.1",
 		"autoprefixer": "^10.4.20",
