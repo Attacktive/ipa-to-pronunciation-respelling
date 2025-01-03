@@ -1,6 +1,6 @@
 {
 	"name": "ipa-to-pronunciation-respelling",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "Respells IPA (International Phonetic Alphabet).",
 	"scripts": {
 		"serve": "webpack serve",
