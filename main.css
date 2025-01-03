@@ -62914,4 +62914,4 @@ html:has(.drawer-open.drawer-open) {
         padding-top: 1rem;
         padding-bottom: 1rem}}
 
-h1,h2{@apply text-center}#input-form,#output{@apply border-2 border-gray-300 rounded-lg}#output{@apply bg-gray-200 italic;min-height:30px}label[for=input]{width:4%}#input-button-area button.input-button{display:inline-block;flex-grow:0;margin:2px}
+h1,h2{text-align:center}#input-form,#output{border-radius:0.5rem;border-width:2px;--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}#output{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1));font-style:italic;min-height:30px}label[for=input]{width:4%}#input-button-area button.input-button{display:inline-block;flex-grow:0;margin:2px}
