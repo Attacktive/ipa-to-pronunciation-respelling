@@ -30,3 +30,7 @@ updates:
         patterns:
           - 'typescript-eslint'
           - '@typescript-eslint/*'
+      tailwindcss:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
