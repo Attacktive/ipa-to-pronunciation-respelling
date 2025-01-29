@@ -1,5 +1,10 @@
-@import "tailwindcss/tailwind.css";
-@import "daisyui/dist/full.css";
+/*
+ * It might have to be
+ * @import "tailwindcss/index"
+ * as instructed https://tailwindcss.com/blog/tailwindcss-v4#simplified-installation
+ * but it raises a SASS warning.
+ */
+@import "tailwindcss/index.css";
 
 h1, h2 {
 	@apply text-center;
@@ -22,4 +27,26 @@ label[for=input] {
 	display: inline-block;
 	flex-grow: 0;
 	margin: 2px;
+}
+
+#toast {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	bottom: 1.5rem;
+	left: 30%;
+	horiz-align: center;
+	min-width: fit-content;
+	gap: .5rem;
+	padding: 1rem;
+	background-color: rgba(128, 128, 128, 0.5);
+}
+
+#toast-body {
+	animation-duration: .5s;
+	animation-timing-function: ease-in-out;
+}
+
+#toast.hidden {
+	display: none;
 }

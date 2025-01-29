@@ -30,7 +30,9 @@ function drawInputButtons() {
 			const button = document.createElement("button");
 			button.type = "button";
 			button.innerText = consonant;
-			button.className = "col btn btn-secondary btn-xs input-button";
+
+			// fixme: coloring does not work
+			button.className = "col text-white bg-blue-500 hover:bg-blue-700 py-1 px-3 rounded input-button";
 			button.onclick = onButtonClick;
 
 			return button;
@@ -42,7 +44,9 @@ function drawInputButtons() {
 		const button = document.createElement("button");
 		button.type = "button";
 		button.innerText = vowel;
-		button.className = "col btn btn-secondary btn-xs input-button";
+
+		// fixme: coloring does not work
+		button.className = "col text-white bg-purple-500 hover:bg-purple-700 py-1 px-3 rounded input-button";
 		button.onclick = onButtonClick;
 
 		return button;
@@ -103,10 +107,12 @@ function copy() {
 }
 
 function showToast(message: string) {
-	const toast = document.querySelector("#toast-body") as HTMLSpanElement;
-	toast.innerText = message;
+	const toast = document.querySelector("#toast") as HTMLSpanElement;
 	toast.classList.remove("hidden");
 	setTimeout(() => toast.classList.add("hidden"), 3000);
+
+	const toastBody = document.querySelector("#toast-body") as HTMLSpanElement;
+	toastBody.innerText = message;
 }
 
 addEventListener("load", loaded);
