@@ -1,6 +1,6 @@
 {
 	"name": "ipa-to-pronunciation-respelling",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"description": "Respells IPA (International Phonetic Alphabet).",
 	"scripts": {
 		"serve": "webpack serve",
@@ -26,6 +26,7 @@
 		"respelling"
 	],
 	"dependencies": {
+		"@tailwindcss/postcss": "^4.0.0",
 		"daisyui": "^4.12.23",
 		"tailwindcss": "^4.0.0"
 	},
