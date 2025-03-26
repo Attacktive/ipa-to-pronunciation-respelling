@@ -26,7 +26,7 @@
 		"respelling"
 	],
 	"dependencies": {
-		"@tailwindcss/postcss": "^4.0.16",
+		"@tailwindcss/postcss": "^4.0.17",
 		"tailwindcss": "^4.0.0"
 	},
 	"devDependencies": {
