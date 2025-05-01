@@ -34,3 +34,6 @@ updates:
         patterns:
           - 'tailwindcss'
           - '@tailwindcss/*'
+      babel:
+        patterns:
+          - '@babel/*'
