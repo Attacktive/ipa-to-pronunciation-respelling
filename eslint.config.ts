@@ -1,6 +1,7 @@
-import js from "@eslint/js";
-import { configs as tsConfigs } from "typescript-eslint";
-import globals from "globals";
+import js from '@eslint/js';
+import { globalIgnores } from 'eslint/config'
+import { configs as tsConfigs } from 'typescript-eslint';
+import globals from 'globals';
 
 const config = [
 	{
@@ -11,12 +12,13 @@ const config = [
 			}
 		}
 	},
+	globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
 	js.configs.recommended,
 	...tsConfigs.recommended,
 	{
-		files: ["**/*.js", "**/*.ts"],
+		files: ['**/*.js', '**/*.ts'],
 		rules: {
-			indent: ["warn", "tab"]
+			indent: ['warn', 'tab']
 		}
 	}
 ];

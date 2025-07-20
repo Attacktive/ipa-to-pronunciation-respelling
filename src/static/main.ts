@@ -1,6 +1,6 @@
-import "./styles.css";
-import "./index.scss";
+import './styles.css';
+import './index.scss';
 
-import "../scripts/converter";
-import "../scripts/index";
-import "../scripts/mappings";
+import '../scripts/converter';
+import '../scripts/index';
+import '../scripts/mappings';

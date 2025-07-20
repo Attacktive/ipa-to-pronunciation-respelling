@@ -4,7 +4,7 @@
  * as instructed https://tailwindcss.com/blog/tailwindcss-v4#simplified-installation
  * but it raises a SASS warning.
  */
-@import "tailwindcss/index.css";
+@import 'tailwindcss/index.css';
 
 h1, h2 {
 	@apply text-center;

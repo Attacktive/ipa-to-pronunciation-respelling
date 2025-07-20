@@ -3,7 +3,7 @@
 		"strict": true,
 		"target": "ESNext",
 		"module": "esnext",
-		"moduleResolution": "nodenext",
+		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"sourceMap": true,
 		"rootDir": ".",

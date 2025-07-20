@@ -1,5 +1,5 @@
-import { convert } from "./converter";
-import { consonants, vowels, STRESS_MARK } from "./mappings";
+import { convert } from './converter';
+import { consonants, vowels, STRESS_MARK } from './mappings';
 
 function loaded() {
 	focusOnInput();
@@ -7,12 +7,12 @@ function loaded() {
 }
 
 function focusOnInput() {
-	const input = document.querySelector("#input") as HTMLInputElement;
+	const input = document.querySelector('#input') as HTMLInputElement;
 	input.select();
 }
 
 function drawInputButtons() {
-	const input = document.querySelector("#input") as HTMLInputElement;
+	const input = document.querySelector('#input') as HTMLInputElement;
 
 	const onButtonClick = (event: MouseEvent) => {
 		const target = event.target as HTMLButtonElement;
@@ -21,32 +21,32 @@ function drawInputButtons() {
 		const end = input.selectionEnd ?? input.value.length;
 
 		input.focus();
-		input.setRangeText(target.innerText, start, end, "end");
+		input.setRangeText(target.innerText, start, end, 'end');
 	};
 
-	const consonantInputButtonArea = document.querySelector("#input-button-area-consonants") as HTMLDivElement;
+	const consonantInputButtonArea = document.querySelector('#input-button-area-consonants') as HTMLDivElement;
 	[...consonants, STRESS_MARK]
 		.map(consonant => {
-			const button = document.createElement("button");
-			button.type = "button";
+			const button = document.createElement('button');
+			button.type = 'button';
 			button.innerText = consonant;
 
 			// fixme: coloring does not work
-			button.className = "col text-white bg-blue-500 hover:bg-blue-700 py-1 px-3 rounded input-button";
+			button.className = 'col text-white bg-blue-500 hover:bg-blue-700 py-1 px-3 rounded input-button';
 			button.onclick = onButtonClick;
 
 			return button;
 		})
 		.forEach(button => consonantInputButtonArea.appendChild(button));
 
-	const vowelInputButtonArea = document.querySelector("#input-button-area-vowels") as HTMLDivElement;
+	const vowelInputButtonArea = document.querySelector('#input-button-area-vowels') as HTMLDivElement;
 	vowels.map(vowel => {
-		const button = document.createElement("button");
-		button.type = "button";
+		const button = document.createElement('button');
+		button.type = 'button';
 		button.innerText = vowel;
 
 		// fixme: coloring does not work
-		button.className = "col text-white bg-purple-500 hover:bg-purple-700 py-1 px-3 rounded input-button";
+		button.className = 'col text-white bg-purple-500 hover:bg-purple-700 py-1 px-3 rounded input-button';
 		button.onclick = onButtonClick;
 
 		return button;
@@ -55,31 +55,31 @@ function drawInputButtons() {
 }
 
 function onInput() {
-	const input = document.querySelector("#input") as HTMLInputElement;
-	const button = document.querySelector("#run") as HTMLButtonElement;
+	const input = document.querySelector('#input') as HTMLInputElement;
+	const button = document.querySelector('#run') as HTMLButtonElement;
 
 	if (input.value.length > 0) {
-		button.removeAttribute("disabled");
+		button.removeAttribute('disabled');
 	} else {
-		button.setAttribute("disabled", "");
+		button.setAttribute('disabled', '');
 	}
 }
 
 function preventFormSubmission(event: KeyboardEvent) {
-	if (event.key === "Enter") {
+	if (event.key === 'Enter') {
 		return false;
 	}
 }
 
 function onKeydown(event: KeyboardEvent) {
-	if (event.key === "Enter") {
+	if (event.key === 'Enter') {
 		run();
 	}
 }
 
 function run() {
-	const input = document.querySelector("#input") as HTMLInputElement;
-	const output = document.querySelector("#output") as HTMLElement;
+	const input = document.querySelector('#input') as HTMLInputElement;
+	const output = document.querySelector('#output') as HTMLElement;
 
 	let result;
 
@@ -95,7 +95,7 @@ function run() {
 }
 
 function copy() {
-	const output = document.querySelector("#output") as HTMLElement;
+	const output = document.querySelector('#output') as HTMLElement;
 
 	navigator.clipboard.writeText(output.textContent as string)
 		.then(() => {
@@ -107,27 +107,27 @@ function copy() {
 }
 
 function showToast(message: string) {
-	const toast = document.querySelector("#toast") as HTMLSpanElement;
-	toast.classList.remove("hidden");
-	setTimeout(() => toast.classList.add("hidden"), 3000);
+	const toast = document.querySelector('#toast') as HTMLSpanElement;
+	toast.classList.remove('hidden');
+	setTimeout(() => toast.classList.add('hidden'), 3000);
 
-	const toastBody = document.querySelector("#toast-body") as HTMLSpanElement;
+	const toastBody = document.querySelector('#toast-body') as HTMLSpanElement;
 	toastBody.innerText = message;
 }
 
-addEventListener("load", loaded);
+addEventListener('load', loaded);
 
-const forms = document.querySelectorAll("form");
+const forms = document.querySelectorAll('form');
 for (const form of Array.from(forms)) {
 	form.onkeydown = preventFormSubmission;
 }
 
-const input = document.querySelector("#input") as HTMLInputElement;
-input.addEventListener("input", onInput);
-input.addEventListener("keydown", onKeydown);
+const input = document.querySelector('#input') as HTMLInputElement;
+input.addEventListener('input', onInput);
+input.addEventListener('keydown', onKeydown);
 
-const button = document.querySelector("#run") as HTMLButtonElement;
-button.addEventListener("click", run);
+const button = document.querySelector('#run') as HTMLButtonElement;
+button.addEventListener('click', run);
 
-const copyButton = document.querySelector("#copy") as HTMLButtonElement;
-copyButton.addEventListener("click", copy);
+const copyButton = document.querySelector('#copy') as HTMLButtonElement;
+copyButton.addEventListener('click', copy);

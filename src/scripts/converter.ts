@@ -1,4 +1,4 @@
-import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks } from "./mappings";
+import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks } from './mappings';
 
 interface SyllableState {
 	currentSyllable: string[];
@@ -33,7 +33,7 @@ function convertToken(token: string): string {
 	if (Array.isArray(mapped)) {
 		// fixme
 		return mapped[0];
-	} else if (typeof mapped === "string") {
+	} else if (typeof mapped === 'string') {
 		return mapped;
 	}
 
@@ -46,10 +46,10 @@ function convertToken(token: string): string {
 
 function handleStressedSyllable(syllable: string[], isStressed: boolean): string {
 	if (syllable.length === 0) {
-		return "";
+		return '';
 	}
 
-	const syllableText = syllable.join("");
+	const syllableText = syllable.join('');
 	return isStressed? syllableText.toUpperCase() : syllableText;
 }
 
@@ -67,13 +67,13 @@ function processToken(token: string, currentSyllable: string[], isStressed: bool
 		return { currentSyllable, isStressed };
 	}
 
-	if (token === " ") {
+	if (token === ' ') {
 		const syllableText = handleStressedSyllable(currentSyllable, isStressed);
 		if (syllableText) {
 			result.push(syllableText);
 		}
 
-		result.push(" ");
+		result.push(' ');
 		return { currentSyllable: [], isStressed: false };
 	}
 
@@ -132,5 +132,5 @@ export function convert(ipa: string) {
 		result.push(finalSyllable);
 	}
 
-	return result.join("");
+	return result.join('');
 }
