@@ -31,8 +31,7 @@ function findSyllableBoundaries(tokens: string[]): number[] {
 function convertToken(token: string): string {
 	const mapped = mappings.get(token);
 	if (Array.isArray(mapped)) {
-		// fixme
-		return mapped[0];
+		return `(${mapped.join('|')})`;
 	} else if (typeof mapped === 'string') {
 		return mapped;
 	}

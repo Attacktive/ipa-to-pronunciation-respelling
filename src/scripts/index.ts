@@ -31,7 +31,6 @@ function drawInputButtons() {
 			button.type = 'button';
 			button.innerText = consonant;
 
-			// fixme: coloring does not work
 			button.className = 'col text-white bg-blue-500 hover:bg-blue-700 py-1 px-3 rounded input-button';
 			button.onclick = onButtonClick;
 
@@ -45,7 +44,6 @@ function drawInputButtons() {
 		button.type = 'button';
 		button.innerText = vowel;
 
-		// fixme: coloring does not work
 		button.className = 'col text-white bg-purple-500 hover:bg-purple-700 py-1 px-3 rounded input-button';
 		button.onclick = onButtonClick;
 
