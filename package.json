@@ -6,7 +6,8 @@
 		"dev": "vite",
 		"build": "vite build",
 		"deploy": "gh-pages -d dist",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"test": "vitest"
 	},
 	"author": {
 		"name": "Attacktive",
@@ -43,6 +44,7 @@
 		"sass": "^1.89.2",
 		"typescript": "^5.8.3",
 		"typescript-eslint": "^8.37.0",
-		"vite": "^7.0.5"
+		"vite": "^7.0.5",
+		"vitest": "^3.2.4"
 	}
 }
