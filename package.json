@@ -3,8 +3,8 @@
 	"version": "2.2.1",
 	"description": "Respells IPA (International Phonetic Alphabet).",
 	"scripts": {
-		"serve": "webpack serve",
-		"build": "webpack",
+		"dev": "vite",
+		"build": "vite build",
 		"deploy": "gh-pages -d dist",
 		"lint": "eslint ."
 	},
@@ -27,29 +27,22 @@
 	],
 	"dependencies": {
 		"@tailwindcss/postcss": "^4.1.11",
-		"tailwindcss": "^4.0.0"
+		"tailwindcss": "^4.1.11"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.28.0",
 		"@babel/register": "^7.27.1",
 		"@eslint/js": "^9.31.0",
 		"@typescript-eslint/eslint-plugin": "^8.37.0",
-		"@typescript-eslint/parser": "^8.32.1",
+		"@typescript-eslint/parser": "^8.37.0",
+		"@vitejs/plugin-react": "^4.7.0",
 		"autoprefixer": "^10.4.21",
-		"css-loader": "^7.1.2",
 		"eslint": "^9.31.0",
 		"gh-pages": "^6.3.0",
 		"globals": "^16.3.0",
-		"html-webpack-plugin": "^5.6.3",
-		"mini-css-extract-plugin": "^2.9.2",
-		"postcss-loader": "^8.1.1",
 		"sass": "^1.89.2",
-		"sass-loader": "^16.0.5",
-		"style-loader": "^4.0.0",
-		"ts-loader": "^9.5.2",
 		"typescript": "^5.8.3",
-		"webpack": "^5.100.2",
-		"webpack-cli": "^6.0.1",
-		"webpack-dev-server": "^5.2.2"
+		"typescript-eslint": "^8.37.0",
+		"vite": "^7.0.5"
 	}
 }
