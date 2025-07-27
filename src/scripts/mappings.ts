@@ -123,7 +123,7 @@ const consonants = [...consonantMappings.keys()];
 const vowels = [...vowelMappings.keys()];
 
 const syllableSeparatorSymbols = [' ', '.'];
-const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
+const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']', '(', ')'];
 
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
 
