@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
-import { copyFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { copyFileSync, mkdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
 	root: '.',
@@ -15,6 +16,7 @@ export default defineConfig({
 		{
 			name: 'copy favicon',
 			closeBundle: () => {
+				const __dirname = dirname(fileURLToPath(import.meta.url));
 				const destDir = join(__dirname, 'dist');
 
 				mkdirSync(destDir, { recursive: true });
