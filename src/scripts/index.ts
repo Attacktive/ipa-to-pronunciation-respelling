@@ -2,29 +2,11 @@ import { convert } from './converter';
 import { consonants, vowels, STRESS_MARK } from './mappings';
 import { fetchWords, convertToIpa } from './random-words';
 
-async function loaded() {
-	const input = document.querySelector<HTMLInputElement>('#input') as HTMLInputElement;
-	const defaultValue = input.value;
-
-	try {
-		const words = await fetchWords(8);
-		const ipa = await convertToIpa(words);
-		if (ipa) {
-			input.value = ipa;
-		}
-	} catch (err) {
-		console.error(err);
-
-		input.value = defaultValue;
-	}
-
-	focusOnInput();
+function onWindowLoaded() {
 	drawInputButtons();
-}
 
-function focusOnInput() {
-	const input = document.querySelector('#input') as HTMLInputElement;
-	input.select();
+	generateRandomInput()
+		.then(() => {});
 }
 
 function drawInputButtons() {
@@ -129,7 +111,8 @@ function showToast(message: string) {
 	toastBody.innerText = message;
 }
 
-addEventListener('load', loaded);
+addEventListener('load', onWindowLoaded);
+
 
 const forms = document.querySelectorAll('form');
 for (const form of Array.from(forms)) {
@@ -145,3 +128,27 @@ button.addEventListener('click', run);
 
 const copyButton = document.querySelector('#copy') as HTMLButtonElement;
 copyButton.addEventListener('click', copy);
+
+const randomIpaButton = document.getElementById('random-ipa') as HTMLButtonElement;
+
+async function generateRandomInput() {
+	input.disabled = true;
+	randomIpaButton.disabled = true;
+
+	try {
+		const input = document.querySelector('#input') as HTMLInputElement;
+
+		const words = await fetchWords();
+		const ipa = await convertToIpa(words);
+		if (ipa) {
+			input.value = ipa;
+		}
+	} catch (err) {
+		console.error(err);
+	} finally {
+		input.disabled = false;
+		randomIpaButton.disabled = false;
+	}
+}
+
+randomIpaButton.addEventListener('click', generateRandomInput);

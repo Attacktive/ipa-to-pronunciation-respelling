@@ -11,7 +11,10 @@
 		<form id="input-form" class="p-4 bg-base-100 shadow-md rounded-lg">
 			<div class="form-control mb-4">
 				<label for="input" class="text-xl">IPA</label>
-				<input type="text" id="input" class="shadow appearance-none border rounded w-full mt-1 py-2 px-3" placeholder="IPA" value="ˈæl fə bɛt">
+				<div class="flex items-center gap-2">
+				<input type="text" id="input" class="shadow appearance-none border rounded w-full mt-1 py-2 px-3 flex-1" placeholder="IPA" value="ˈæl fə bɛt">
+				<button type="button" id="random-ipa" class="ml-2 text-xl roll-on-disabled" title="Insert random IPA">🎲</button>
+			</div>
 			</div>
 			<div id="input-button-area" class="flex flex-col gap-4">
 				<div id="input-button-area-consonants" class="flex flex-wrap gap-2"></div>

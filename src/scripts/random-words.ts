@@ -38,7 +38,13 @@ async function convertToIpa(words: string | string[]) {
 			continue;
 		}
 
-		return ipa.phonetic;
+		const { phonetic } = ipa;
+		if (!phonetic) {
+			console.warn(`No IPA is retrieved: ${word}; it's just not provided by the API.`);
+			continue;
+		}
+
+		return phonetic;
 	}
 
 	return undefined;

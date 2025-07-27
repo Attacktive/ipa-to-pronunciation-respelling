@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+#input:disabled {
+	background-color: #cccccc;
+}
+
+#random-ipa:disabled {
+	animation: roll-dice 1s linear infinite;
+}
+
+@keyframes roll-dice {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+
 @layer base {
 	*,
 	::after,
