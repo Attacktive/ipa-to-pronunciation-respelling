@@ -1,6 +1,6 @@
 {
 	"name": "ipa-to-pronunciation-respelling",
-	"version": "2.4.2",
+	"version": "2.4.3",
 	"description": "Respells IPA (International Phonetic Alphabet).",
 	"scripts": {
 		"dev": "vite",
