@@ -12,9 +12,8 @@ describe(
 				(globalThis.fetch) = vi
 					.fn()
 					.mockResolvedValue({
-							json: async () => ['apple', 'banana', 'cat', 'dog', 'egg', 'fish', 'goat', 'hat']
-						}
-					);
+						json: async () => ['apple', 'banana', 'cat', 'dog', 'egg', 'fish', 'goat', 'hat']
+					});
 
 				const words = await fetchWords(8);
 				expect(Array.isArray(words)).toBe(true);
@@ -28,15 +27,13 @@ describe(
 				(globalThis.fetch) = vi
 					.fn()
 					.mockResolvedValueOnce({
-							ok: true,
-							json: async () => [{ word: 'cat', phonetic: '/kæt/' }]
-						}
-					)
+						ok: true,
+						json: async () => [{ word: 'cat', phonetic: '/kæt/' }]
+					})
 					.mockResolvedValueOnce({
-							ok: true,
-							json: async () => [{ word: 'dog', phonetic: '/dɒg/' }]
-						}
-					);
+						ok: true,
+						json: async () => [{ word: 'dog', phonetic: '/dɒg/' }]
+					});
 
 				const phonetic = await convertToIpa(['cat', 'dog']);
 				expect(phonetic).toBe('/kæt/');
