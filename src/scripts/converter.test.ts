@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { convert } from './converter';
 
 describe(
-	'convert',
+	'converter',
 	() => {
 		it(
 			'handles ambiguous mapping for aɪ',

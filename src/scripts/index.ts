@@ -1,7 +1,23 @@
 import { convert } from './converter';
 import { consonants, vowels, STRESS_MARK } from './mappings';
+import { fetchWords, convertToIpa } from './random-words';
 
-function loaded() {
+async function loaded() {
+	const input = document.querySelector<HTMLInputElement>('#input') as HTMLInputElement;
+	const defaultValue = input.value;
+
+	try {
+		const words = await fetchWords(8);
+		const ipa = await convertToIpa(words);
+		if (ipa) {
+			input.value = ipa;
+		}
+	} catch (err) {
+		console.error(err);
+
+		input.value = defaultValue;
+	}
+
 	focusOnInput();
 	drawInputButtons();
 }
