@@ -1,4 +1,4 @@
-import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks } from './mappings';
+import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols } from './mappings';
 
 interface SyllableState {
 	currentSyllable: string[];
@@ -66,7 +66,7 @@ function processToken(token: string, currentSyllable: string[], isStressed: bool
 		return { currentSyllable, isStressed };
 	}
 
-	if (token === ' ') {
+	if (syllableSeparatorSymbols.includes(token)) {
 		const syllableText = handleStressedSyllable(currentSyllable, isStressed);
 		if (syllableText) {
 			result.push(syllableText);

@@ -114,21 +114,21 @@ vowelMappings.set('ɛ̃', 'an');
 vowelMappings.set('ɔ̃', 'on');
 vowelMappings.set('œ̃', 'un');
 
-export const mappings: Map<string, string | string[]> = new Map([...consonantMappings, ...vowelMappings]);
+const mappings: Map<string, string | string[]> = new Map([...consonantMappings, ...vowelMappings]);
 
-export const STRESS_MARK = 'ˈ';
-export const SECONDARY_STRESS_MARK = 'ˌ';
+const STRESS_MARK = 'ˈ';
+const SECONDARY_STRESS_MARK = 'ˌ';
 
-export const consonants = [...consonantMappings.keys()];
-export const vowels = [...vowelMappings.keys()];
+const consonants = [...consonantMappings.keys()];
+const vowels = [...vowelMappings.keys()];
 
-// miscellaneous
-export const acceptedSymbols = ['/', '[', ']', ' '];
+const syllableSeparatorSymbols = [' ', '.'];
+const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
 
-export const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
+const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
 
 // Sonority rankings (higher = more sonorous)
-export const sonorityRanks = new Map<string, number>([
+const sonorityRanks = new Map<string, number>([
 	// Vowels (8)
 	['i', 8], ['y', 8], ['ɨ', 8], ['ʉ', 8], ['ɯ', 8], ['u', 8], ['ɪ', 8], ['ʏ', 8], ['ʊ', 8], ['e', 8], ['ø', 8], ['ɘ', 8], ['ɵ', 8], ['ɤ', 8], ['o', 8], ['ə', 8], ['ɛ', 8], ['œ', 8], ['ɜ', 8], ['ɞ', 8], ['ʌ', 8], ['ɔ', 8], ['æ', 8], ['ɐ', 8], ['a', 8], ['ɶ', 8], ['ɑ', 8], ['ɒ', 8], ['ɚ', 8], ['ɝ', 8], ['ʲ', 8],
 	// Diphthongs
@@ -152,3 +152,5 @@ export const sonorityRanks = new Map<string, number>([
 	// Stops (2)
 	['p', 2], ['b', 2], ['t', 2], ['d', 2], ['ʈ', 2], ['ɖ', 2], ['c', 2], ['ɟ', 2], ['k', 2], ['g', 2], ['q', 2], ['ɢ', 2], ['ʔ', 2]
 ]);
+
+export { mappings, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, syllableSeparatorSymbols, validChunks, sonorityRanks };
