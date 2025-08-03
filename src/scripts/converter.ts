@@ -108,27 +108,45 @@ export function convert(ipa: string) {
 	const syllableBoundaries = findSyllableBoundaries(tokens);
 	const result: string[] = [];
 
-	let state: SyllableState = {
-		currentSyllable: [],
-		isStressed: false
-	};
+	let currentSyllable: string[] = [];
+	let pendingStress = false;
 
 	for (let i = 0; i < tokens.length; i++) {
-		state = processToken(tokens[i], state.currentSyllable, state.isStressed, result);
+		const token = tokens[i];
+		if (token === STRESS_MARK) {
+			pendingStress = true;
+			continue;
+		}
 
-		if (syllableBoundaries.includes(i)) {
-			const syllableText = handleStressedSyllable(state.currentSyllable, state.isStressed);
-			if (syllableText) {
+		if (token === SECONDARY_STRESS_MARK) {
+			continue;
+		}
+
+		if (syllableSeparatorSymbols.includes(token)) {
+			if (currentSyllable.length > 0) {
+				const syllableText = handleStressedSyllable(currentSyllable, pendingStress);
 				result.push(syllableText);
+				pendingStress = false;
+				currentSyllable = [];
 			}
 
-			state.currentSyllable = [];
+			result.push(' ');
+			continue;
+		}
+
+		currentSyllable.push(convertToken(token));
+
+		if (syllableBoundaries.includes(i)) {
+			const syllableText = handleStressedSyllable(currentSyllable, pendingStress);
+			result.push(syllableText);
+			pendingStress = false;
+			currentSyllable = [];
 		}
 	}
 
-	const finalSyllable = handleStressedSyllable(state.currentSyllable, state.isStressed);
-	if (finalSyllable) {
-		result.push(finalSyllable);
+	if (currentSyllable.length > 0) {
+		const syllableText = handleStressedSyllable(currentSyllable, pendingStress);
+		result.push(syllableText);
 	}
 
 	return result.join('');

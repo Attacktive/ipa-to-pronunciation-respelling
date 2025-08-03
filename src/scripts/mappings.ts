@@ -122,7 +122,7 @@ const SECONDARY_STRESS_MARK = 'ˌ';
 const consonants = [...consonantMappings.keys()];
 const vowels = [...vowelMappings.keys()];
 
-const syllableSeparatorSymbols = [' ', '.'];
+const syllableSeparatorSymbols = [' ', '.', 'ˌ'];
 const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']', '(', ')'];
 
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
