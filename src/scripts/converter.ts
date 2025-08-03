@@ -1,10 +1,5 @@
 import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols } from './mappings';
 
-interface SyllableState {
-	currentSyllable: string[];
-	isStressed: boolean;
-}
-
 function getSonority(token: string): number {
 	return sonorityRanks.get(token) ?? 0;
 }
