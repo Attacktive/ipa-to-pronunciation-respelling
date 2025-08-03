@@ -52,36 +52,6 @@ function handleStressedSyllable(syllable: string[], isStressed: boolean): string
 	return isStressed? syllableText.toUpperCase() : syllableText;
 }
 
-function processToken(token: string, currentSyllable: string[], isStressed: boolean, result: string[]): SyllableState {
-	if (token === STRESS_MARK) {
-		const syllableText = handleStressedSyllable(currentSyllable, isStressed);
-		if (syllableText) {
-			result.push(syllableText);
-		}
-
-		return { currentSyllable: [], isStressed: true };
-	}
-
-	if (token === SECONDARY_STRESS_MARK) {
-		return { currentSyllable, isStressed };
-	}
-
-	if (syllableSeparatorSymbols.includes(token)) {
-		const syllableText = handleStressedSyllable(currentSyllable, isStressed);
-		if (syllableText) {
-			result.push(syllableText);
-		}
-
-		result.push(' ');
-		return { currentSyllable: [], isStressed: false };
-	}
-
-	return {
-		currentSyllable: [...currentSyllable, convertToken(token)],
-		isStressed
-	};
-}
-
 function tokenize(ipa: string) {
 	const result = [];
 
