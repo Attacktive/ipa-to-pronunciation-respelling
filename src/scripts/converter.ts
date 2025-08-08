@@ -1,4 +1,4 @@
-import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols } from './mappings';
+import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols, ignoredSymbols } from './mappings';
 
 function getSonority(token: string): number {
 	return sonorityRanks.get(token) ?? 0;
@@ -69,7 +69,13 @@ function tokenize(ipa: string) {
 }
 
 export function convert(ipa: string) {
-	const tokens = tokenize(ipa);
+	// Remove ignored symbols before tokenization
+	let cleanedIpa = ipa;
+	for (const ignoredSymbol of ignoredSymbols) {
+		cleanedIpa = cleanedIpa.replaceAll(ignoredSymbol, '');
+	}
+	
+	const tokens = tokenize(cleanedIpa);
 	const syllableBoundaries = findSyllableBoundaries(tokens);
 	const result: string[] = [];
 

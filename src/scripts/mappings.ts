@@ -123,7 +123,8 @@ const consonants = [...consonantMappings.keys()];
 const vowels = [...vowelMappings.keys()];
 
 const syllableSeparatorSymbols = [' ', '.', 'ˌ'];
-const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']', '(', ')'];
+const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
+const ignoredSymbols = ['(', ')', 'ː'];
 
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
 
@@ -153,4 +154,4 @@ const sonorityRanks = new Map<string, number>([
 	['p', 2], ['b', 2], ['t', 2], ['d', 2], ['ʈ', 2], ['ɖ', 2], ['c', 2], ['ɟ', 2], ['k', 2], ['g', 2], ['q', 2], ['ɢ', 2], ['ʔ', 2]
 ]);
 
-export { mappings, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, syllableSeparatorSymbols, validChunks, sonorityRanks };
+export { mappings, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks, sonorityRanks };

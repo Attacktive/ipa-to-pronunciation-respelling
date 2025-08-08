@@ -113,5 +113,20 @@ describe(
 			'handles multiple syllables with stress',
 			() => expect(convert('ˈkæt.ə.ˈpɪl.ər')).toBe('KAT uh P(I|IH)L uhr')
 		);
+
+		it(
+			'ignores parentheses and length marks but keeps slashes',
+			() => expect(convert('/həˈloʊ(ː)/')).toBe('/HUHLOH/')
+		);
+
+		it(
+			'ignores parentheses',
+			() => expect(convert('(həˈloʊ)')).toBe('HUHLOH')
+		);
+
+		it(
+			'ignores length marks',
+			() => expect(convert('həˈloːʊ')).toBe('HUHLOH')
+		);
 	}
 );
