@@ -21,6 +21,7 @@ updates:
       - "CI/CD"
     commit-message:
       prefix: 'ci'
+    versioning-strategy: 'increase'
     groups:
       eslint:
         patterns:
