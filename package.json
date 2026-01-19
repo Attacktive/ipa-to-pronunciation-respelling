@@ -32,8 +32,8 @@
 		"@eslint/js": "^9.39.2",
 		"@tailwindcss/postcss": "^4.1.18",
 		"@types/node": "^24.10.9",
-		"@typescript-eslint/eslint-plugin": "^8.53.0",
-		"@typescript-eslint/parser": "^8.53.0",
+		"@typescript-eslint/eslint-plugin": "^8.53.1",
+		"@typescript-eslint/parser": "^8.53.1",
 		"autoprefixer": "^10.4.23",
 		"eslint": "^9.39.2",
 		"gh-pages": "^6.3.0",
@@ -41,7 +41,7 @@
 		"sass": "^1.97.2",
 		"tailwindcss": "^4.1.18",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.53.0",
+		"typescript-eslint": "^8.53.1",
 		"vite": "^7.3.1",
 		"vitest": "^4.0.17"
 	}
