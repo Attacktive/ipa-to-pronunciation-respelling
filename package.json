@@ -30,7 +30,7 @@
 		"@babel/preset-env": "^7.29.0",
 		"@babel/register": "^7.28.6",
 		"@eslint/js": "^10.0.1",
-		"@tailwindcss/postcss": "^4.2.0",
+		"@tailwindcss/postcss": "^4.2.1",
 		"@types/node": "^24.10.13",
 		"@typescript-eslint/eslint-plugin": "^8.56.0",
 		"@typescript-eslint/parser": "^8.56.0",
