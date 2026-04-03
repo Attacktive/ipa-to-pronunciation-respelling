@@ -31,7 +31,7 @@
 		"@babel/register": "^7.28.6",
 		"@eslint/js": "^10.0.1",
 		"@tailwindcss/postcss": "^4.2.2",
-		"@types/node": "^24.12.0",
+		"@types/node": "^24.12.2",
 		"@typescript-eslint/eslint-plugin": "^8.58.0",
 		"@typescript-eslint/parser": "^8.58.0",
 		"autoprefixer": "^10.4.27",
