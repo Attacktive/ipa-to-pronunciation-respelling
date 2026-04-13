@@ -37,7 +37,7 @@
 		"autoprefixer": "^10.4.27",
 		"eslint": "^10.2.0",
 		"gh-pages": "^6.3.0",
-		"globals": "^17.4.0",
+		"globals": "^17.5.0",
 		"sass": "^1.99.0",
 		"tailwindcss": "^4.1.18",
 		"typescript": "^6.0.2",
