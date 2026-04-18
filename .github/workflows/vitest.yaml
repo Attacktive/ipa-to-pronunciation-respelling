@@ -13,12 +13,18 @@ jobs:
 
     steps:
       - name: 'Checkout code'
+<<<<<<< Updated upstream
         uses: 'actions/checkout@v6'
       - name: 'Install Node.js'
         uses: 'actions/setup-node@v6'
+=======
+        uses: 'actions/checkout@v5'
+      - name: 'Install Bun'
+        uses: 'oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6'
+>>>>>>> Stashed changes
         with:
-          node-version: '22.x'
-      - name: 'Install NPM packages'
-        run: 'npm ci'
+          bun-version: 'latest'
+      - name: 'Install Bun packages'
+        run: 'bun install --frozen-lockfile'
       - name: 'Test'
-        run: 'npm run test'
+        run: 'bun run test'
