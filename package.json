@@ -27,8 +27,8 @@
 		"respelling"
 	],
 	"dependencies": {
-		"@tailwindcss/postcss": "^4.2.3",
-		"tailwindcss": "^4.2.3"
+		"@tailwindcss/postcss": "^4.2.4",
+		"tailwindcss": "^4.2.4"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.29.2",
