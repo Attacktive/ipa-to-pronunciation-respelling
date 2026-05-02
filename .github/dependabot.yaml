@@ -5,20 +5,20 @@
 
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/.github'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     labels:
-      - "CI/CD"
+      - 'CI/CD'
     commit-message:
       prefix: 'ci'
-  - package-ecosystem: 'npm'
-    directory: "/"
+  - package-ecosystem: 'bun'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     labels:
-      - "CI/CD"
+      - 'CI/CD'
     commit-message:
       prefix: 'ci'
     versioning-strategy: 'increase'
