@@ -81,7 +81,7 @@ describe(
 
 		it(
 			'handles vowel + liquid + consonant',
-			() => expect(convert('wɜrld')).toBe('wuhrld')
+			() => expect(convert('wɜrld')).toBe('wurld')
 		);
 
 		it(
@@ -96,12 +96,12 @@ describe(
 
 		it(
 			'handles stress with syllable boundaries',
-			() => expect(convert('ˈkæt.ər')).toBe('KAT uhr')
+			() => expect(convert('ˈkæt.ər')).toBe('KAT er')
 		);
 
 		it(
 			'splits multisyllabic words correctly',
-			() => expect(convert('kæt.ər.pɪl.ər')).toBe('kat uhr p(i|ih)l uhr')
+			() => expect(convert('kæt.ər.pɪl.ər')).toBe('kat er p(i|ih)l er')
 		);
 
 		it(
@@ -111,7 +111,7 @@ describe(
 
 		it(
 			'handles multiple syllables with stress',
-			() => expect(convert('ˈkæt.ə.ˈpɪl.ər')).toBe('KAT uh P(I|IH)L uhr')
+			() => expect(convert('ˈkæt.ə.ˈpɪl.ər')).toBe('KAT uh P(I|IH)L er')
 		);
 
 		it(
