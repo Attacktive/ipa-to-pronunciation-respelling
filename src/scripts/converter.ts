@@ -57,6 +57,7 @@ function tokenize(ipa: string) {
 				result.push(chunk);
 				i += chunk.length;
 				foundMatch = true;
+				break;
 			}
 		}
 

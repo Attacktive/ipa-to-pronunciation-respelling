@@ -128,7 +128,8 @@ const syllableSeparatorSymbols = [' ', '.', 'ˌ'];
 const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
 const ignoredSymbols = ['(', ')', 'ː'];
 
-const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols];
+const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols]
+	.sort((a, b) => b.length - a.length);
 
 // Sonority rankings (higher = more sonorous)
 const sonorityRanks = new Map<string, number>([
