@@ -1,6 +1,6 @@
 const consonantMappings: Map<string, string | string[]> = new Map();
 consonantMappings.set('b', 'b');
-consonantMappings.set('tʃ', 'ch');
+consonantMappings.set('tʃ', ['ch', 'tch']);
 consonantMappings.set('d', 'd');
 consonantMappings.set('ð', 'dh');
 consonantMappings.set('f', 'f');
@@ -28,7 +28,6 @@ consonantMappings.set('s', ['s', 'ss']);
 consonantMappings.set('ʃ', 'sh');
 consonantMappings.set('t', 't');
 consonantMappings.set('ʈ', 't');
-consonantMappings.set('tʃ', 'tch');
 consonantMappings.set('θ', 'th');
 consonantMappings.set('v', 'v');
 consonantMappings.set('w', 'w');
