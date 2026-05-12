@@ -12,6 +12,7 @@ describe(
 				(globalThis.fetch) = vi
 					.fn()
 					.mockResolvedValue({
+						ok: true,
 						json: async () => ['apple', 'banana', 'cat', 'dog', 'egg', 'fish', 'goat', 'hat']
 					});
 

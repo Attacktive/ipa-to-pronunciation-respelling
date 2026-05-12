@@ -5,8 +5,8 @@ async function fetchWords(number = 8) {
 	const url = `${URL_PREFIX_TO_RANDOM_WORD_API}=${number}`;
 
 	const response = await fetch(url);
-	if (!response) {
-		throw new Error(`Got no response from: ${url}`);
+	if (!response.ok) {
+		throw new Error(`Got a ${response.status} response from: ${url}`);
 	}
 
 	return await response.json() as string[];
