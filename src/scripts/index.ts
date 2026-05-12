@@ -98,13 +98,24 @@ function copy() {
 
 			console.debug(message);
 			showToast(message);
+		})
+		.catch(error => {
+			console.error(error);
+			showToast('Failed to copy to the clipboard.');
 		});
 }
+
+let toastTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
 function showToast(message: string) {
 	const toast = document.querySelector('#toast') as HTMLSpanElement;
 	toast.classList.remove('hidden');
-	setTimeout(() => toast.classList.add('hidden'), 3000);
+
+	if (toastTimeoutId !== undefined) {
+		clearTimeout(toastTimeoutId);
+	}
+
+	toastTimeoutId = setTimeout(() => toast.classList.add('hidden'), 3000);
 
 	const toastBody = document.querySelector('#toast-body') as HTMLSpanElement;
 	toastBody.innerText = message;
@@ -141,9 +152,12 @@ async function generateRandomInput() {
 		const ipa = await fetchFirstIpa(words);
 		if (ipa) {
 			input.value = ipa;
+		} else {
+			showToast('No phonetic available for the fetched words. Try again?');
 		}
 	} catch (err) {
 		console.error(err);
+		showToast('Failed to fetch a random IPA.');
 	} finally {
 		input.disabled = false;
 		randomIpaButton.disabled = false;
