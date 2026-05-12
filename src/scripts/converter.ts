@@ -1,10 +1,14 @@
 import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols, ignoredSymbols } from './mappings';
 
-function getSonority(token: string): number {
-	return sonorityRanks.get(token) ?? 0;
+function getSonority(token: string): number | undefined {
+	return sonorityRanks.get(token);
 }
 
 function findSyllableBoundaries(tokens: string[]): number[] {
+	if (tokens.length < 3) {
+		return [];
+	}
+
 	const boundaries: number[] = [];
 
 	let previousSonority = getSonority(tokens[0]);
@@ -13,7 +17,13 @@ function findSyllableBoundaries(tokens: string[]): number[] {
 		const currentSonority = getSonority(tokens[i]);
 		const nextSonority = getSonority(tokens[i + 1]);
 
-		if (currentSonority <= previousSonority && currentSonority <= nextSonority) {
+		const isSonorityValley = currentSonority !== undefined
+			&& previousSonority !== undefined
+			&& nextSonority !== undefined
+			&& currentSonority <= previousSonority
+			&& currentSonority <= nextSonority;
+
+		if (isSonorityValley) {
 			boundaries.push(i);
 		}
 

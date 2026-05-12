@@ -135,12 +135,18 @@ const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MAR
 const sonorityRanks = new Map<string, number>([
 	// Vowels (8)
 	['i', 8], ['y', 8], ['ɨ', 8], ['ʉ', 8], ['ɯ', 8], ['u', 8], ['ɪ', 8], ['ʏ', 8], ['ʊ', 8], ['e', 8], ['ø', 8], ['ɘ', 8], ['ɵ', 8], ['ɤ', 8], ['o', 8], ['ə', 8], ['ɛ', 8], ['œ', 8], ['ɜ', 8], ['ɞ', 8], ['ʌ', 8], ['ɔ', 8], ['æ', 8], ['ɐ', 8], ['a', 8], ['ɶ', 8], ['ɑ', 8], ['ɒ', 8], ['ɚ', 8], ['ɝ', 8], ['ʲ', 8],
+	// Length-marked vowels (stripped at runtime, kept here so module-load validation passes)
+	['ɑː', 8], ['iː', 8], ['uː', 8], ['ɔː', 8], ['juː', 8], ['ɑːr', 8], ['ɜːr', 8], ['ɔːr', 8],
 	// Diphthongs and rhotic vowels
 	['aɪ', 8], ['eɪ', 8], ['ɔɪ', 8], ['aʊ', 8], ['oʊ', 8], ['ɪə', 8], ['ɛə', 8], ['ʊə', 8],
 	['ər', 8], ['ɜr', 8], ['ɑr', 8], ['ɔr', 8],
+	['ɛr', 8], ['ɪr', 8], ['ʊr', 8], ['ʌr', 8], ['ɒr', 8], ['ær', 8],
+	['ɛər', 8], ['ɪər', 8], ['ʊər', 8], ['aɪər', 8], ['ɔɪər', 8], ['aʊər', 8], ['jʊər', 8],
+	// Nasalized vowels
+	['ɑ̃', 8], ['ɛ̃', 8], ['ɔ̃', 8], ['œ̃', 8],
 
 	// Glides (7)
-	['j', 7], ['w', 7], ['ɥ', 7], ['ɰ', 7],
+	['j', 7], ['w', 7], ['ɥ', 7], ['ɰ', 7], ['hw', 7],
 
 	// Liquids (6)
 	['l', 6], ['r', 6], ['ɹ', 6], ['ɾ', 6], ['ɽ', 6], ['ʎ', 6], ['ʟ', 6],
@@ -154,8 +160,14 @@ const sonorityRanks = new Map<string, number>([
 	// Affricates (3)
 	['ʦ', 3], ['ʣ', 3], ['ʧ', 3], ['ʤ', 3], ['tʃ', 3], ['dʒ', 3],
 
-	// Stops (2)
-	['p', 2], ['b', 2], ['t', 2], ['d', 2], ['ʈ', 2], ['ɖ', 2], ['c', 2], ['ɟ', 2], ['k', 2], ['g', 2], ['q', 2], ['ɢ', 2], ['ʔ', 2]
+	// Stops (2). Nasal+stop clusters take the stop rank since they pattern as codas.
+	['p', 2], ['b', 2], ['t', 2], ['d', 2], ['ʈ', 2], ['ɖ', 2], ['c', 2], ['ɟ', 2], ['k', 2], ['ɡ', 2], ['q', 2], ['ɢ', 2], ['ʔ', 2], ['ŋk', 2]
 ]);
+
+for (const key of mappings.keys()) {
+	if (!sonorityRanks.has(key)) {
+		throw new Error(`Missing sonority rank for mapping key: "${key}"`);
+	}
+}
 
 export { mappings, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks, sonorityRanks };
