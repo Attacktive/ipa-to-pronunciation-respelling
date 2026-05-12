@@ -130,13 +130,13 @@ describe(
 		);
 
 		it(
-			'stress mark terminates the prior syllable without an explicit "."',
+			'stress mark terminates the prior syllable without an explicit "." ("cater")',
 			() => expect(convert('kæˈtər')).toBe('kaTER')
 		);
 
 		it(
-			'r-coloured vowels are treated as vowel peaks, not consonant valleys',
-			() => expect(convert('ˈbɛri')).toBe('BERREE')
+			'r between vowels syllabifies as onset of next syllable ("berry")',
+			() => expect(convert('ˈbɛri')).toBe('B(E|EH)Ree')
 		);
 	}
 );
