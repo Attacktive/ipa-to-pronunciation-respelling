@@ -3,10 +3,6 @@ import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymb
 const rColoredVowelChunks = new Set(vowels.filter(v => v.endsWith('r')));
 const vowelChunksByLength = [...vowels].sort((a, b) => b.length - a.length);
 
-function startsWithVowel(s: string): boolean {
-	return vowelChunksByLength.some(v => s.startsWith(v));
-}
-
 function findSyllableBoundaries(tokens: string[]): number[] {
 	if (tokens.length < 3) {
 		return [];
@@ -71,7 +67,8 @@ function tokenize(ipa: string) {
 		let foundMatch = false;
 		for (const chunk of validChunks) {
 			if (ipa.startsWith(chunk, i)) {
-				if (rColoredVowelChunks.has(chunk) && startsWithVowel(ipa.substring(i + chunk.length))) {
+				const rest = ipa.substring(i + chunk.length);
+				if (rColoredVowelChunks.has(chunk) && vowelChunksByLength.some(vowel => rest.startsWith(vowel))) {
 					continue;
 				}
 
