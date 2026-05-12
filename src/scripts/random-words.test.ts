@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { fetchWords, convertToIpa } from './random-words';
+import { fetchWords, fetchFirstIpa } from './random-words';
 
 globalThis.fetch = globalThis.fetch || vi.fn();
 
@@ -47,7 +47,7 @@ describe(
 		);
 
 		it(
-			'convertToIpa returns first phonetic for known words',
+			'fetchFirstIpa returns first phonetic for known words',
 			async () => {
 				(globalThis.fetch) = vi
 					.fn()
@@ -60,7 +60,7 @@ describe(
 						json: async () => [{ word: 'dog', phonetic: '/dɒg/' }]
 					});
 
-				const phonetic = await convertToIpa(['cat', 'dog']);
+				const phonetic = await fetchFirstIpa(['cat', 'dog']);
 				expect(phonetic).toBe('/kæt/');
 			}
 		);

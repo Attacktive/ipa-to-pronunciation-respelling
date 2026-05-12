@@ -46,15 +46,8 @@ interface Ipa {
 	phonetic: string;
 }
 
-async function convertToIpa(words: string | string[]) {
-	let array: string[];
-	if (Array.isArray(words)) {
-		array = words;
-	} else {
-		array = [words];
-	}
-
-	for (const word of array) {
+async function fetchFirstIpa(words: string[]) {
+	for (const word of words) {
 		const response = await fetch(`${URL_PREFIX_TO_IPA_API}/${word}`);
 		if (!response.ok) {
 			console.warn(`Failed to retrieve IPA: ${word}`);
@@ -79,4 +72,4 @@ async function convertToIpa(words: string | string[]) {
 	return undefined;
 }
 
-export { fetchWords, convertToIpa };
+export { fetchWords, fetchFirstIpa };

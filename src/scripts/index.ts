@@ -1,6 +1,6 @@
 import { convert } from './converter';
 import { consonants, vowels, STRESS_MARK } from './mappings';
-import { fetchWords, convertToIpa } from './random-words';
+import { fetchWords, fetchFirstIpa } from './random-words';
 
 function onWindowLoaded() {
 	drawInputButtons();
@@ -138,7 +138,7 @@ async function generateRandomInput() {
 		const input = document.querySelector('#input') as HTMLInputElement;
 
 		const words = await fetchWords();
-		const ipa = await convertToIpa(words);
+		const ipa = await fetchFirstIpa(words);
 		if (ipa) {
 			input.value = ipa;
 		}
