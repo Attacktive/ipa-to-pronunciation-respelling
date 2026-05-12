@@ -5,8 +5,7 @@ import { fetchWords, convertToIpa } from './random-words';
 function onWindowLoaded() {
 	drawInputButtons();
 
-	generateRandomInput()
-		.then(() => {});
+	void generateRandomInput();
 }
 
 function drawInputButtons() {
@@ -115,7 +114,7 @@ addEventListener('load', onWindowLoaded);
 
 
 const forms = document.querySelectorAll('form');
-for (const form of Array.from(forms)) {
+for (const form of forms) {
 	form.onkeydown = preventFormSubmission;
 }
 
