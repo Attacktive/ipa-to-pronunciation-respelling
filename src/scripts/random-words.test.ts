@@ -7,18 +7,19 @@ describe(
 	'random words',
 	() => {
 		it(
-			'fetchWords returns an array of the requested length',
+			'fetchWords requests the configured number of words from the API',
 			async () => {
-				(globalThis.fetch) = vi
+				const fetchSpy = vi
 					.fn()
 					.mockResolvedValue({
 						ok: true,
 						json: async () => ['apple', 'banana', 'cat', 'dog', 'egg', 'fish', 'goat', 'hat']
 					});
+				globalThis.fetch = fetchSpy;
 
-				const words = await fetchWords(8);
-				expect(Array.isArray(words)).toBe(true);
-				expect(words.length).toBe(8);
+				await fetchWords(8);
+				expect(fetchSpy).toHaveBeenCalledOnce();
+				expect(fetchSpy.mock.calls[0][0]).toContain('number=8');
 			}
 		);
 
