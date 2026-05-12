@@ -150,6 +150,7 @@ async function generateRandomInput() {
 		const ipa = await fetchFirstIpa(words);
 		if (ipa) {
 			input.value = ipa;
+			input.dispatchEvent(new Event('input'));
 		} else {
 			showToast('No phonetic available for the fetched words. Try again?');
 		}
