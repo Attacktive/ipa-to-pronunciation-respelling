@@ -9,7 +9,7 @@ function onWindowLoaded() {
 }
 
 function drawInputButtons() {
-	const input = document.querySelector('#input') as HTMLInputElement;
+	const input = document.querySelector<HTMLInputElement>('#input')!;
 
 	const onButtonClick = (event: MouseEvent) => {
 		const target = event.target as HTMLButtonElement;
@@ -18,31 +18,31 @@ function drawInputButtons() {
 		const end = input.selectionEnd ?? input.value.length;
 
 		input.focus();
-		input.setRangeText(target.innerText, start, end, 'end');
+		input.setRangeText(target.textContent ?? '', start, end, 'end');
 	};
 
-	const consonantInputButtonArea = document.querySelector('#input-button-area-consonants') as HTMLDivElement;
+	const consonantInputButtonArea = document.querySelector<HTMLDivElement>('#input-button-area-consonants')!;
 	[...consonants, STRESS_MARK]
 		.map(consonant => {
 			const button = document.createElement('button');
 			button.type = 'button';
-			button.innerText = consonant;
+			button.textContent = consonant;
 
 			button.className = 'col text-white bg-blue-500 hover:bg-blue-700 py-1 px-3 rounded input-button';
-			button.onclick = onButtonClick;
+			button.addEventListener('click', onButtonClick);
 
 			return button;
 		})
 		.forEach(button => consonantInputButtonArea.appendChild(button));
 
-	const vowelInputButtonArea = document.querySelector('#input-button-area-vowels') as HTMLDivElement;
+	const vowelInputButtonArea = document.querySelector<HTMLDivElement>('#input-button-area-vowels')!;
 	vowels.map(vowel => {
 		const button = document.createElement('button');
 		button.type = 'button';
-		button.innerText = vowel;
+		button.textContent = vowel;
 
 		button.className = 'col text-white bg-purple-500 hover:bg-purple-700 py-1 px-3 rounded input-button';
-		button.onclick = onButtonClick;
+		button.addEventListener('click', onButtonClick);
 
 		return button;
 	})
@@ -50,8 +50,8 @@ function drawInputButtons() {
 }
 
 function onInput() {
-	const input = document.querySelector('#input') as HTMLInputElement;
-	const button = document.querySelector('#run') as HTMLButtonElement;
+	const input = document.querySelector<HTMLInputElement>('#input')!;
+	const button = document.querySelector<HTMLButtonElement>('#run')!;
 
 	if (input.value.length > 0) {
 		button.removeAttribute('disabled');
@@ -62,7 +62,7 @@ function onInput() {
 
 function preventFormSubmission(event: KeyboardEvent) {
 	if (event.key === 'Enter') {
-		return false;
+		event.preventDefault();
 	}
 }
 
@@ -73,8 +73,8 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function run() {
-	const input = document.querySelector('#input') as HTMLInputElement;
-	const output = document.querySelector('#output') as HTMLElement;
+	const input = document.querySelector<HTMLInputElement>('#input')!;
+	const output = document.querySelector<HTMLElement>('#output')!;
 
 	let result;
 
@@ -90,9 +90,9 @@ function run() {
 }
 
 function copy() {
-	const output = document.querySelector('#output') as HTMLElement;
+	const output = document.querySelector<HTMLElement>('#output')!;
 
-	navigator.clipboard.writeText(output.textContent as string)
+	navigator.clipboard.writeText(output.textContent)
 		.then(() => {
 			const message = `"${output.textContent}" is successfully copied to the clipboard. 😁`;
 
@@ -108,7 +108,7 @@ function copy() {
 let toastTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
 function showToast(message: string) {
-	const toast = document.querySelector('#toast') as HTMLSpanElement;
+	const toast = document.querySelector<HTMLSpanElement>('#toast')!;
 	toast.classList.remove('hidden');
 
 	if (toastTimeoutId !== undefined) {
@@ -117,8 +117,8 @@ function showToast(message: string) {
 
 	toastTimeoutId = setTimeout(() => toast.classList.add('hidden'), 3000);
 
-	const toastBody = document.querySelector('#toast-body') as HTMLSpanElement;
-	toastBody.innerText = message;
+	const toastBody = document.querySelector<HTMLSpanElement>('#toast-body')!;
+	toastBody.textContent = message;
 }
 
 addEventListener('load', onWindowLoaded);
@@ -126,28 +126,26 @@ addEventListener('load', onWindowLoaded);
 
 const forms = document.querySelectorAll('form');
 for (const form of forms) {
-	form.onkeydown = preventFormSubmission;
+	form.addEventListener('keydown', preventFormSubmission);
 }
 
-const input = document.querySelector('#input') as HTMLInputElement;
+const input = document.querySelector<HTMLInputElement>('#input')!;
 input.addEventListener('input', onInput);
 input.addEventListener('keydown', onKeydown);
 
-const button = document.querySelector('#run') as HTMLButtonElement;
+const button = document.querySelector<HTMLButtonElement>('#run')!;
 button.addEventListener('click', run);
 
-const copyButton = document.querySelector('#copy') as HTMLButtonElement;
+const copyButton = document.querySelector<HTMLButtonElement>('#copy')!;
 copyButton.addEventListener('click', copy);
 
-const randomIpaButton = document.getElementById('random-ipa') as HTMLButtonElement;
+const randomIpaButton = document.querySelector<HTMLButtonElement>('#random-ipa')!;
 
 async function generateRandomInput() {
 	input.disabled = true;
 	randomIpaButton.disabled = true;
 
 	try {
-		const input = document.querySelector('#input') as HTMLInputElement;
-
 		const words = await fetchWords();
 		const ipa = await fetchFirstIpa(words);
 		if (ipa) {
