@@ -116,17 +116,27 @@ describe(
 
 		it(
 			'ignores parentheses and length marks but keeps slashes ("hello")',
-			() => expect(convert('/həˈloʊ(ː)/')).toBe('/HUHLOH/')
+			() => expect(convert('/həˈloʊ(ː)/')).toBe('/huhLOH/')
 		);
 
 		it(
 			'ignores parentheses ("hello")',
-			() => expect(convert('(həˈloʊ)')).toBe('HUHLOH')
+			() => expect(convert('(həˈloʊ)')).toBe('huhLOH')
 		);
 
 		it(
 			'ignores length marks ("hello")',
-			() => expect(convert('həˈloːʊ')).toBe('HUHLOH')
+			() => expect(convert('həˈloːʊ')).toBe('huhLOH')
+		);
+
+		it(
+			'stress mark terminates the prior syllable without an explicit "."',
+			() => expect(convert('kæˈtər')).toBe('kaTER')
+		);
+
+		it(
+			'r-coloured vowels are treated as vowel peaks, not consonant valleys',
+			() => expect(convert('ˈbɛri')).toBe('BERREE')
 		);
 	}
 );

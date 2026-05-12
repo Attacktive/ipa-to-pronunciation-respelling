@@ -100,6 +100,11 @@ export function convert(ipa: string) {
 	for (let i = 0; i < tokens.length; i++) {
 		const token = tokens[i];
 		if (token === STRESS_MARK) {
+			if (currentSyllable.length > 0) {
+				result.push(handleStressedSyllable(currentSyllable, pendingStress));
+				currentSyllable = [];
+			}
+
 			pendingStress = true;
 			continue;
 		}
