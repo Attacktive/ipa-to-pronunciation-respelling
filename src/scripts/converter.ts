@@ -44,7 +44,11 @@ function handleStressedSyllable(syllable: string[], isStressed: boolean): string
 	}
 
 	const syllableText = syllable.join('');
-	return isStressed? syllableText.toUpperCase() : syllableText;
+	if (isStressed) {
+		return syllableText.toUpperCase();
+	}
+
+	return syllableText;
 }
 
 function tokenize(ipa: string) {
@@ -75,7 +79,7 @@ export function convert(ipa: string) {
 	for (const ignoredSymbol of ignoredSymbols) {
 		cleanedIpa = cleanedIpa.replaceAll(ignoredSymbol, '');
 	}
-	
+
 	const tokens = tokenize(cleanedIpa);
 	const syllableBoundaries = findSyllableBoundaries(tokens);
 	const result: string[] = [];
