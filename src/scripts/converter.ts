@@ -1,9 +1,5 @@
 import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols, ignoredSymbols } from './mappings';
 
-function getSonority(token: string): number | undefined {
-	return sonorityRanks.get(token);
-}
-
 function findSyllableBoundaries(tokens: string[]): number[] {
 	if (tokens.length < 3) {
 		return [];
@@ -11,11 +7,11 @@ function findSyllableBoundaries(tokens: string[]): number[] {
 
 	const boundaries: number[] = [];
 
-	let previousSonority = getSonority(tokens[0]);
+	let previousSonority = sonorityRanks.get(tokens[0]);
 
 	for (let i = 1; i < tokens.length - 1; i++) {
-		const currentSonority = getSonority(tokens[i]);
-		const nextSonority = getSonority(tokens[i + 1]);
+		const currentSonority = sonorityRanks.get(tokens[i]);
+		const nextSonority = sonorityRanks.get(tokens[i + 1]);
 
 		const isSonorityValley = currentSonority !== undefined
 			&& previousSonority !== undefined
