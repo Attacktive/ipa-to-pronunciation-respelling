@@ -1,5 +1,9 @@
 name: 'Smoke Test'
 on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
@@ -20,10 +24,10 @@ jobs:
       - name: 'Install Bun packages'
         run: 'bun install --frozen-lockfile'
       - name: 'Run smoke test'
-        id: smoke-test
+        id: 'smoke-test'
         continue-on-error: true
-        run: 'bun run src/scripts/smoke-test.ts > failures.json'
-      - name: 'Append failures to tracking issue'
+        run: 'bun run src/scripts/smoke-test.ts 2> failures.json'
+      - name: 'Report failures'
         if: steps.smoke-test.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -42,8 +46,7 @@ jobs:
             fi
 
             NEW_ROW="| ${WORD} | \`${IPA}\` | ${ERROR} | ${TIMESTAMP} |"
-            CURRENT_BODY="${CURRENT_BODY}
-${NEW_ROW}"
+            CURRENT_BODY="${CURRENT_BODY}"$'\n'"${NEW_ROW}"
           done < <(jq -c '.[]' failures.json)
 
           gh api repos/${{ github.repository }}/issues/576 \

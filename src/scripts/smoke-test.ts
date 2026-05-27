@@ -1,46 +1,5 @@
-import { convert } from '../src/scripts/converter.ts';
-
-const RANDOM_WORD_API_URL_PREFIX = 'https://random-word-api.herokuapp.com/word?number';
-const IPA_API_URL_PREFIX = 'https://api.dictionaryapi.dev/api/v2/entries/en';
-
-interface DictionaryEntry {
-	phonetic?: string;
-}
-
-async function fetchWords(count: number): Promise<string[] | null> {
-	try {
-		const response = await fetch(
-			`${RANDOM_WORD_API_URL_PREFIX}=${count}`,
-			{ signal: AbortSignal.timeout(5000) },
-		);
-
-		if (!response.ok) {
-			throw new Error(`Status ${response.status}`);
-		}
-
-		return await response.json() as string[];
-	} catch (error) {
-		console.warn('Random word API failed; skipping smoke test.', error);
-
-		return null;
-	}
-}
-
-async function fetchIpa(word: string): Promise<string | undefined> {
-	try {
-		const response = await fetch(`${IPA_API_URL_PREFIX}/${word}`);
-
-		if (!response.ok) {
-			return undefined;
-		}
-
-		const [entry] = await response.json() as DictionaryEntry[];
-
-		return entry?.phonetic;
-	} catch {
-		return undefined;
-	}
-}
+import { convert } from './converter.ts';
+import { fetchRandomWords, fetchIpa } from './random-words.ts';
 
 interface ConversionError {
 	word: string;
@@ -48,12 +7,12 @@ interface ConversionError {
 	error: string;
 }
 
-async function main() {
-	const count = parseInt(process.argv[2] ?? '8', 10);
-
-	console.log(`Fetching ${count} random words...`);
-	const words = await fetchWords(count);
+async function smokeTest() {
+	console.log('Fetching random words...');
+	const words = await fetchRandomWords();
 	if (words === null) {
+		console.log('Random word API failed; skipping smoke test.');
+
 		return;
 	}
 
@@ -75,24 +34,27 @@ async function main() {
 	for (const { word, ipa } of wordsWithIpa) {
 		try {
 			convert(ipa);
-		} catch (e) {
-			errors.push({ word, ipa, error: (e as Error).message });
+		} catch (error) {
+			errors.push({ word, ipa, error: (error as Error).message });
 		}
 	}
 
 	if (errors.length === 0) {
 		console.log(`All ${wordsWithIpa.length} words converted successfully.`);
 	} else {
-		console.error(`${errors.length}/${wordsWithIpa.length} words failed to convert:`);
+		console.log(`${errors.length}/${wordsWithIpa.length} words failed to convert:`);
+
 		for (const { word, ipa, error } of errors) {
-			console.error(`  - ${word} [${ipa}]: ${error}`);
+			console.log(`  - ${word} [${ipa}]: ${error}`);
 		}
+
+		process.stderr.write(JSON.stringify(errors) + '\n');
 
 		process.exit(1);
 	}
 }
 
-main()
+smokeTest()
 	.catch(error => {
 		console.error('Unexpected error:', error);
 		process.exit(1);
