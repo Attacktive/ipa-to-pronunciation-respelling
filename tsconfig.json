@@ -9,6 +9,7 @@
 		"rootDir": ".",
 		"noEmitOnError": true,
 		"noEmit": true,
-		"allowImportingTsExtensions": true
+		"allowImportingTsExtensions": true,
+		"types": ["node"]
 	}
 }
