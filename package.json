@@ -28,6 +28,7 @@
 	],
 	"dependencies": {
 		"@tailwindcss/postcss": "^4.3.0",
+		"random-words": "^2.0.1",
 		"tailwindcss": "^4.3.0"
 	},
 	"devDependencies": {

@@ -1,5 +1,5 @@
 import { convert } from './converter.ts';
-import { fetchRandomWords, fetchIpa } from './random-words.ts';
+import { fetchWords, fetchIpa } from './random-words.ts';
 
 interface ConversionError {
 	word: string;
@@ -8,18 +8,7 @@ interface ConversionError {
 }
 
 async function smokeTest() {
-	console.log('Fetching random words...');
-
-	let words: string[];
-
-	try {
-		words = await fetchRandomWords();
-	} catch (error) {
-		console.log('Random word API failed; skipping smoke test.', error);
-
-		return;
-	}
-
+	const words = fetchWords();
 	console.log(`Got ${words.length} words. Fetching IPA transcriptions...`);
 
 	const ipaPromises = words.map(async word => ({ word, ipa: await fetchIpa(word) }));
