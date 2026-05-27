@@ -9,9 +9,13 @@ interface ConversionError {
 
 async function smokeTest() {
 	console.log('Fetching random words...');
-	const words = await fetchRandomWords();
-	if (words === null) {
-		console.log('Random word API failed; skipping smoke test.');
+
+	let words: string[];
+
+	try {
+		words = await fetchRandomWords();
+	} catch (error) {
+		console.log('Random word API failed; skipping smoke test.', error);
 
 		return;
 	}

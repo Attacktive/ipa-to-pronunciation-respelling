@@ -1,4 +1,4 @@
-const URL_PREFIX_TO_RANDOM_WORD_API = 'https://random-word-api.herokuapp.com/word?number';
+const URL_PREFIX_TO_RANDOM_WORD_API = 'https://random-word-api.herokuapp.com/word';
 const URL_PREFIX_TO_IPA_API = 'https://api.dictionaryapi.dev/api/v2/entries/en';
 const RANDOM_WORD_API_TIMEOUT_MS = 3000;
 
@@ -11,30 +11,25 @@ function pickFallbackWords(count: number): string[] {
 	);
 }
 
-async function fetchRandomWords(count = 8): Promise<string[] | null> {
-	const url = `${URL_PREFIX_TO_RANDOM_WORD_API}=${count}`;
+async function fetchRandomWords(count = 8): Promise<string[]> {
+	const url = `${URL_PREFIX_TO_RANDOM_WORD_API}?number=${count}`;
+	const response = await fetch(url, { signal: AbortSignal.timeout(RANDOM_WORD_API_TIMEOUT_MS) });
 
-	try {
-		const response = await fetch(url, { signal: AbortSignal.timeout(RANDOM_WORD_API_TIMEOUT_MS) });
-		if (!response.ok) {
-			throw new Error(`Got a ${response.status} response from: ${url}`);
-		}
-
-		return await response.json() as string[];
-	} catch {
-		return null;
+	if (!response.ok) {
+		throw new Error(`Got a ${response.status} response from: ${url}`);
 	}
+
+	return await response.json() as string[];
 }
 
 async function fetchWords(number = 8) {
-	const words = await fetchRandomWords(number);
-	if (words === null) {
-		console.warn('Random word API failed; using local fallback list.');
+	try {
+		return await fetchRandomWords(number);
+	} catch (error) {
+		console.warn('Random word API failed; using local fallback list.', error);
 
 		return pickFallbackWords(number);
 	}
-
-	return words;
 }
 
 interface Ipa {
