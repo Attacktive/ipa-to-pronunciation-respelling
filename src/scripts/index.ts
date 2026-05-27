@@ -158,6 +158,10 @@ async function generateRandomInput() {
 		console.error(err);
 		showToast('Failed to fetch a random IPA.');
 	} finally {
+		if (input.value) {
+			run();
+		}
+
 		input.disabled = false;
 		randomIpaButton.disabled = false;
 	}
