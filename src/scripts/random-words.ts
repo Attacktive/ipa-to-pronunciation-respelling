@@ -11,8 +11,8 @@ function pickFallbackWords(count: number): string[] {
 	);
 }
 
-async function fetchWords(number = 8) {
-	const url = `${URL_PREFIX_TO_RANDOM_WORD_API}=${number}`;
+async function fetchRandomWords(count = 8): Promise<string[] | null> {
+	const url = `${URL_PREFIX_TO_RANDOM_WORD_API}=${count}`;
 
 	try {
 		const response = await fetch(url, { signal: AbortSignal.timeout(RANDOM_WORD_API_TIMEOUT_MS) });
@@ -21,11 +21,20 @@ async function fetchWords(number = 8) {
 		}
 
 		return await response.json() as string[];
-	} catch (error) {
-		console.warn('Random word API failed; using local fallback list.', error);
+	} catch {
+		return null;
+	}
+}
+
+async function fetchWords(number = 8) {
+	const words = await fetchRandomWords(number);
+	if (words === null) {
+		console.warn('Random word API failed; using local fallback list.');
 
 		return pickFallbackWords(number);
 	}
+
+	return words;
 }
 
 interface Ipa {
@@ -33,30 +42,33 @@ interface Ipa {
 	phonetic: string;
 }
 
-async function fetchFirstIpa(words: string[]) {
-	for (const word of words) {
+async function fetchIpa(word: string): Promise<string | undefined> {
+	try {
 		const response = await fetch(`${URL_PREFIX_TO_IPA_API}/${word}`);
+
 		if (!response.ok) {
-			console.warn(`Failed to retrieve IPA: ${word}`);
-			continue;
+			return undefined;
 		}
 
 		const [ipa] = await response.json() as Ipa[];
-		if (!ipa) {
-			console.warn(`No IPA is retrieved: ${word}`);
-			continue;
+
+		return ipa?.phonetic;
+	} catch {
+		return undefined;
+	}
+}
+
+async function fetchFirstIpa(words: string[]) {
+	for (const word of words) {
+		const phonetic = await fetchIpa(word);
+		if (phonetic) {
+			return phonetic;
 		}
 
-		const { phonetic } = ipa;
-		if (!phonetic) {
-			console.warn(`No IPA is retrieved: ${word}; it's just not provided by the API.`);
-			continue;
-		}
-
-		return phonetic;
+		console.warn(`No IPA is retrieved: ${word}`);
 	}
 
 	return undefined;
 }
 
-export { fetchWords, fetchFirstIpa };
+export { fetchRandomWords, fetchWords, fetchIpa, fetchFirstIpa };
