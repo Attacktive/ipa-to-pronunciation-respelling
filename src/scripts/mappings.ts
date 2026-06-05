@@ -11,6 +11,7 @@ consonantMappings.set('dʒ', 'j');
 consonantMappings.set('k', 'k');
 consonantMappings.set('x', 'kh');
 consonantMappings.set('l', 'l');
+consonantMappings.set('ɫ', 'l');
 consonantMappings.set('ʎ', 'ly');
 consonantMappings.set('m', 'm');
 consonantMappings.set('ɱ', 'm');
@@ -63,6 +64,7 @@ vowelMappings.set('ɑr', 'ar');
 vowelMappings.set('ær', 'arr');
 vowelMappings.set('ɔː', 'aw');
 vowelMappings.set('eɪ', 'ay');
+vowelMappings.set('e', ['e', 'eh']);
 vowelMappings.set('ɛ', ['e', 'eh']);
 vowelMappings.set('iː', 'ee');
 vowelMappings.set('i', 'ee');
@@ -126,7 +128,7 @@ const vowels = [...vowelMappings.keys()];
 
 const syllableSeparatorSymbols = [' ', '.'];
 const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
-const ignoredSymbols = ['(', ')', 'ː'];
+const ignoredSymbols = ['(', ')', 'ː', '͡', '̩', '-'];
 
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols]
 	.sort((a, b) => b.length - a.length);
@@ -149,7 +151,7 @@ const sonorityRanks = new Map<string, number>([
 	['j', 7], ['w', 7], ['ɥ', 7], ['ɰ', 7], ['hw', 7],
 
 	// Liquids (6)
-	['l', 6], ['r', 6], ['ɹ', 6], ['ɾ', 6], ['ɽ', 6], ['ʎ', 6], ['ʟ', 6],
+	['l', 6], ['ɫ', 6], ['r', 6], ['ɹ', 6], ['ɾ', 6], ['ɽ', 6], ['ʎ', 6], ['ʟ', 6],
 
 	// Nasals (5)
 	['m', 5], ['ɱ', 5], ['n', 5], ['ɳ', 5], ['ŋ', 5], ['ɴ', 5],

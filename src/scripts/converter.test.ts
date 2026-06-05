@@ -138,5 +138,35 @@ describe(
 			'r between vowels syllabifies as onset of next syllable ("berry")',
 			() => expect(convert('ˈbɛri')).toBe('B(E|EH)Ree')
 		);
+
+		it(
+			'handles tie bar affricate ("judge")',
+			() => expect(convert('/d͡ʒʌd͡ʒ/')).toBe('/j(u|uh)j/')
+		);
+
+		it(
+			'handles trailing hyphen ("curious")',
+			() => expect(convert('/ˈkjɔː-/')).toBe('/KYAW/')
+		);
+
+		it(
+			'handles plain e vowel ("clean")',
+			() => expect(convert('/kleːn/')).toBe('/kl(e|eh)n/')
+		);
+
+		it(
+			'handles tie bar affricate with syllabic consonant ("region")',
+			() => expect(convert('/ˈɹiːd͡ʒn̩/')).toBe('/REEJn/')
+		);
+
+		it(
+			'handles dark l ("bowl")',
+			() => expect(convert('/bəʊɫ/')).toBe('/buhuul/')
+		);
+
+		it(
+			'handles tie bar affricate ("choose")',
+			() => expect(convert('/t͡ʃuːz/')).toBe('/(ch|tch)ooz/')
+		);
 	}
 );
