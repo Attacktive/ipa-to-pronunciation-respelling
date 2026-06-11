@@ -3,30 +3,20 @@ import { symbolByIpa, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedS
 const rColoredVowelChunks = new Set(vowels.filter(v => v.endsWith('r')));
 const vowelChunksByLength = [...vowels].sort((a, b) => b.length - a.length);
 
-const findSyllableBoundaries = (tokens: string[]): number[] => {
-	if (tokens.length < 3) {
-		return [];
-	}
+const isSonorityValley = (previous: number | undefined, current: number | undefined, next: number | undefined): boolean => current !== undefined
+	&& previous !== undefined
+	&& next !== undefined
+	&& current <= previous
+	&& current <= next;
 
+const findSyllableBoundaries = (tokens: string[]): number[] => {
+	const sonorities = tokens.map(token => symbolByIpa.get(token)?.sonority);
 	const boundaries: number[] = [];
 
-	let previousSonority = symbolByIpa.get(tokens[0])?.sonority;
-
 	for (let i = 1; i < tokens.length - 1; i++) {
-		const currentSonority = symbolByIpa.get(tokens[i])?.sonority;
-		const nextSonority = symbolByIpa.get(tokens[i + 1])?.sonority;
-
-		const isSonorityValley = currentSonority !== undefined
-			&& previousSonority !== undefined
-			&& nextSonority !== undefined
-			&& currentSonority <= previousSonority
-			&& currentSonority <= nextSonority;
-
-		if (isSonorityValley) {
+		if (isSonorityValley(sonorities[i - 1], sonorities[i], sonorities[i + 1])) {
 			boundaries.push(i);
 		}
-
-		previousSonority = currentSonority;
 	}
 
 	return boundaries;
@@ -45,19 +35,6 @@ const convertToken = (token: string): string => {
 	}
 
 	throw Error(`Token "${token}" has no mapping!`);
-};
-
-const handleStressedSyllable = (syllable: string[], isStressed: boolean): string => {
-	if (syllable.length === 0) {
-		return '';
-	}
-
-	const syllableText = syllable.join('');
-	if (isStressed) {
-		return syllableText.toUpperCase();
-	}
-
-	return syllableText;
 };
 
 const tokenize = (ipa: string) => {
@@ -101,14 +78,21 @@ export const convert = (ipa: string) => {
 	let currentSyllable: string[] = [];
 	let pendingStress = false;
 
+	const flushSyllable = () => {
+		if (currentSyllable.length === 0) {
+			return;
+		}
+
+		const syllableText = currentSyllable.join('');
+		result.push(pendingStress? syllableText.toUpperCase(): syllableText);
+		pendingStress = false;
+		currentSyllable = [];
+	};
+
 	for (let i = 0; i < tokens.length; i++) {
 		const token = tokens[i];
 		if (token === STRESS_MARK) {
-			if (currentSyllable.length > 0) {
-				result.push(handleStressedSyllable(currentSyllable, pendingStress));
-				currentSyllable = [];
-			}
-
+			flushSyllable();
 			pendingStress = true;
 			continue;
 		}
@@ -118,13 +102,7 @@ export const convert = (ipa: string) => {
 		}
 
 		if (syllableSeparatorSymbols.includes(token)) {
-			if (currentSyllable.length > 0) {
-				const syllableText = handleStressedSyllable(currentSyllable, pendingStress);
-				result.push(syllableText);
-				pendingStress = false;
-				currentSyllable = [];
-			}
-
+			flushSyllable();
 			result.push(' ');
 			continue;
 		}
@@ -132,17 +110,11 @@ export const convert = (ipa: string) => {
 		currentSyllable.push(convertToken(token));
 
 		if (syllableBoundaries.includes(i)) {
-			const syllableText = handleStressedSyllable(currentSyllable, pendingStress);
-			result.push(syllableText);
-			pendingStress = false;
-			currentSyllable = [];
+			flushSyllable();
 		}
 	}
 
-	if (currentSyllable.length > 0) {
-		const syllableText = handleStressedSyllable(currentSyllable, pendingStress);
-		result.push(syllableText);
-	}
+	flushSyllable();
 
 	return result.join('');
 };
