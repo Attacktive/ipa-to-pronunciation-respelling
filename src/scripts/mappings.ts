@@ -1,131 +1,172 @@
-const consonantMappings: Map<string, string | string[]> = new Map();
-consonantMappings.set('b', 'b');
-consonantMappings.set('tʃ', ['ch', 'tch']);
-consonantMappings.set('d', 'd');
-consonantMappings.set('ð', 'dh');
-consonantMappings.set('f', 'f');
-consonantMappings.set('ɡ', ['g', 'gh']);
-consonantMappings.set('h', 'h');
-consonantMappings.set('ɦ', 'h');
-consonantMappings.set('dʒ', 'j');
-consonantMappings.set('k', 'k');
-consonantMappings.set('x', 'kh');
-consonantMappings.set('l', 'l');
-consonantMappings.set('ɫ', 'l');
-consonantMappings.set('ʎ', 'ly');
-consonantMappings.set('m', 'm');
-consonantMappings.set('ɱ', 'm');
-consonantMappings.set('n', 'n');
-consonantMappings.set('ɳ', 'n');
-consonantMappings.set('ŋ', 'ng');
-consonantMappings.set('ɴ', 'ng');
-consonantMappings.set('ŋk', 'nk');
-consonantMappings.set('p', 'p');
-consonantMappings.set('r', 'r');
-consonantMappings.set('ɹ', 'r');
-consonantMappings.set('ɾ', 'r');
-consonantMappings.set('ɽ', 'r');
-consonantMappings.set('s', ['s', 'ss']);
-consonantMappings.set('ʃ', 'sh');
-consonantMappings.set('t', 't');
-consonantMappings.set('ʈ', 't');
-consonantMappings.set('θ', 'th');
-consonantMappings.set('v', 'v');
-consonantMappings.set('w', 'w');
-consonantMappings.set('ɥ', 'w');
-consonantMappings.set('ɰ', 'w');
-consonantMappings.set('hw', 'wh');
-consonantMappings.set('j', 'y');
-consonantMappings.set('ʝ', 'y');
-consonantMappings.set('z', 'z');
-consonantMappings.set('ʒ', 'zh');
-consonantMappings.set('ç', 'ch');
-consonantMappings.set('ʣ', 'dz');
-consonantMappings.set('ʤ', 'j');
-consonantMappings.set('ʦ', 'ts');
-consonantMappings.set('ʧ', 'ch');
-consonantMappings.set('ɢ', 'g');
-consonantMappings.set('ʔ', '');
-consonantMappings.set('c', 'k');
-consonantMappings.set('ɟ', 'g');
-consonantMappings.set('q', 'k');
-consonantMappings.set('χ', 'kh');
-consonantMappings.set('ʁ', 'r');
-consonantMappings.set('ħ', 'h');
-consonantMappings.set('ʕ', '');
+type Category = 'vowel' | 'glide' | 'liquid' | 'nasal' | 'fricative' | 'affricate' | 'stop';
 
-const vowelMappings: Map<string, string | string[]> = new Map();
-vowelMappings.set('æ', 'a');
-vowelMappings.set('ɑ', 'ah');
-vowelMappings.set('ɑː', 'ah');
-vowelMappings.set('ɛər', 'air');
-vowelMappings.set('ɑːr', 'ar');
-vowelMappings.set('ɑr', 'ar');
-vowelMappings.set('ær', 'arr');
-vowelMappings.set('ɔː', 'aw');
-vowelMappings.set('eɪ', 'ay');
-vowelMappings.set('e', ['e', 'eh']);
-vowelMappings.set('ɛ', ['e', 'eh']);
-vowelMappings.set('iː', 'ee');
-vowelMappings.set('i', 'ee');
-vowelMappings.set('ɪər', 'eer');
-vowelMappings.set('ɛr', 'err');
-vowelMappings.set('juː', 'ew');
-vowelMappings.set('ju', 'ew');
-vowelMappings.set('aɪ', ['eye', 'y']);
-vowelMappings.set('ɪ', ['i', 'ih']);
-vowelMappings.set('aɪər', 'ire');
-vowelMappings.set('ɪr', 'irr');
-vowelMappings.set('ɒ', 'o');
-vowelMappings.set('oʊ', 'oh');
-vowelMappings.set('ɔɪər', 'oir');
-vowelMappings.set('uː', 'oo');
-vowelMappings.set('u', 'oo');
-vowelMappings.set('ʊər', 'oor');
-vowelMappings.set('ɔːr', 'or');
-vowelMappings.set('ɔr', 'or');
-vowelMappings.set('ɒr', 'orr');
-vowelMappings.set('aʊər', 'our');
-vowelMappings.set('aʊ', 'ow');
-vowelMappings.set('ɔɪ', 'oy');
-vowelMappings.set('ʌ', ['u', 'uh']);
-vowelMappings.set('ɜːr', 'ur');
-vowelMappings.set('ɜr', 'ur');
-vowelMappings.set('jʊər', 'ure');
-vowelMappings.set('ʌr', 'urr');
-vowelMappings.set('ʊ', 'uu');
-vowelMappings.set('ʊr', 'uurr');
-vowelMappings.set('ə', 'uh');
-vowelMappings.set('ər', 'er');
-vowelMappings.set('y', 'ue');
-vowelMappings.set('ø', 'eu');
-vowelMappings.set('œ', 'eu');
-vowelMappings.set('ɶ', 'a');
-vowelMappings.set('ɨ', 'i');
-vowelMappings.set('ʉ', 'u');
-vowelMappings.set('ɯ', 'u');
-vowelMappings.set('ɘ', 'uh');
-vowelMappings.set('ɵ', 'uh');
-vowelMappings.set('ɤ', 'uh');
-vowelMappings.set('ɜ', 'uh');
-vowelMappings.set('ɞ', 'uh');
-vowelMappings.set('ɐ', 'uh');
-vowelMappings.set('ɚ', 'er');
-vowelMappings.set('ɝ', 'ur');
-vowelMappings.set('ɔ', 'aw');
-vowelMappings.set('a', 'ah');
-vowelMappings.set('ɑ̃', 'on');
-vowelMappings.set('ɛ̃', 'an');
-vowelMappings.set('ɔ̃', 'on');
-vowelMappings.set('œ̃', 'un');
+// Sonority rankings (higher = more sonorous)
+const CATEGORY_SONORITY: Record<Category, number> = {
+	vowel: 8,
+	glide: 7,
+	liquid: 6,
+	nasal: 5,
+	fricative: 4,
+	affricate: 3,
+	stop: 2
+};
 
-const mappings: Map<string, string | string[]> = new Map([...consonantMappings, ...vowelMappings]);
+interface IpaSymbol {
+	ipa: string;
+	respellings: string[];
+	category: Category;
+	sonority: number;
+}
+
+const defineSymbol = (category: Category) => (ipa: string, respelling: string | string[]): IpaSymbol => ({
+	ipa,
+	respellings: Array.isArray(respelling)? respelling: [respelling],
+	category,
+	sonority: CATEGORY_SONORITY[category]
+});
+
+const vowel = defineSymbol('vowel');
+const glide = defineSymbol('glide');
+const liquid = defineSymbol('liquid');
+const nasal = defineSymbol('nasal');
+const fricative = defineSymbol('fricative');
+const affricate = defineSymbol('affricate');
+const stop = defineSymbol('stop');
+
+const consonantSymbols = [
+	stop('b', 'b'),
+	affricate('tʃ', ['ch', 'tch']),
+	stop('d', 'd'),
+	fricative('ð', 'dh'),
+	fricative('f', 'f'),
+	stop('ɡ', ['g', 'gh']),
+	fricative('h', 'h'),
+	fricative('ɦ', 'h'),
+	affricate('dʒ', 'j'),
+	stop('k', 'k'),
+	fricative('x', 'kh'),
+	liquid('l', 'l'),
+	liquid('ɫ', 'l'),
+	liquid('ʎ', 'ly'),
+	nasal('m', 'm'),
+	nasal('ɱ', 'm'),
+	nasal('n', 'n'),
+	nasal('ɳ', 'n'),
+	nasal('ŋ', 'ng'),
+	nasal('ɴ', 'ng'),
+	// Nasal+stop clusters take the stop category since they pattern as codas.
+	stop('ŋk', 'nk'),
+	stop('p', 'p'),
+	liquid('r', 'r'),
+	liquid('ɹ', 'r'),
+	liquid('ɾ', 'r'),
+	liquid('ɽ', 'r'),
+	fricative('s', ['s', 'ss']),
+	fricative('ʃ', 'sh'),
+	stop('t', 't'),
+	stop('ʈ', 't'),
+	fricative('θ', 'th'),
+	fricative('v', 'v'),
+	glide('w', 'w'),
+	glide('ɥ', 'w'),
+	glide('ɰ', 'w'),
+	glide('hw', 'wh'),
+	glide('j', 'y'),
+	fricative('ʝ', 'y'),
+	fricative('z', 'z'),
+	fricative('ʒ', 'zh'),
+	fricative('ç', 'ch'),
+	affricate('ʣ', 'dz'),
+	affricate('ʤ', 'j'),
+	affricate('ʦ', 'ts'),
+	affricate('ʧ', 'ch'),
+	stop('ɢ', 'g'),
+	stop('ʔ', ''),
+	stop('c', 'k'),
+	stop('ɟ', 'g'),
+	stop('q', 'k'),
+	fricative('χ', 'kh'),
+	fricative('ʁ', 'r'),
+	fricative('ħ', 'h'),
+	fricative('ʕ', '')
+];
+
+// Length-marked entries (ɑː, juː, …) never match during conversion because ː is
+// stripped beforehand, but they populate the IPA input buttons.
+const vowelSymbols = [
+	vowel('æ', 'a'),
+	vowel('ɑ', 'ah'),
+	vowel('ɑː', 'ah'),
+	vowel('ɛər', 'air'),
+	vowel('ɑːr', 'ar'),
+	vowel('ɑr', 'ar'),
+	vowel('ær', 'arr'),
+	vowel('ɔː', 'aw'),
+	vowel('eɪ', 'ay'),
+	vowel('e', ['e', 'eh']),
+	vowel('ɛ', ['e', 'eh']),
+	vowel('iː', 'ee'),
+	vowel('i', 'ee'),
+	vowel('ɪər', 'eer'),
+	vowel('ɛr', 'err'),
+	vowel('juː', 'ew'),
+	vowel('ju', 'ew'),
+	vowel('aɪ', ['eye', 'y']),
+	vowel('ɪ', ['i', 'ih']),
+	vowel('aɪər', 'ire'),
+	vowel('ɪr', 'irr'),
+	vowel('ɒ', 'o'),
+	vowel('oʊ', 'oh'),
+	vowel('ɔɪər', 'oir'),
+	vowel('uː', 'oo'),
+	vowel('u', 'oo'),
+	vowel('ʊər', 'oor'),
+	vowel('ɔːr', 'or'),
+	vowel('ɔr', 'or'),
+	vowel('ɒr', 'orr'),
+	vowel('aʊər', 'our'),
+	vowel('aʊ', 'ow'),
+	vowel('ɔɪ', 'oy'),
+	vowel('ʌ', ['u', 'uh']),
+	vowel('ɜːr', 'ur'),
+	vowel('ɜr', 'ur'),
+	vowel('jʊər', 'ure'),
+	vowel('ʌr', 'urr'),
+	vowel('ʊ', 'uu'),
+	vowel('ʊr', 'uurr'),
+	vowel('ə', 'uh'),
+	vowel('ər', 'er'),
+	vowel('y', 'ue'),
+	vowel('ø', 'eu'),
+	vowel('œ', 'eu'),
+	vowel('ɶ', 'a'),
+	vowel('ɨ', 'i'),
+	vowel('ʉ', 'u'),
+	vowel('ɯ', 'u'),
+	vowel('ɘ', 'uh'),
+	vowel('ɵ', 'uh'),
+	vowel('ɤ', 'uh'),
+	vowel('ɜ', 'uh'),
+	vowel('ɞ', 'uh'),
+	vowel('ɐ', 'uh'),
+	vowel('ɚ', 'er'),
+	vowel('ɝ', 'ur'),
+	vowel('ɔ', 'aw'),
+	vowel('a', 'ah'),
+	vowel('ɑ̃', 'on'),
+	vowel('ɛ̃', 'an'),
+	vowel('ɔ̃', 'on'),
+	vowel('œ̃', 'un')
+];
+
+const symbols = [...consonantSymbols, ...vowelSymbols];
+const symbolByIpa = new Map(symbols.map(symbol => [symbol.ipa, symbol]));
 
 const STRESS_MARK = 'ˈ';
 const SECONDARY_STRESS_MARK = 'ˌ';
 
-const consonants = [...consonantMappings.keys()];
-const vowels = [...vowelMappings.keys()];
+const consonants = consonantSymbols.map(({ ipa }) => ipa);
+const vowels = vowelSymbols.map(({ ipa }) => ipa);
 
 const syllableSeparatorSymbols = [' ', '.'];
 const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
@@ -134,43 +175,5 @@ const ignoredSymbols = ['(', ')', 'ː', '͡', '̩', '-'];
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols]
 	.sort((a, b) => b.length - a.length);
 
-// Sonority rankings (higher = more sonorous)
-const sonorityRanks = new Map<string, number>([
-	// Vowels (8)
-	['i', 8], ['y', 8], ['ɨ', 8], ['ʉ', 8], ['ɯ', 8], ['u', 8], ['ɪ', 8], ['ʏ', 8], ['ʊ', 8], ['e', 8], ['ø', 8], ['ɘ', 8], ['ɵ', 8], ['ɤ', 8], ['o', 8], ['ə', 8], ['ɛ', 8], ['œ', 8], ['ɜ', 8], ['ɞ', 8], ['ʌ', 8], ['ɔ', 8], ['æ', 8], ['ɐ', 8], ['a', 8], ['ɶ', 8], ['ɑ', 8], ['ɒ', 8], ['ɚ', 8], ['ɝ', 8], ['ʲ', 8],
-	// Length-marked vowels (stripped at runtime, kept here so module-load validation passes)
-	['ɑː', 8], ['iː', 8], ['uː', 8], ['ɔː', 8], ['juː', 8], ['ɑːr', 8], ['ɜːr', 8], ['ɔːr', 8],
-	// Diphthongs and rhotic vowels
-	['aɪ', 8], ['eɪ', 8], ['ɔɪ', 8], ['aʊ', 8], ['oʊ', 8], ['ɪə', 8], ['ɛə', 8], ['ʊə', 8],
-	['ər', 8], ['ɜr', 8], ['ɑr', 8], ['ɔr', 8], ['ju', 8],
-	['ɛr', 8], ['ɪr', 8], ['ʊr', 8], ['ʌr', 8], ['ɒr', 8], ['ær', 8],
-	['ɛər', 8], ['ɪər', 8], ['ʊər', 8], ['aɪər', 8], ['ɔɪər', 8], ['aʊər', 8], ['jʊər', 8],
-	// Nasalized vowels
-	['ɑ̃', 8], ['ɛ̃', 8], ['ɔ̃', 8], ['œ̃', 8],
-
-	// Glides (7)
-	['j', 7], ['w', 7], ['ɥ', 7], ['ɰ', 7], ['hw', 7],
-
-	// Liquids (6)
-	['l', 6], ['ɫ', 6], ['r', 6], ['ɹ', 6], ['ɾ', 6], ['ɽ', 6], ['ʎ', 6], ['ʟ', 6],
-
-	// Nasals (5)
-	['m', 5], ['ɱ', 5], ['n', 5], ['ɳ', 5], ['ŋ', 5], ['ɴ', 5],
-
-	// Fricatives (4)
-	['f', 4], ['v', 4], ['θ', 4], ['ð', 4], ['s', 4], ['z', 4], ['ʃ', 4], ['ʒ', 4], ['ç', 4], ['ʝ', 4], ['x', 4], ['ɣ', 4], ['χ', 4], ['ʁ', 4], ['ħ', 4], ['ʕ', 4], ['h', 4], ['ɦ', 4],
-
-	// Affricates (3)
-	['ʦ', 3], ['ʣ', 3], ['ʧ', 3], ['ʤ', 3], ['tʃ', 3], ['dʒ', 3],
-
-	// Stops (2). Nasal+stop clusters take the stop rank since they pattern as codas.
-	['p', 2], ['b', 2], ['t', 2], ['d', 2], ['ʈ', 2], ['ɖ', 2], ['c', 2], ['ɟ', 2], ['k', 2], ['ɡ', 2], ['q', 2], ['ɢ', 2], ['ʔ', 2], ['ŋk', 2]
-]);
-
-for (const key of mappings.keys()) {
-	if (!sonorityRanks.has(key)) {
-		throw new Error(`Missing sonority rank for mapping key: "${key}"`);
-	}
-}
-
-export { mappings, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks, sonorityRanks };
+export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks };
+export type { IpaSymbol, Category };

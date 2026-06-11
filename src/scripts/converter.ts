@@ -1,20 +1,20 @@
-import { mappings, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, sonorityRanks, syllableSeparatorSymbols, ignoredSymbols, vowels } from './mappings';
+import { symbolByIpa, validChunks, SECONDARY_STRESS_MARK, STRESS_MARK, acceptedSymbols, syllableSeparatorSymbols, ignoredSymbols, vowels } from './mappings';
 
 const rColoredVowelChunks = new Set(vowels.filter(v => v.endsWith('r')));
 const vowelChunksByLength = [...vowels].sort((a, b) => b.length - a.length);
 
-function findSyllableBoundaries(tokens: string[]): number[] {
+const findSyllableBoundaries = (tokens: string[]): number[] => {
 	if (tokens.length < 3) {
 		return [];
 	}
 
 	const boundaries: number[] = [];
 
-	let previousSonority = sonorityRanks.get(tokens[0]);
+	let previousSonority = symbolByIpa.get(tokens[0])?.sonority;
 
 	for (let i = 1; i < tokens.length - 1; i++) {
-		const currentSonority = sonorityRanks.get(tokens[i]);
-		const nextSonority = sonorityRanks.get(tokens[i + 1]);
+		const currentSonority = symbolByIpa.get(tokens[i])?.sonority;
+		const nextSonority = symbolByIpa.get(tokens[i + 1])?.sonority;
 
 		const isSonorityValley = currentSonority !== undefined
 			&& previousSonority !== undefined
@@ -30,14 +30,14 @@ function findSyllableBoundaries(tokens: string[]): number[] {
 	}
 
 	return boundaries;
-}
+};
 
-function convertToken(token: string): string {
-	const mapped = mappings.get(token);
-	if (Array.isArray(mapped)) {
-		return `(${mapped.join('|')})`;
-	} else if (typeof mapped === 'string') {
-		return mapped;
+const convertToken = (token: string): string => {
+	const symbol = symbolByIpa.get(token);
+	if (symbol) {
+		const { respellings } = symbol;
+
+		return respellings.length > 1? `(${respellings.join('|')})`: respellings[0];
 	}
 
 	if (acceptedSymbols.includes(token)) {
@@ -45,9 +45,9 @@ function convertToken(token: string): string {
 	}
 
 	throw Error(`Token "${token}" has no mapping!`);
-}
+};
 
-function handleStressedSyllable(syllable: string[], isStressed: boolean): string {
+const handleStressedSyllable = (syllable: string[], isStressed: boolean): string => {
 	if (syllable.length === 0) {
 		return '';
 	}
@@ -58,9 +58,9 @@ function handleStressedSyllable(syllable: string[], isStressed: boolean): string
 	}
 
 	return syllableText;
-}
+};
 
-function tokenize(ipa: string) {
+const tokenize = (ipa: string) => {
 	const result = [];
 
 	for (let i = 0; i < ipa.length;) {
@@ -85,9 +85,9 @@ function tokenize(ipa: string) {
 	}
 
 	return result;
-}
+};
 
-export function convert(ipa: string) {
+export const convert = (ipa: string) => {
 	// Remove ignored symbols before tokenization
 	let cleanedIpa = ipa;
 	for (const ignoredSymbol of ignoredSymbols) {
@@ -145,4 +145,4 @@ export function convert(ipa: string) {
 	}
 
 	return result.join('');
-}
+};
