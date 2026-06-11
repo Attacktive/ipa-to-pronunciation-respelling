@@ -1,5 +1,5 @@
 import js from '@eslint/js';
-import { globalIgnores } from 'eslint/config'
+import { globalIgnores } from 'eslint/config';
 import { configs as tsConfigs } from 'typescript-eslint';
 import globals from 'globals';
 
