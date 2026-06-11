@@ -3,13 +3,13 @@
 		"strict": true,
 		"target": "ESNext",
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"esModuleInterop": true,
 		"sourceMap": true,
 		"rootDir": ".",
 		"noEmitOnError": true,
 		"noEmit": true,
 		"allowImportingTsExtensions": true,
-		"types": ["node"]
+		"types": ["node", "vite/client"]
 	}
 }
