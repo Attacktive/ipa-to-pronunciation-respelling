@@ -71,6 +71,7 @@ vowelMappings.set('i', 'ee');
 vowelMappings.set('ɪər', 'eer');
 vowelMappings.set('ɛr', 'err');
 vowelMappings.set('juː', 'ew');
+vowelMappings.set('ju', 'ew');
 vowelMappings.set('aɪ', ['eye', 'y']);
 vowelMappings.set('ɪ', ['i', 'ih']);
 vowelMappings.set('aɪər', 'ire');
@@ -141,7 +142,7 @@ const sonorityRanks = new Map<string, number>([
 	['ɑː', 8], ['iː', 8], ['uː', 8], ['ɔː', 8], ['juː', 8], ['ɑːr', 8], ['ɜːr', 8], ['ɔːr', 8],
 	// Diphthongs and rhotic vowels
 	['aɪ', 8], ['eɪ', 8], ['ɔɪ', 8], ['aʊ', 8], ['oʊ', 8], ['ɪə', 8], ['ɛə', 8], ['ʊə', 8],
-	['ər', 8], ['ɜr', 8], ['ɑr', 8], ['ɔr', 8],
+	['ər', 8], ['ɜr', 8], ['ɑr', 8], ['ɔr', 8], ['ju', 8],
 	['ɛr', 8], ['ɪr', 8], ['ʊr', 8], ['ʌr', 8], ['ɒr', 8], ['ær', 8],
 	['ɛər', 8], ['ɪər', 8], ['ʊər', 8], ['aɪər', 8], ['ɔɪər', 8], ['aʊər', 8], ['jʊər', 8],
 	// Nasalized vowels

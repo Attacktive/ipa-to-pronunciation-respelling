@@ -130,6 +130,11 @@ describe(
 		);
 
 		it(
+			'respells juː as ew after the length mark is stripped ("few")',
+			() => expect(convert('fjuː')).toBe('few')
+		);
+
+		it(
 			'stress mark terminates the prior syllable without an explicit "." ("cater")',
 			() => expect(convert('kæˈtər')).toBe('kaTER')
 		);
