@@ -98,6 +98,8 @@ export const convert = (ipa: string) => {
 		}
 
 		if (token === SECONDARY_STRESS_MARK) {
+			// A syllable break without uppercasing; the respelling key leaves secondary stress unmarked.
+			flushSyllable();
 			continue;
 		}
 

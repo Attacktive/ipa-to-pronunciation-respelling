@@ -173,5 +173,15 @@ describe(
 			'handles tie bar affricate ("choose")',
 			() => expect(convert('/t͡ʃuːz/')).toBe('/(ch|tch)ooz/')
 		);
+
+		it(
+			'secondary stress mark terminates the prior syllable ("abstract", noun)',
+			() => expect(convert('ˈæbˌstrækt')).toBe('AB(s|ss)trakt')
+		);
+
+		it(
+			'secondary stress mark stops primary stress from bleeding into the next syllable ("A-B")',
+			() => expect(convert('ˈeɪˌbiː')).toBe('AYbee')
+		);
 	}
 );
