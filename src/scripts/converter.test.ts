@@ -160,6 +160,16 @@ describe(
 		);
 
 		it(
+			'respells bare o as aw after the length mark is stripped ("quarter")',
+			() => expect(convert('/ˈkoː.tɘ/')).toBe('/KAW tuh/')
+		);
+
+		it(
+			'ignores the non-syllabic diacritic U+032F ("area")',
+			() => expect(convert('/ˈɛə̯ɹɪə̯/')).toBe('/(E|EH)UHR(i|ih)uh/')
+		);
+
+		it(
 			'handles tie bar affricate with syllabic consonant ("region")',
 			() => expect(convert('/ˈɹiːd͡ʒn̩/')).toBe('/REEJn/')
 		);
@@ -182,6 +192,41 @@ describe(
 		it(
 			'secondary stress mark stops primary stress from bleeding into the next syllable ("A-B")',
 			() => expect(convert('ˈeɪˌbiː')).toBe('AYbee')
+		);
+	}
+);
+
+describe(
+	'normalization and diacritic resilience',
+	() => {
+		it(
+			'drops an aspiration modifier letter ("tʰ")',
+			() => expect(convert('tʰ')).toBe('t')
+		);
+
+		it(
+			'decomposes a precomposed accented vowel via NFD ("ẽ")',
+			() => expect(convert('ẽ')).toBe('(e|eh)')
+		);
+
+		it(
+			'drops a half-length modifier ("ɛˑ")',
+			() => expect(convert('ɛˑ')).toBe('(e|eh)')
+		);
+
+		it(
+			'drops an unrecognized combining diacritic ("n̥" voiceless)',
+			() => expect(convert('n̥')).toBe('n')
+		);
+
+		it(
+			'keeps ç mapped after NFD key normalization ("ç")',
+			() => expect(convert('ç')).toBe('ch')
+		);
+
+		it(
+			'keeps nasal vowel chunks intact ("ɑ̃")',
+			() => expect(convert('ɑ̃')).toBe('on')
 		);
 	}
 );

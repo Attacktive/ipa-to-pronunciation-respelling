@@ -152,6 +152,8 @@ const vowelSymbols = [
 	vowel('ɚ', 'er'),
 	vowel('ɝ', 'ur'),
 	vowel('ɔ', 'aw'),
+	vowel('o', 'aw'),
+	vowel('oː', 'aw'),
 	vowel('a', 'ah'),
 	vowel('ɑ̃', 'on'),
 	vowel('ɛ̃', 'an'),
@@ -160,7 +162,7 @@ const vowelSymbols = [
 ];
 
 const symbols = [...consonantSymbols, ...vowelSymbols];
-const symbolByIpa = new Map(symbols.map(symbol => [symbol.ipa, symbol]));
+const symbolByIpa = new Map(symbols.map(symbol => [symbol.ipa.normalize('NFD'), symbol]));
 
 const STRESS_MARK = 'ˈ';
 const SECONDARY_STRESS_MARK = 'ˌ';
@@ -170,9 +172,12 @@ const vowels = vowelSymbols.map(({ ipa }) => ipa);
 
 const syllableSeparatorSymbols = [' ', '.'];
 const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
-const ignoredSymbols = ['(', ')', 'ː', '͡', '̩', '-'];
+
+// Stripped pre-tokenization: parens/hyphen, length mark, and tie bars U+0361/U+035C (the bars must go so dʒ/tʃ become adjacent and match one chunk); other diacritics/modifiers are dropped in the tokenizer.
+const ignoredSymbols = ['(', ')', 'ː', '\u0361', '\u035C', '-'];
 
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols]
+	.map(chunk => chunk.normalize('NFD'))
 	.sort((a, b) => b.length - a.length);
 
 export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks };
