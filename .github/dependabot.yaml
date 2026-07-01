@@ -9,6 +9,7 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+      time: '00:00'
     labels:
       - 'CI/CD'
     commit-message:
@@ -17,6 +18,7 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+      time: '00:00'
     labels:
       - 'CI/CD'
     commit-message:
