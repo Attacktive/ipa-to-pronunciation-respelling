@@ -32,7 +32,7 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@tailwindcss/postcss": "^4.3.2",
-		"@types/node": "^24.13.2",
+		"@types/node": "^24.13.3",
 		"eslint": "^10.6.0",
 		"gh-pages": "^6.3.0",
 		"globals": "^17.7.0",
