@@ -36,7 +36,7 @@
 		"eslint": "^10.7.0",
 		"gh-pages": "^6.3.0",
 		"globals": "^17.7.0",
-		"sass": "^1.101.6",
+		"sass": "^1.101.7",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.65.0",
