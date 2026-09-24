@@ -76,7 +76,7 @@ const findNuclei = (tokens: ParsedToken[], start: number, end: number) => {
 		}
 
 		if (isNucleus(token)) {
-			currentNucleus = finishNucleus(nuclei, currentNucleus);
+			finishNucleus(nuclei, currentNucleus);
 			currentNucleus = [i];
 			continue;
 		}
