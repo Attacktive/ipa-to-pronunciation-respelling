@@ -1,6 +1,6 @@
 import { fetchWords, fetchIpa } from './random-words.ts';
-import { testConversions, testIpaNotations } from './smoke-test-runner.ts';
-import type { ConversionError } from './smoke-test-runner.ts';
+import { testConversions, testIpaNotations } from './smoke-test-runner';
+import type { ConversionError } from './smoke-test-runner';
 
 const printFailures = (errors: ConversionError[], total: number, subject: string) => {
 	console.log(`${errors.length}/${total} ${subject} failed to convert:`);

@@ -49,11 +49,10 @@ jobs:
         run: |
           if [[ -z "$IPA_NOTATIONS" ]]; then
             bun run src/scripts/smoke-test.ts 2> failures.json
-            exit
+          else
+            mapfile -t ipa_notations < <(jq -r '.[]' <<< "$IPA_NOTATIONS")
+            bun run src/scripts/smoke-test.ts "${ipa_notations[@]}" 2> failures.json
           fi
-
-          mapfile -t ipa_notations < <(jq -r '.[]' <<< "$IPA_NOTATIONS")
-          bun run src/scripts/smoke-test.ts "${ipa_notations[@]}" 2> failures.json
       - name: 'Report failures'
         if: steps.smoke-test.outcome == 'failure'
         env:
@@ -67,12 +66,12 @@ jobs:
             IPA=$(echo "$entry" | jq -r '.ipa')
             ERROR=$(echo "$entry" | jq -r '.error')
 
-            if echo "$CURRENT_BODY" | grep -qF "`${IPA}`"; then
+            if echo "$CURRENT_BODY" | grep -qF "\`${IPA}\`"; then
               echo "Skipping duplicate IPA: ${IPA}"
               continue
             fi
 
-            NEW_ROW="| ${WORD} | `${IPA}` | ${ERROR} | ${TIMESTAMP} |"
+            NEW_ROW="| ${WORD} | \`${IPA}\` | ${ERROR} | ${TIMESTAMP} |"
             CURRENT_BODY="${CURRENT_BODY}"$'\n'"${NEW_ROW}"
           done < <(jq -c '.[]' failures.json)
 
