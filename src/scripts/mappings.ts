@@ -91,8 +91,7 @@ const consonantSymbols = [
 	fricative('ʕ', '')
 ];
 
-// Length-marked entries (ɑː, juː, …) never match during conversion because ː is
-// stripped beforehand, but they populate the IPA input buttons.
+// Length-marked entries populate the IPA buttons while the parser retains length as token metadata.
 const vowelSymbols = [
 	vowel('æ', 'a'),
 	vowel('ɑ', 'ah'),
@@ -117,6 +116,7 @@ const vowelSymbols = [
 	vowel('ɪr', 'irr'),
 	vowel('ɒ', 'o'),
 	vowel('oʊ', 'oh'),
+	vowel('əʊ', 'oh'),
 	vowel('ɔɪər', 'oir'),
 	vowel('uː', 'oo'),
 	vowel('u', 'oo'),
@@ -169,16 +169,17 @@ const SECONDARY_STRESS_MARK = 'ˌ';
 
 const consonants = consonantSymbols.map(({ ipa }) => ipa);
 const vowels = vowelSymbols.map(({ ipa }) => ipa);
+const phonemeChunks = [...new Set([...consonants, ...vowels].map(chunk => chunk.normalize('NFD').replaceAll('ː', '')))]
+	.sort((a, b) => b.length - a.length);
 
 const syllableSeparatorSymbols = [' ', '.'];
 const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
-
-// Stripped pre-tokenization: parens/hyphen, length mark, and tie bars U+0361/U+035C (the bars must go so dʒ/tʃ become adjacent and match one chunk); other diacritics/modifiers are dropped in the tokenizer.
-const ignoredSymbols = ['(', ')', 'ː', '\u0361', '\u035C', '-'];
+// Stripped pre-tokenization: tie bars become adjacent affricates and hyphens remain formatting-only.
+const ignoredSymbols = ['\u0361', '\u035C', '-'];
 
 const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols]
 	.map(chunk => chunk.normalize('NFD'))
 	.sort((a, b) => b.length - a.length);
 
-export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks };
+export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, phonemeChunks, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks };
 export type { IpaSymbol, Category };

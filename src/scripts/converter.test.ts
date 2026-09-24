@@ -105,8 +105,8 @@ describe(
 		);
 
 		it(
-			'syllable boundaries work with complex clusters ("strict")',
-			() => expect(convert('ˈstrɪkt')).toBe('(S|SS)Tr(i|ih)kt')
+			'does not invent a boundary inside a one-syllable word ("strict")',
+			() => expect(convert('ˈstrɪkt')).toBe('(S|SS)TR(I|IH)KT')
 		);
 
 		it(
@@ -120,17 +120,17 @@ describe(
 		);
 
 		it(
-			'ignores parentheses ("hello")',
+			'ignores wrapper parentheses ("hello")',
 			() => expect(convert('(həˈloʊ)')).toBe('huhLOH')
 		);
 
 		it(
-			'ignores length marks ("hello")',
+			'handles a length mark inside a diphthong ("hello")',
 			() => expect(convert('həˈloːʊ')).toBe('huhLOH')
 		);
 
 		it(
-			'respells juː as ew after the length mark is stripped ("few")',
+			'respells juː as ew ("few")',
 			() => expect(convert('fjuː')).toBe('few')
 		);
 
@@ -141,7 +141,7 @@ describe(
 
 		it(
 			'r between vowels syllabifies as onset of next syllable ("berry")',
-			() => expect(convert('ˈbɛri')).toBe('B(E|EH)Ree')
+			() => expect(convert('ˈbɛri')).toBe('B(E|EH)ree')
 		);
 
 		it(
@@ -160,23 +160,23 @@ describe(
 		);
 
 		it(
-			'respells bare o as aw after the length mark is stripped ("quarter")',
+			'respells bare o as aw when marked long ("quarter")',
 			() => expect(convert('/ˈkoː.tɘ/')).toBe('/KAW tuh/')
 		);
 
 		it(
-			'ignores the non-syllabic diacritic U+032F ("area")',
-			() => expect(convert('/ˈɛə̯ɹɪə̯/')).toBe('/(E|EH)UHR(i|ih)uh/')
+			'ignores the non-syllabic diacritic U+032F while keeping its vowel in the nucleus ("area")',
+			() => expect(convert('/ˈɛə̯ɹɪə̯/')).toBe('/(E|EH)UHr(i|ih)uh/')
 		);
 
 		it(
 			'handles tie bar affricate with syllabic consonant ("region")',
-			() => expect(convert('/ˈɹiːd͡ʒn̩/')).toBe('/REEJn/')
+			() => expect(convert('/ˈɹiːd͡ʒn̩/')).toBe('/REEjn/')
 		);
 
 		it(
-			'handles dark l ("bowl")',
-			() => expect(convert('/bəʊɫ/')).toBe('/buhuul/')
+			'handles dark l and the British əʊ diphthong ("bowl")',
+			() => expect(convert('/bəʊɫ/')).toBe('/bohl/')
 		);
 
 		it(
@@ -192,6 +192,35 @@ describe(
 		it(
 			'secondary stress mark stops primary stress from bleeding into the next syllable ("A-B")',
 			() => expect(convert('ˈeɪˌbiː')).toBe('AYbee')
+		);
+
+		it(
+			'infers the coda and onset between vowel nuclei ("household")',
+			() => {
+				expect(convert('/ˈhaʊshəʊld/'))
+					.toBe('/HOW(S|SS)hohld/');
+			}
+		);
+	}
+);
+
+describe(
+	'structured IPA handling',
+	() => {
+		it(
+			'preserves optional sounds in the respelling ("solution")',
+			() => {
+				expect(convert('/səˈl(j)uːʃən/'))
+					.toBe('/(s|ss)uhL(Y)OOshuhn/');
+			}
+		);
+
+		it(
+			'handles long vowels and optional rhotics together ("archer")',
+			() => {
+				expect(convert('/ˈɑː(ɹ).tʃə(ɹ)/'))
+					.toBe('/AH(R) (ch|tch)uh(r)/');
+			}
 		);
 	}
 );
