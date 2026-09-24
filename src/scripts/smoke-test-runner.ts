@@ -1,4 +1,4 @@
-import { convert } from './converter.ts';
+import { convert } from './converter';
 
 const testConversions = (inputs: ConversionInput[]) => {
 	const results: ConversionResult[] = [];

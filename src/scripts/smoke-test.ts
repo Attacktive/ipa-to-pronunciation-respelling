@@ -16,7 +16,7 @@ const printFailures = (errors: ConversionError[], total: number, subject: string
 	process.stderr.write(`${JSON.stringify(errors)}\n`);
 };
 
-const smokeTestIpaNotations = (ipaNotations: string[]) => {
+function smokeTestIpaNotations(ipaNotations: string[]) {
 	console.log(`Testing ${ipaNotations.length} supplied IPA notations...`);
 
 	const { results, errors } = testIpaNotations(ipaNotations);
@@ -31,8 +31,9 @@ const smokeTestIpaNotations = (ipaNotations: string[]) => {
 	}
 
 	printFailures(errors, ipaNotations.length, 'IPA notations');
+
 	process.exit(1);
-};
+}
 
 async function smokeTestRandomWords() {
 	const words = fetchWords();
@@ -57,6 +58,7 @@ async function smokeTestRandomWords() {
 	}
 
 	printFailures(errors, wordsWithIpa.length, 'words');
+
 	process.exit(1);
 }
 

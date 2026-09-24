@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { testIpaNotations } from './smoke-test-runner.ts';
+import { testConversions, testIpaNotations } from './smoke-test-runner';
 
 describe(
 	'smoke test runner',
@@ -11,6 +11,7 @@ describe(
 
 				expect(errors)
 					.toEqual([]);
+
 				expect(results)
 					.toEqual([
 						{ ipa: '/ˈaʊ̯tɪŋ/', respelling: '/OWt(i|ih)ng/' },
@@ -29,10 +30,31 @@ describe(
 						{ ipa: 'aɪ', respelling: '(eye|y)' },
 						{ ipa: 'b', respelling: 'b' }
 					]);
+
 				expect(errors)
 					.toHaveLength(1);
 				expect(errors[0])
 					.toMatchObject({ ipa: '💩' });
+			}
+		);
+
+		it(
+			'preserves word metadata for random-word conversions and failures',
+			() => {
+				const { results, errors } = testConversions([
+					{ word: 'eye', ipa: 'aɪ' },
+					{ word: 'invalid', ipa: '💩' }
+				]);
+
+				expect(results)
+					.toEqual([
+						{ word: 'eye', ipa: 'aɪ', respelling: '(eye|y)' }
+					]);
+
+				expect(errors)
+					.toHaveLength(1);
+				expect(errors[0])
+					.toMatchObject({ word: 'invalid', ipa: '💩' });
 			}
 		);
 	}
