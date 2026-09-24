@@ -55,8 +55,15 @@ const findBoundaryBefore = (tokens: ParsedToken[], consonantIndexes: number[], n
 	return nextNucleusIndex;
 };
 
-const findRegionBoundaries = (tokens: ParsedToken[], start: number, end: number) => {
-	const boundaries: number[] = [];
+const finishNucleus = (nuclei: number[][], currentNucleus: number[]) => {
+	if (currentNucleus.length > 0) {
+		nuclei.push(currentNucleus);
+	}
+
+	return [];
+};
+
+const findNuclei = (tokens: ParsedToken[], start: number, end: number) => {
 	const nuclei: number[][] = [];
 	let currentNucleus: number[] = [];
 
@@ -66,71 +73,74 @@ const findRegionBoundaries = (tokens: ParsedToken[], start: number, end: number)
 			continue;
 		}
 
-		if (isNucleus(token)) {
-			if (currentNucleus.length > 0) {
-				currentNucleus.push(i);
-			} else {
-				currentNucleus = [i];
-			}
-
-			continue;
-		}
-
-		if (isVowel(token) && currentNucleus.length > 0) {
+		if (isNucleus(token) || isVowel(token) && currentNucleus.length > 0) {
 			currentNucleus.push(i);
 			continue;
 		}
 
-		if (currentNucleus.length > 0) {
-			nuclei.push(currentNucleus);
-			currentNucleus = [];
+		currentNucleus = finishNucleus(nuclei, currentNucleus);
+	}
+
+	finishNucleus(nuclei, currentNucleus);
+
+	return nuclei;
+};
+
+const findConsonantIndexes = (tokens: ParsedToken[], previousNucleus: number[], nextNucleus: number[]) => {
+	const result: number[] = [];
+
+	for (let tokenIndex = previousNucleus[previousNucleus.length - 1] + 1; tokenIndex < nextNucleus[0]; tokenIndex++) {
+		if (tokens[tokenIndex].kind === 'phoneme') {
+			result.push(tokenIndex);
 		}
 	}
 
-	if (currentNucleus.length > 0) {
-		nuclei.push(currentNucleus);
+	return result;
+};
+
+const findBoundaryBetweenNuclei = (tokens: ParsedToken[], previousNucleus: number[], nextNucleus: number[]) => {
+	const consonantIndexes = findConsonantIndexes(tokens, previousNucleus, nextNucleus);
+	if (consonantIndexes.length === 0) {
+		return undefined;
 	}
+
+	return findBoundaryBefore(tokens, consonantIndexes, nextNucleus[0]);
+};
+
+const findRegionBoundaries = (tokens: ParsedToken[], start: number, end: number) => {
+	const nuclei = findNuclei(tokens, start, end);
+	const boundaries: number[] = [];
 
 	for (let i = 1; i < nuclei.length; i++) {
-		const previousNucleus = nuclei[i - 1];
-		const nextNucleus = nuclei[i];
-		const consonantIndexes: number[] = [];
-
-		for (let tokenIndex = previousNucleus[previousNucleus.length - 1] + 1; tokenIndex < nextNucleus[0]; tokenIndex++) {
-			if (tokens[tokenIndex].kind === 'phoneme') {
-				consonantIndexes.push(tokenIndex);
-			}
-		}
-
-		if (consonantIndexes.length > 0) {
-			boundaries.push(findBoundaryBefore(tokens, consonantIndexes, nextNucleus[0]));
+		const boundary = findBoundaryBetweenNuclei(tokens, nuclei[i - 1], nuclei[i]);
+		if (boundary !== undefined) {
+			boundaries.push(boundary);
 		}
 	}
 
 	return boundaries;
 };
 
+const addRegionBoundaries = (boundaries: Set<number>, tokens: ParsedToken[], start: number, end: number) => {
+	for (const boundary of findRegionBoundaries(tokens, start, end)) {
+		boundaries.add(boundary);
+	}
+};
+
 const findSyllableBoundaries = (tokens: ParsedToken[]) => {
 	const boundaries = new Set<number>();
 	let regionStart = 0;
 
-	const flushRegion = (end: number) => {
-		for (const boundary of findRegionBoundaries(tokens, regionStart, end)) {
-			boundaries.add(boundary);
-		}
-
-		regionStart = end + 1;
-	};
-
 	for (let i = 0; i < tokens.length; i++) {
-		if (tokens[i].kind !== 'phoneme') {
-			flushRegion(i);
+		if (tokens[i].kind === 'phoneme') {
+			continue;
 		}
+
+		addRegionBoundaries(boundaries, tokens, regionStart, i);
+		regionStart = i + 1;
 	}
 
-	for (const boundary of findRegionBoundaries(tokens, regionStart, tokens.length)) {
-		boundaries.add(boundary);
-	}
+	addRegionBoundaries(boundaries, tokens, regionStart, tokens.length);
 
 	return boundaries;
 };
