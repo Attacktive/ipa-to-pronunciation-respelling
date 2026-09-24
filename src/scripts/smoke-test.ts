@@ -1,13 +1,40 @@
-import { convert } from './converter.ts';
 import { fetchWords, fetchIpa } from './random-words.ts';
+import { testConversions, testIpaNotations } from './smoke-test-runner.ts';
+import type { ConversionError } from './smoke-test-runner.ts';
 
-interface ConversionError {
-	word: string;
-	ipa: string;
-	error: string;
-}
+const printFailures = (errors: ConversionError[], total: number, subject: string) => {
+	console.log(`${errors.length}/${total} ${subject} failed to convert:`);
 
-async function smokeTest() {
+	for (const { word, ipa, error } of errors) {
+		if (word !== undefined) {
+			console.log(`  - ${word} [${ipa}]: ${error}`);
+		} else {
+			console.log(`  - [${ipa}]: ${error}`);
+		}
+	}
+
+	process.stderr.write(`${JSON.stringify(errors)}\n`);
+};
+
+const smokeTestIpaNotations = (ipaNotations: string[]) => {
+	console.log(`Testing ${ipaNotations.length} supplied IPA notations...`);
+
+	const { results, errors } = testIpaNotations(ipaNotations);
+
+	for (const { ipa, respelling } of results) {
+		console.log(`  - ${ipa} -> ${respelling}`);
+	}
+
+	if (errors.length === 0) {
+		console.log(`All ${ipaNotations.length} IPA notations converted successfully.`);
+		return;
+	}
+
+	printFailures(errors, ipaNotations.length, 'IPA notations');
+	process.exit(1);
+};
+
+async function smokeTestRandomWords() {
 	const words = fetchWords();
 	console.log(`Got ${words.length} words. Fetching IPA transcriptions...`);
 
@@ -22,29 +49,25 @@ async function smokeTest() {
 
 	console.log(`Got IPA for ${wordsWithIpa.length}/${words.length} words. Testing converter...`);
 
-	const errors: ConversionError[] = [];
-
-	for (const { word, ipa } of wordsWithIpa) {
-		try {
-			convert(ipa);
-		} catch (error) {
-			errors.push({ word, ipa, error: (error as Error).message });
-		}
-	}
+	const { errors } = testConversions(wordsWithIpa);
 
 	if (errors.length === 0) {
 		console.log(`All ${wordsWithIpa.length} words converted successfully.`);
-	} else {
-		console.log(`${errors.length}/${wordsWithIpa.length} words failed to convert:`);
-
-		for (const { word, ipa, error } of errors) {
-			console.log(`  - ${word} [${ipa}]: ${error}`);
-		}
-
-		process.stderr.write(JSON.stringify(errors) + '\n');
-
-		process.exit(1);
+		return;
 	}
+
+	printFailures(errors, wordsWithIpa.length, 'words');
+	process.exit(1);
+}
+
+async function smokeTest() {
+	const ipaNotations = process.argv.slice(2);
+	if (ipaNotations.length > 0) {
+		smokeTestIpaNotations(ipaNotations);
+		return;
+	}
+
+	await smokeTestRandomWords();
 }
 
 smokeTest()
