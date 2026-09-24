@@ -3,6 +3,8 @@ import { parseIpa } from './parser';
 import { findSyllableBoundaries } from './syllabifier';
 import type { PhonemeToken } from './parser';
 
+const OPTIONAL_ALTERNATIVE_GROUP = /\(\(([^()]*\|[^()]*)\)\)/gu;
+
 const convertToken = (token: PhonemeToken) => {
 	const symbol = symbolByIpa.get(token.ipa);
 	if (symbol === undefined) {
@@ -15,12 +17,12 @@ const convertToken = (token: PhonemeToken) => {
 		result = `(${respellings.join('|')})`;
 	}
 
-	if (token.optional) {
-		return `(${result})`;
-	}
-
 	return result;
 };
+
+const normalizeOptionalGroups = (value: string) => value
+	.replaceAll('()', '')
+	.replace(OPTIONAL_ALTERNATIVE_GROUP, '($1)');
 
 const convert = (ipa: string) => {
 	const tokens = parseIpa(ipa);
@@ -56,6 +58,16 @@ const convert = (ipa: string) => {
 			continue;
 		}
 
+		if (token.kind === 'optional') {
+			if (token.boundary === 'start') {
+				currentSyllable.push('(');
+			} else {
+				currentSyllable.push(')');
+			}
+
+			continue;
+		}
+
 		if (token.kind === 'stress') {
 			flushSyllable();
 			pendingStress = token.level === 'primary';
@@ -74,7 +86,7 @@ const convert = (ipa: string) => {
 
 	flushSyllable();
 
-	return result.join('');
+	return normalizeOptionalGroups(result.join(''));
 };
 
 export { convert };

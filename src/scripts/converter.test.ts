@@ -160,13 +160,23 @@ describe(
 		);
 
 		it(
-			'respells bare o as aw when marked long ("quarter")',
+			'handles a length mark after bare o ("quarter")',
 			() => expect(convert('/ˈkoː.tɘ/')).toBe('/KAW tuh/')
 		);
 
 		it(
 			'ignores the non-syllabic diacritic U+032F while keeping its vowel in the nucleus ("area")',
 			() => expect(convert('/ˈɛə̯ɹɪə̯/')).toBe('/(E|EH)UHr(i|ih)uh/')
+		);
+
+		it(
+			'keeps a marked component inside a diphthong nucleus',
+			() => expect(convert('/ˈaʊ̯tɪŋ/')).toBe('/OWt(i|ih)ng/')
+		);
+
+		it(
+			'splits adjacent syllabic vowels into separate nuclei',
+			() => expect(convert('ˈbaɪoʊ')).toBe('B(EYE|Y)oh')
 		);
 
 		it(
@@ -213,6 +223,16 @@ describe(
 				expect(convert('/səˈl(j)uːʃən/'))
 					.toBe('/(s|ss)uhL(Y)OOshuhn/');
 			}
+		);
+
+		it(
+			'keeps a multi-phoneme optional group together',
+			() => expect(convert('/(st)/')).toBe('/((s|ss)t)/')
+		);
+
+		it(
+			'avoids redundant parentheses for one ambiguous optional phoneme',
+			() => expect(convert('/(s)/')).toBe('/(s|ss)/')
 		);
 
 		it(

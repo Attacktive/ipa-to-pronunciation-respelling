@@ -12,11 +12,22 @@ describe(
 
 				expect(phonemes)
 					.toEqual([
-						{ kind: 'phoneme', ipa: 'ɑ', optional: false, long: true },
-						{ kind: 'phoneme', ipa: 'ɹ', optional: true, long: false },
-						{ kind: 'phoneme', ipa: 'tʃ', optional: false, long: false },
-						{ kind: 'phoneme', ipa: 'ə', optional: false, long: false },
-						{ kind: 'phoneme', ipa: 'ɹ', optional: true, long: false }
+						{ kind: 'phoneme', ipa: 'ɑ', long: true },
+						{ kind: 'phoneme', ipa: 'ɹ', long: false },
+						{ kind: 'phoneme', ipa: 'tʃ', long: false },
+						{ kind: 'phoneme', ipa: 'ə', long: false },
+						{ kind: 'phoneme', ipa: 'ɹ', long: false }
+					]);
+
+				const optionals = parseIpa('/ˈɑː(ɹ).tʃə(ɹ)/')
+					.filter(token => token.kind === 'optional');
+
+				expect(optionals)
+					.toEqual([
+						{ kind: 'optional', boundary: 'start' },
+						{ kind: 'optional', boundary: 'end' },
+						{ kind: 'optional', boundary: 'start' },
+						{ kind: 'optional', boundary: 'end' }
 					]);
 			}
 		);
@@ -33,6 +44,17 @@ describe(
 					.toMatchObject({ ipa: 'n', syllabic: true });
 				expect(nonSyllabicVowel)
 					.toMatchObject({ ipa: 'ə', syllabic: false });
+			}
+		);
+
+		it(
+			'keeps a non-syllabic component inside a compound vowel token',
+			() => {
+				const diphthong = parseIpa('/aʊ̯/')
+					.find(token => token.kind === 'phoneme');
+
+				expect(diphthong)
+					.toMatchObject({ ipa: 'aʊ', containsNonSyllabicComponent: true });
 			}
 		);
 	}

@@ -6,20 +6,37 @@ const SYLLABICITY_BY_DIACRITIC = new Map<string, boolean>([
 	['\u0329', true],
 	['\u032F', false]
 ]);
+
 const STRESS_LEVEL_BY_MARK = new Map<string, StressToken['level']>([
 	[STRESS_MARK, 'primary'],
 	[SECONDARY_STRESS_MARK, 'secondary']
 ]);
+
 const SYLLABLE_SEPARATORS = new Set<BoundaryToken['separator']>([' ', '.']);
 const LITERALS = new Set<LiteralToken['value']>(['/', '[', ']']);
+const OPTIONAL_BOUNDARY_BY_PARENTHESIS = new Map<string, OptionalToken['boundary']>([
+	['(', 'start'],
+	[')', 'end']
+]);
+
 const PARENTHESIS_DEPTH_CHANGE = new Map([
 	['(', 1],
 	[')', -1]
 ]);
+
 const DROPPABLE_DIACRITIC = /[\p{M}\p{Lm}]/u;
-const normalizedVowels = [...new Set(vowels.map(vowel => vowel.normalize('NFD').replaceAll(LENGTH_MARK, '')))]
-	.sort((a, b) => b.length - a.length);
+
+const cleanVowel = (vowel: string) => vowel.normalize('NFD')
+	.replaceAll(LENGTH_MARK, '');
+
+const normalizedVowels = [...new Set(vowels.map(cleanVowel))]
+	.sort((left, right) => right.length - left.length);
+const vowelChunks = new Set(normalizedVowels);
 const rColoredVowels = new Set(normalizedVowels.filter(vowel => vowel.endsWith('r')));
+
+const hasMultipleSegments = (ipa: string) => [...ipa]
+	.filter(character => /\p{L}/u.test(character))
+	.length > 1;
 
 const closesOuterParenthesisEarly = (ipa: string) => {
 	let depth = 0;
@@ -97,16 +114,22 @@ const cleanIpa = (ipa: string) => {
 
 const consumeParenthesis: TokenConsumer = context => {
 	const character = context.cleanedIpa.charAt(context.index);
-	const depthChange = PARENTHESIS_DEPTH_CHANGE.get(character);
-	if (depthChange === undefined) {
+	const boundary = OPTIONAL_BOUNDARY_BY_PARENTHESIS.get(character);
+	if (boundary === undefined) {
 		return false;
 	}
 
-	if (depthChange < 0 && context.optionalDepth === 0) {
+	if (boundary === 'end' && context.optionalDepth === 0) {
 		throw Error(`${context.originalIpa} contains an unmatched closing parenthesis.`);
 	}
 
-	context.optionalDepth += depthChange;
+	context.tokens.push({ kind: 'optional', boundary });
+	if (boundary === 'start') {
+		context.optionalDepth++;
+	} else {
+		context.optionalDepth--;
+	}
+
 	context.index++;
 
 	return true;
@@ -156,7 +179,11 @@ const consumeSyllabicity: TokenConsumer = context => {
 
 	const token = context.tokens.at(-1);
 	if (token?.kind === 'phoneme') {
-		token.syllabic = syllabic;
+		if (!syllabic && vowelChunks.has(token.ipa) && hasMultipleSegments(token.ipa)) {
+			token.containsNonSyllabicComponent = true;
+		} else {
+			token.syllabic = syllabic;
+		}
 	}
 
 	context.index++;
@@ -170,7 +197,7 @@ const consumePhoneme: TokenConsumer = context => {
 		return false;
 	}
 
-	context.tokens.push({ kind: 'phoneme', ipa: match.ipa, optional: context.optionalDepth > 0, long: match.long });
+	context.tokens.push({ kind: 'phoneme', ipa: match.ipa, long: match.long });
 	context.index = match.nextIndex;
 
 	return true;
@@ -222,9 +249,9 @@ const parseIpa = (ipa: string) => {
 interface PhonemeToken {
 	kind: 'phoneme';
 	ipa: string;
-	optional: boolean;
 	long: boolean;
 	syllabic?: boolean;
+	containsNonSyllabicComponent?: boolean;
 }
 
 interface StressToken {
@@ -242,7 +269,12 @@ interface LiteralToken {
 	value: '/' | '[' | ']';
 }
 
-type ParsedToken = PhonemeToken | StressToken | BoundaryToken | LiteralToken;
+interface OptionalToken {
+	kind: 'optional';
+	boundary: 'start' | 'end';
+}
+
+type ParsedToken = PhonemeToken | StressToken | BoundaryToken | LiteralToken | OptionalToken;
 
 interface ChunkMatch {
 	ipa: string;

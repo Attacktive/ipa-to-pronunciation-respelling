@@ -30,6 +30,8 @@ const isNucleus = (token: PhonemeToken) => {
 	return isVowel(token);
 };
 
+const isNonSyllabicVowel = (token: PhonemeToken) => isVowel(token) && token.syllabic === false;
+
 const normalizeOnset = (tokens: PhonemeToken[]) => tokens.map(token => ONSET_EQUIVALENTS.get(token.ipa) ?? token.ipa).join('');
 
 const canBeOnset = (tokens: PhonemeToken[]) => {
@@ -73,7 +75,13 @@ const findNuclei = (tokens: ParsedToken[], start: number, end: number) => {
 			continue;
 		}
 
-		if (isNucleus(token) || isVowel(token) && currentNucleus.length > 0) {
+		if (isNucleus(token)) {
+			currentNucleus = finishNucleus(nuclei, currentNucleus);
+			currentNucleus = [i];
+			continue;
+		}
+
+		if (isNonSyllabicVowel(token) && currentNucleus.length > 0) {
 			currentNucleus.push(i);
 			continue;
 		}
@@ -101,7 +109,7 @@ const findConsonantIndexes = (tokens: ParsedToken[], previousNucleus: number[], 
 const findBoundaryBetweenNuclei = (tokens: ParsedToken[], previousNucleus: number[], nextNucleus: number[]) => {
 	const consonantIndexes = findConsonantIndexes(tokens, previousNucleus, nextNucleus);
 	if (consonantIndexes.length === 0) {
-		return undefined;
+		return nextNucleus[0];
 	}
 
 	return findBoundaryBefore(tokens, consonantIndexes, nextNucleus[0]);
@@ -112,10 +120,7 @@ const findRegionBoundaries = (tokens: ParsedToken[], start: number, end: number)
 	const boundaries: number[] = [];
 
 	for (let i = 1; i < nuclei.length; i++) {
-		const boundary = findBoundaryBetweenNuclei(tokens, nuclei[i - 1], nuclei[i]);
-		if (boundary !== undefined) {
-			boundaries.push(boundary);
-		}
+		boundaries.push(findBoundaryBetweenNuclei(tokens, nuclei[i - 1], nuclei[i]));
 	}
 
 	return boundaries;
@@ -127,12 +132,16 @@ const addRegionBoundaries = (boundaries: Set<number>, tokens: ParsedToken[], sta
 	}
 };
 
+const isRegionBreak = (token: ParsedToken) => token.kind === 'stress'
+	|| token.kind === 'boundary'
+	|| token.kind === 'literal';
+
 const findSyllableBoundaries = (tokens: ParsedToken[]) => {
 	const boundaries = new Set<number>();
 	let regionStart = 0;
 
 	for (let i = 0; i < tokens.length; i++) {
-		if (tokens[i].kind === 'phoneme') {
+		if (!isRegionBreak(tokens[i])) {
 			continue;
 		}
 

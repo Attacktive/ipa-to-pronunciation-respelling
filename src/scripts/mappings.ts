@@ -172,14 +172,8 @@ const vowels = vowelSymbols.map(({ ipa }) => ipa);
 const phonemeChunks = [...new Set([...consonants, ...vowels].map(chunk => chunk.normalize('NFD').replaceAll('ː', '')))]
 	.sort((a, b) => b.length - a.length);
 
-const syllableSeparatorSymbols = [' ', '.'];
-const acceptedSymbols = [...syllableSeparatorSymbols, '/', '[', ']'];
 // Stripped pre-tokenization: tie bars become adjacent affricates and hyphens remain formatting-only.
 const ignoredSymbols = ['\u0361', '\u035C', '-'];
 
-const validChunks = [...consonants, ...vowels, STRESS_MARK, SECONDARY_STRESS_MARK, ...acceptedSymbols]
-	.map(chunk => chunk.normalize('NFD'))
-	.sort((a, b) => b.length - a.length);
-
-export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, phonemeChunks, acceptedSymbols, ignoredSymbols, syllableSeparatorSymbols, validChunks };
+export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, phonemeChunks, ignoredSymbols };
 export type { IpaSymbol, Category };
