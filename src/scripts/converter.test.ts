@@ -63,7 +63,6 @@ describe(
 	}
 );
 
-
 describe(
 	'canonical mapping invariants',
 	() => {
