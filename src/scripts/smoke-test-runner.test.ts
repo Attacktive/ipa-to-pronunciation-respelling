@@ -14,8 +14,8 @@ describe(
 
 				expect(results)
 					.toEqual([
-						{ ipa: '/ˈaʊ̯tɪŋ/', respelling: '/OWt(i|ih)ng/' },
-						{ ipa: 'ˈbaɪoʊ', respelling: 'B(EYE|Y)oh' }
+						{ ipa: '/ˈaʊ̯tɪŋ/', respelling: '/OWtihng/' },
+						{ ipa: 'ˈbaɪoʊ', respelling: 'BEYEoh' }
 					]);
 			}
 		);
@@ -27,7 +27,7 @@ describe(
 
 				expect(results)
 					.toEqual([
-						{ ipa: 'aɪ', respelling: '(eye|y)' },
+						{ ipa: 'aɪ', respelling: 'eye' },
 						{ ipa: 'b', respelling: 'b' }
 					]);
 
@@ -48,7 +48,7 @@ describe(
 
 				expect(results)
 					.toEqual([
-						{ word: 'eye', ipa: 'aɪ', respelling: '(eye|y)' }
+						{ word: 'eye', ipa: 'aɪ', respelling: 'eye' }
 					]);
 
 				expect(errors)

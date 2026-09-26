@@ -13,14 +13,16 @@ const CATEGORY_SONORITY: Record<Category, number> = {
 
 interface IpaSymbol {
 	ipa: string;
-	respellings: string[];
+	canonicalRespelling: string;
+	alternativeRespellings: string[];
 	category: Category;
 	sonority: number;
 }
 
-const defineSymbol = (category: Category) => (ipa: string, respelling: string | string[]): IpaSymbol => ({
+const defineSymbol = (category: Category) => (ipa: string, canonicalRespelling: string, alternativeRespellings: string[] = []): IpaSymbol => ({
 	ipa,
-	respellings: Array.isArray(respelling)? respelling: [respelling],
+	canonicalRespelling,
+	alternativeRespellings,
 	category,
 	sonority: CATEGORY_SONORITY[category]
 });
@@ -35,11 +37,11 @@ const stop = defineSymbol('stop');
 
 const consonantSymbols = [
 	stop('b', 'b'),
-	affricate('tʃ', ['ch', 'tch']),
+	affricate('tʃ', 'ch', ['tch']),
 	stop('d', 'd'),
 	fricative('ð', 'dh'),
 	fricative('f', 'f'),
-	stop('ɡ', ['g', 'gh']),
+	stop('ɡ', 'g', ['gh']),
 	fricative('h', 'h'),
 	fricative('ɦ', 'h'),
 	affricate('dʒ', 'j'),
@@ -61,7 +63,7 @@ const consonantSymbols = [
 	liquid('ɹ', 'r'),
 	liquid('ɾ', 'r'),
 	liquid('ɽ', 'r'),
-	fricative('s', ['s', 'ss']),
+	fricative('s', 's', ['ss']),
 	fricative('ʃ', 'sh'),
 	stop('t', 't'),
 	stop('ʈ', 't'),
@@ -103,16 +105,16 @@ const vowelSymbols = [
 	vowel('ær', 'arr'),
 	vowel('ɔː', 'aw'),
 	vowel('eɪ', 'ay'),
-	vowel('e', ['e', 'eh']),
-	vowel('ɛ', ['e', 'eh']),
+	vowel('e', 'eh', ['e']),
+	vowel('ɛ', 'eh', ['e']),
 	vowel('iː', 'ee'),
 	vowel('i', 'ee'),
 	vowel('ɪər', 'eer'),
 	vowel('ɛr', 'err'),
 	vowel('juː', 'ew'),
 	vowel('ju', 'ew'),
-	vowel('aɪ', ['eye', 'y']),
-	vowel('ɪ', ['i', 'ih']),
+	vowel('aɪ', 'eye', ['y']),
+	vowel('ɪ', 'ih', ['i']),
 	vowel('aɪər', 'ire'),
 	vowel('ɪr', 'irr'),
 	vowel('ɒ', 'o'),
@@ -128,7 +130,7 @@ const vowelSymbols = [
 	vowel('aʊər', 'our'),
 	vowel('aʊ', 'ow'),
 	vowel('ɔɪ', 'oy'),
-	vowel('ʌ', ['u', 'uh']),
+	vowel('ʌ', 'uh', ['u']),
 	vowel('ɜːr', 'ur'),
 	vowel('ɜr', 'ur'),
 	vowel('jʊər', 'ure'),

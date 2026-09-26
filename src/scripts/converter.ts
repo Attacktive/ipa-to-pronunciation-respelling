@@ -3,26 +3,16 @@ import { parseIpa } from './parser';
 import { findSyllableBoundaries } from './syllabifier';
 import type { PhonemeToken } from './parser';
 
-const OPTIONAL_ALTERNATIVE_GROUP = /\(\(([^()]*\|[^()]*)\)\)/gu;
-
 const convertToken = (token: PhonemeToken) => {
 	const symbol = symbolByIpa.get(token.ipa);
 	if (symbol === undefined) {
 		throw Error(`Token "${token.ipa}" has no mapping!`);
 	}
 
-	const { respellings } = symbol;
-	let result = respellings[0];
-	if (respellings.length > 1) {
-		result = `(${respellings.join('|')})`;
-	}
-
-	return result;
+	return symbol.canonicalRespelling;
 };
 
-const normalizeOptionalGroups = (value: string) => value
-	.replaceAll('()', '')
-	.replace(OPTIONAL_ALTERNATIVE_GROUP, '($1)');
+const normalizeOptionalGroups = (value: string) => value.replaceAll('()', '');
 
 const convert = (ipa: string) => {
 	const tokens = parseIpa(ipa);

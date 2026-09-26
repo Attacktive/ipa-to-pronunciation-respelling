@@ -1,22 +1,34 @@
 import { describe, it, expect } from 'vitest';
 import { convert } from './converter';
+import { symbolByIpa } from './mappings';
 
 describe(
 	'converter tests',
 	() => {
 		it(
-			'handles ambiguous mapping for aɪ ("I")',
-			() => expect(convert('aɪ')).toBe('(eye|y)')
+			'uses canonical mapping for aɪ ("I")',
+			() => expect(convert('aɪ')).toBe('eye')
 		);
 
 		it(
-			'handles ambiguous mapping for ɡ ("go")',
-			() => expect(convert('ɡ')).toBe('(g|gh)')
+			'uses canonical mapping for ɡ ("go")',
+			() => expect(convert('ɡ')).toBe('g')
 		);
 
 		it(
-			'handles ambiguous mapping for s ("see")',
-			() => expect(convert('s')).toBe('(s|ss)')
+			'uses canonical mapping for s ("see")',
+			() => expect(convert('s')).toBe('s')
+		);
+
+		it(
+			'retains alternative respellings as mapping metadata',
+			() => {
+				expect(symbolByIpa.get('aɪ'))
+					.toMatchObject({
+						canonicalRespelling: 'eye',
+						alternativeRespellings: ['y']
+					});
+			}
 		);
 
 		it(
@@ -26,7 +38,7 @@ describe(
 
 		it(
 			'handles the voiceless wh sound ("when")',
-			() => expect(convert('/ʍɛn/')).toBe('/wh(e|eh)n/')
+			() => expect(convert('/ʍɛn/')).toBe('/whehn/')
 		);
 
 		it(
@@ -61,17 +73,17 @@ describe(
 
 		it(
 			'splits consonant clusters at sonority valleys ("strength")',
-			() => expect(convert('strɛŋθ')).toBe('(s|ss)tr(e|eh)ngth')
+			() => expect(convert('strɛŋθ')).toBe('strehngth')
 		);
 
 		it(
 			'handles liquid + consonant clusters ("help")',
-			() => expect(convert('hɛlp')).toBe('h(e|eh)lp')
+			() => expect(convert('hɛlp')).toBe('hehlp')
 		);
 
 		it(
 			'splits complex consonant clusters ("script")',
-			() => expect(convert('skrɪpt')).toBe('(s|ss)kr(i|ih)pt')
+			() => expect(convert('skrɪpt')).toBe('skrihpt')
 		);
 
 		it(
@@ -81,7 +93,7 @@ describe(
 
 		it(
 			'splits at fricative + stop boundaries ("asked")',
-			() => expect(convert('æskt')).toBe('a(s|ss)kt')
+			() => expect(convert('æskt')).toBe('askt')
 		);
 
 		it(
@@ -106,17 +118,17 @@ describe(
 
 		it(
 			'splits multisyllabic words correctly ("caterpillar")',
-			() => expect(convert('kæt.ər.pɪl.ər')).toBe('kat er p(i|ih)l er')
+			() => expect(convert('kæt.ər.pɪl.ər')).toBe('kat er pihl er')
 		);
 
 		it(
 			'does not invent a boundary inside a one-syllable word ("strict")',
-			() => expect(convert('ˈstrɪkt')).toBe('(S|SS)TR(I|IH)KT')
+			() => expect(convert('ˈstrɪkt')).toBe('STRIHKT')
 		);
 
 		it(
 			'handles multiple syllables with stress ("caterpillar")',
-			() => expect(convert('ˈkæt.ə.ˈpɪl.ər')).toBe('KAT uh P(I|IH)L er')
+			() => expect(convert('ˈkæt.ə.ˈpɪl.ər')).toBe('KAT uh PIHL er')
 		);
 
 		it(
@@ -146,12 +158,12 @@ describe(
 
 		it(
 			'r between vowels syllabifies as onset of next syllable ("berry")',
-			() => expect(convert('ˈbɛri')).toBe('B(E|EH)ree')
+			() => expect(convert('ˈbɛri')).toBe('BEHree')
 		);
 
 		it(
 			'handles tie bar affricate ("judge")',
-			() => expect(convert('/d͡ʒʌd͡ʒ/')).toBe('/j(u|uh)j/')
+			() => expect(convert('/d͡ʒʌd͡ʒ/')).toBe('/juhj/')
 		);
 
 		it(
@@ -161,7 +173,7 @@ describe(
 
 		it(
 			'handles plain e vowel ("clean")',
-			() => expect(convert('/kleːn/')).toBe('/kl(e|eh)n/')
+			() => expect(convert('/kleːn/')).toBe('/klehn/')
 		);
 
 		it(
@@ -171,17 +183,17 @@ describe(
 
 		it(
 			'ignores the non-syllabic diacritic U+032F while keeping its vowel in the nucleus ("area")',
-			() => expect(convert('/ˈɛə̯ɹɪə̯/')).toBe('/(E|EH)UHr(i|ih)uh/')
+			() => expect(convert('/ˈɛə̯ɹɪə̯/')).toBe('/EHUHrihuh/')
 		);
 
 		it(
 			'keeps a marked component inside a diphthong nucleus',
-			() => expect(convert('/ˈaʊ̯tɪŋ/')).toBe('/OWt(i|ih)ng/')
+			() => expect(convert('/ˈaʊ̯tɪŋ/')).toBe('/OWtihng/')
 		);
 
 		it(
 			'splits adjacent syllabic vowels into separate nuclei',
-			() => expect(convert('ˈbaɪoʊ')).toBe('B(EYE|Y)oh')
+			() => expect(convert('ˈbaɪoʊ')).toBe('BEYEoh')
 		);
 
 		it(
@@ -196,12 +208,12 @@ describe(
 
 		it(
 			'handles tie bar affricate ("choose")',
-			() => expect(convert('/t͡ʃuːz/')).toBe('/(ch|tch)ooz/')
+			() => expect(convert('/t͡ʃuːz/')).toBe('/chooz/')
 		);
 
 		it(
 			'secondary stress mark terminates the prior syllable ("abstract", noun)',
-			() => expect(convert('ˈæbˌstrækt')).toBe('AB(s|ss)trakt')
+			() => expect(convert('ˈæbˌstrækt')).toBe('ABstrakt')
 		);
 
 		it(
@@ -213,7 +225,7 @@ describe(
 			'infers the coda and onset between vowel nuclei ("household")',
 			() => {
 				expect(convert('/ˈhaʊshəʊld/'))
-					.toBe('/HOW(S|SS)hohld/');
+					.toBe('/HOWShohld/');
 			}
 		);
 	}
@@ -226,25 +238,25 @@ describe(
 			'preserves optional sounds in the respelling ("solution")',
 			() => {
 				expect(convert('/səˈl(j)uːʃən/'))
-					.toBe('/(s|ss)uhL(Y)OOshuhn/');
+					.toBe('/suhL(Y)OOshuhn/');
 			}
 		);
 
 		it(
 			'keeps a multi-phoneme optional group together',
-			() => expect(convert('/(st)/')).toBe('/((s|ss)t)/')
+			() => expect(convert('/(st)/')).toBe('/(st)/')
 		);
 
 		it(
-			'avoids redundant parentheses for one ambiguous optional phoneme',
-			() => expect(convert('/(s)/')).toBe('/(s|ss)/')
+			'preserves a single optional phoneme',
+			() => expect(convert('/(s)/')).toBe('/(s)/')
 		);
 
 		it(
 			'handles long vowels and optional rhotics together ("archer")',
 			() => {
 				expect(convert('/ˈɑː(ɹ).tʃə(ɹ)/'))
-					.toBe('/AH(R) (ch|tch)uh(r)/');
+					.toBe('/AH(R) chuh(r)/');
 			}
 		);
 	}
@@ -260,12 +272,12 @@ describe(
 
 		it(
 			'decomposes a precomposed accented vowel via NFD ("ẽ")',
-			() => expect(convert('ẽ')).toBe('(e|eh)')
+			() => expect(convert('ẽ')).toBe('eh')
 		);
 
 		it(
 			'drops a half-length modifier ("ɛˑ")',
-			() => expect(convert('ɛˑ')).toBe('(e|eh)')
+			() => expect(convert('ɛˑ')).toBe('eh')
 		);
 
 		it(
