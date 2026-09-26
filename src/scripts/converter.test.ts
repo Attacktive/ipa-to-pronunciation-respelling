@@ -64,6 +64,35 @@ describe(
 );
 
 describe(
+	'canonical mapping invariants',
+	() => {
+		it(
+			'never silently drops a mapped phoneme',
+			() => {
+				expect([...symbolByIpa.values()].filter(symbol => symbol.canonicalRespelling.length === 0))
+					.toEqual([]);
+			}
+		);
+
+		it(
+			'rejects unsupported glottal stops ("ʔ")',
+			() => {
+				expect(() => convert('ʔ'))
+					.toThrow('ʔ contains unsupported symbol(s) around: "ʔ".');
+			}
+		);
+
+		it(
+			'rejects unsupported pharyngeal fricatives ("ʕ")',
+			() => {
+				expect(() => convert('ʕ'))
+					.toThrow('ʕ contains unsupported symbol(s) around: "ʕ".');
+			}
+		);
+	}
+);
+
+describe(
 	'syllabification tests',
 	() => {
 		it(
