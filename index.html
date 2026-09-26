@@ -16,6 +16,10 @@
 					<input type="text" id="input" class="shadow appearance-none border rounded w-full mt-1 py-2 px-3 flex-1" placeholder="IPA" value="ˈæl fə bɛt">
 					<button type="button" id="random-ipa" class="ml-2 text-xl roll-on-disabled" title="Insert random IPA">🎲</button>
 				</div>
+				<div id="random-ipa-status" class="hidden mt-2 flex items-center gap-2 text-sm" role="status" aria-live="polite">
+					<span>Fetching a random IPA…</span>
+					<button type="button" id="stop-random-ipa" class="text-rose-800 hover:text-rose-600 font-bold">Stop</button>
+				</div>
 			</div>
 			<div id="input-button-area" class="flex flex-col gap-4">
 				<div id="input-button-area-consonants" class="flex flex-wrap gap-2"></div>

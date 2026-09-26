@@ -140,14 +140,27 @@ const copyButton = document.querySelector<HTMLButtonElement>('#copy')!;
 copyButton.addEventListener('click', copy);
 
 const randomIpaButton = document.querySelector<HTMLButtonElement>('#random-ipa')!;
+const randomIpaStatus = document.querySelector<HTMLDivElement>('#random-ipa-status')!;
+const stopRandomIpaButton = document.querySelector<HTMLButtonElement>('#stop-random-ipa')!;
+let randomIpaAbortController: AbortController | undefined;
+
+function stopRandomInput() {
+	stopRandomIpaButton.disabled = true;
+	randomIpaAbortController?.abort();
+}
 
 async function generateRandomInput() {
+	const controller = new AbortController();
+	randomIpaAbortController = controller;
+
 	input.disabled = true;
 	randomIpaButton.disabled = true;
+	stopRandomIpaButton.disabled = false;
+	randomIpaStatus.classList.remove('hidden');
 
 	try {
 		const words = await fetchWords();
-		const ipa = await fetchFirstIpa(words);
+		const ipa = await fetchFirstIpa(words, controller.signal);
 		if (ipa) {
 			input.value = ipa;
 			input.dispatchEvent(new Event('input'));
@@ -155,8 +168,10 @@ async function generateRandomInput() {
 			showToast('No phonetic available for the fetched words. Try again?');
 		}
 	} catch (err) {
-		console.error(err);
-		showToast('Failed to fetch a random IPA.');
+		if (!controller.signal.aborted) {
+			console.error(err);
+			showToast('Failed to fetch a random IPA.');
+		}
 	} finally {
 		if (input.value) {
 			run();
@@ -164,7 +179,13 @@ async function generateRandomInput() {
 
 		input.disabled = false;
 		randomIpaButton.disabled = false;
+		randomIpaStatus.classList.add('hidden');
+
+		if (randomIpaAbortController === controller) {
+			randomIpaAbortController = undefined;
+		}
 	}
 }
 
 randomIpaButton.addEventListener('click', generateRandomInput);
+stopRandomIpaButton.addEventListener('click', stopRandomInput);

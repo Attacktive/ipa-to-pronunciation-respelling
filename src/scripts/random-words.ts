@@ -12,9 +12,16 @@ interface Ipa {
 	phonetic: string;
 }
 
-async function fetchIpa(word: string): Promise<string | undefined> {
+async function fetchIpa(word: string, signal?: AbortSignal): Promise<string | undefined> {
 	const controller = new AbortController();
+	const abort = () => controller.abort(signal?.reason);
 	const timeoutId = setTimeout(() => controller.abort(), IPA_FETCH_TIMEOUT_MS);
+
+	if (signal?.aborted) {
+		abort();
+	} else {
+		signal?.addEventListener('abort', abort, { once: true });
+	}
 
 	try {
 		const response = await fetch(
@@ -33,11 +40,12 @@ async function fetchIpa(word: string): Promise<string | undefined> {
 		return undefined;
 	} finally {
 		clearTimeout(timeoutId);
+		signal?.removeEventListener('abort', abort);
 	}
 }
 
-async function fetchRequiredIpa(word: string) {
-	const phonetic = await fetchIpa(word);
+async function fetchRequiredIpa(word: string, signal?: AbortSignal) {
+	const phonetic = await fetchIpa(word, signal);
 	if (!phonetic) {
 		throw Error(`No IPA is retrieved: ${word}`);
 	}
@@ -45,10 +53,14 @@ async function fetchRequiredIpa(word: string) {
 	return phonetic;
 }
 
-async function fetchFirstIpa(words: string[]) {
+async function fetchFirstIpa(words: string[], signal?: AbortSignal) {
 	try {
-		return await Promise.any(words.map(fetchRequiredIpa));
+		return await Promise.any(words.map(word => fetchRequiredIpa(word, signal)));
 	} catch {
+		if (signal?.aborted) {
+			throw signal.reason;
+		}
+
 		return undefined;
 	}
 }

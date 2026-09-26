@@ -21,6 +21,31 @@ describe(
 		);
 
 		it(
+			'aborts every pending lookup when random IPA fetching is canceled',
+			async () => {
+				const controller = new AbortController();
+
+				globalThis.fetch = vi.fn(
+					(_input, init) => new Promise((_resolve, reject) => {
+						init?.signal?.addEventListener(
+							'abort',
+							() => reject(init.signal?.reason),
+							{ once: true }
+						);
+					})
+				);
+
+				const phonetic = fetchFirstIpa(['cat', 'dog'], controller.signal);
+				controller.abort();
+
+				await expect(phonetic)
+					.rejects.toMatchObject({ name: 'AbortError' });
+				expect(globalThis.fetch)
+					.toHaveBeenCalledTimes(2);
+			}
+		);
+
+		it(
 			'fetchFirstIpa returns the first available phonetic without waiting for earlier lookups',
 			async () => {
 				let resolveFirstRequest: (response: { ok: boolean }) => void;
