@@ -84,14 +84,12 @@ const consonantSymbols = [
 	affricate('ʦ', 'ts'),
 	affricate('ʧ', 'ch'),
 	stop('ɢ', 'g'),
-	stop('ʔ', ''),
 	stop('c', 'k'),
 	stop('ɟ', 'g'),
 	stop('q', 'k'),
 	fricative('χ', 'kh'),
 	fricative('ʁ', 'r'),
 	fricative('ħ', 'h'),
-	fricative('ʕ', '')
 ];
 
 // Length-marked entries populate the IPA buttons while the parser retains length as token metadata.
