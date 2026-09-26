@@ -272,7 +272,10 @@ describe(
 
 		it(
 			'rejects unsupported nasalization after NFD ("ẽ")',
-			() => expect(() => convert('ẽ')).toThrow('ẽ contains unsupported symbol(s) around: "̃".')
+			() => {
+				expect(() => convert('ẽ'))
+					.toThrow('ẽ contains unsupported symbol(s) around: "̃".');
+			}
 		);
 
 		it(
@@ -282,12 +285,18 @@ describe(
 
 		it(
 			'rejects unsupported voicelessness ("n̥")',
-			() => expect(() => convert('n̥')).toThrow('n̥ contains unsupported symbol(s) around: "̥".')
+			() => {
+				expect(() => convert('n̥'))
+					.toThrow('n̥ contains unsupported symbol(s) around: "̥".');
+			}
 		);
 
 		it(
 			'rejects unsupported modifier letters ("tʷ")',
-			() => expect(() => convert('tʷ')).toThrow('tʷ contains unsupported symbol(s) around: "ʷ".')
+			() => {
+				expect(() => convert('tʷ'))
+					.toThrow('tʷ contains unsupported symbol(s) around: "ʷ".');
+			}
 		);
 
 		it(
