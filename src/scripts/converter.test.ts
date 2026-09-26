@@ -25,6 +25,11 @@ describe(
 		);
 
 		it(
+			'handles the voiceless wh sound ("when")',
+			() => expect(convert('/ʍɛn/')).toBe('/wh(e|eh)n/')
+		);
+
+		it(
 			'handles single mapping for æ ("cat" vowel)',
 			() => expect(convert('æ')).toBe('a')
 		);

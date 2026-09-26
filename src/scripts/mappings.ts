@@ -67,6 +67,7 @@ const consonantSymbols = [
 	stop('ʈ', 't'),
 	fricative('θ', 'th'),
 	fricative('v', 'v'),
+	fricative('ʍ', 'wh'),
 	glide('w', 'w'),
 	glide('ɥ', 'w'),
 	glide('ɰ', 'w'),
