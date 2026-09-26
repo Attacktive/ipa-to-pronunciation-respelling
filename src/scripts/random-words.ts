@@ -1,6 +1,7 @@
 import { generate } from 'random-words';
 
 const URL_PREFIX_TO_IPA_API = 'https://api.dictionaryapi.dev/api/v2/entries/en';
+const IPA_FETCH_TIMEOUT_MS = 5000;
 
 function fetchWords(count = 8): string[] {
 	return generate({ exactly: count }) as string[];
@@ -12,8 +13,14 @@ interface Ipa {
 }
 
 async function fetchIpa(word: string): Promise<string | undefined> {
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), IPA_FETCH_TIMEOUT_MS);
+
 	try {
-		const response = await fetch(`${URL_PREFIX_TO_IPA_API}/${word}`);
+		const response = await fetch(
+			`${URL_PREFIX_TO_IPA_API}/${word}`,
+			{ signal: controller.signal }
+		);
 
 		if (!response.ok) {
 			return undefined;
@@ -24,20 +31,26 @@ async function fetchIpa(word: string): Promise<string | undefined> {
 		return ipa?.phonetic;
 	} catch {
 		return undefined;
+	} finally {
+		clearTimeout(timeoutId);
 	}
 }
 
-async function fetchFirstIpa(words: string[]) {
-	for (const word of words) {
-		const phonetic = await fetchIpa(word);
-		if (phonetic) {
-			return phonetic;
-		}
-
-		console.warn(`No IPA is retrieved: ${word}`);
+async function fetchRequiredIpa(word: string) {
+	const phonetic = await fetchIpa(word);
+	if (!phonetic) {
+		throw Error(`No IPA is retrieved: ${word}`);
 	}
 
-	return undefined;
+	return phonetic;
+}
+
+async function fetchFirstIpa(words: string[]) {
+	try {
+		return await Promise.any(words.map(fetchRequiredIpa));
+	} catch {
+		return undefined;
+	}
 }
 
 export { fetchWords, fetchIpa, fetchFirstIpa };

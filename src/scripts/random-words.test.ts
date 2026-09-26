@@ -10,28 +10,39 @@ describe(
 			'fetchWords returns the requested number of words',
 			() => {
 				const words = fetchWords(5);
-				expect(Array.isArray(words)).toBe(true);
-				expect(words.length).toBe(5);
-				expect(words.every(word => typeof word === 'string' && word.length > 0)).toBe(true);
+
+				expect(Array.isArray(words))
+					.toBe(true);
+				expect(words.length)
+					.toBe(5);
+				expect(words.every(word => typeof word === 'string' && word.length > 0))
+					.toBe(true);
 			}
 		);
 
 		it(
-			'fetchFirstIpa returns first phonetic for known words',
+			'fetchFirstIpa returns the first available phonetic without waiting for earlier lookups',
 			async () => {
-				(globalThis.fetch) = vi
+				let resolveFirstRequest: (response: { ok: boolean }) => void;
+
+				globalThis.fetch = vi
 					.fn()
-					.mockResolvedValueOnce({
-						ok: true,
-						json: async () => [{ word: 'cat', phonetic: '/kæt/' }]
-					})
+					.mockImplementationOnce(() => new Promise(resolve => {
+						resolveFirstRequest = resolve;
+					}))
 					.mockResolvedValueOnce({
 						ok: true,
 						json: async () => [{ word: 'dog', phonetic: '/dɒg/' }]
 					});
 
 				const phonetic = await fetchFirstIpa(['cat', 'dog']);
-				expect(phonetic).toBe('/kæt/');
+
+				expect(globalThis.fetch)
+					.toHaveBeenCalledTimes(2);
+				expect(phonetic)
+					.toBe('/dɒg/');
+
+				resolveFirstRequest!({ ok: false });
 			}
 		);
 	}
