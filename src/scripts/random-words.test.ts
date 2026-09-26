@@ -15,6 +15,7 @@ describe(
 					.toBe(true);
 				expect(words.length)
 					.toBe(5);
+
 				expect(words.every(word => typeof word === 'string' && word.length > 0))
 					.toBe(true);
 			}
