@@ -24,7 +24,8 @@ const PARENTHESIS_DEPTH_CHANGE = new Map([
 	[')', -1]
 ]);
 
-const DROPPABLE_DIACRITIC = /[\p{M}\p{Lm}]/u;
+// The respelling scheme intentionally does not encode aspiration or half-length.
+const IGNORED_PHONETIC_MARKS = new Set(['ʰ', 'ˑ']);
 
 const cleanVowel = (vowel: string) => vowel.normalize('NFD')
 	.replaceAll(LENGTH_MARK, '');
@@ -203,8 +204,8 @@ const consumePhoneme: TokenConsumer = context => {
 	return true;
 };
 
-const consumeDroppableDiacritic: TokenConsumer = context => {
-	if (!DROPPABLE_DIACRITIC.test(context.cleanedIpa.charAt(context.index))) {
+const consumeIgnoredPhoneticMark: TokenConsumer = context => {
+	if (!IGNORED_PHONETIC_MARKS.has(context.cleanedIpa.charAt(context.index))) {
 		return false;
 	}
 
@@ -220,7 +221,7 @@ const TOKEN_CONSUMERS: TokenConsumer[] = [
 	consumeLiteral,
 	consumeSyllabicity,
 	consumePhoneme,
-	consumeDroppableDiacritic
+	consumeIgnoredPhoneticMark
 ];
 
 const parseIpa = (ipa: string) => {

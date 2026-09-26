@@ -266,23 +266,28 @@ describe(
 	'normalization and diacritic resilience',
 	() => {
 		it(
-			'drops an aspiration modifier letter ("tʰ")',
+			'ignores aspiration explicitly ("tʰ")',
 			() => expect(convert('tʰ')).toBe('t')
 		);
 
 		it(
-			'decomposes a precomposed accented vowel via NFD ("ẽ")',
-			() => expect(convert('ẽ')).toBe('eh')
+			'rejects unsupported nasalization after NFD ("ẽ")',
+			() => expect(() => convert('ẽ')).toThrow('ẽ contains unsupported symbol(s) around: "̃".')
 		);
 
 		it(
-			'drops a half-length modifier ("ɛˑ")',
+			'ignores half-length explicitly ("ɛˑ")',
 			() => expect(convert('ɛˑ')).toBe('eh')
 		);
 
 		it(
-			'drops an unrecognized combining diacritic ("n̥" voiceless)',
-			() => expect(convert('n̥')).toBe('n')
+			'rejects unsupported voicelessness ("n̥")',
+			() => expect(() => convert('n̥')).toThrow('n̥ contains unsupported symbol(s) around: "̥".')
+		);
+
+		it(
+			'rejects unsupported modifier letters ("tʷ")',
+			() => expect(() => convert('tʷ')).toThrow('tʷ contains unsupported symbol(s) around: "ʷ".')
 		);
 
 		it(
