@@ -24,8 +24,8 @@ const PARENTHESIS_DEPTH_CHANGE = new Map([
 	[')', -1]
 ]);
 
-// The respelling scheme intentionally does not encode aspiration or half-length.
-const IGNORED_PHONETIC_MARKS = new Set(['ʰ', 'ˑ']);
+// The respelling scheme intentionally does not encode standalone length, half-length, or aspiration marks.
+const IGNORED_PHONETIC_MARKS = new Set([LENGTH_MARK, 'ʰ', 'ˑ']);
 
 const cleanVowel = (vowel: string) => vowel.normalize('NFD')
 	.replaceAll(LENGTH_MARK, '');
