@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { fetchWords, fetchFirstIpa } from './random-words';
+import { fetchWords, fetchIpa, fetchFirstIpa } from './random-words';
 
 globalThis.fetch = globalThis.fetch || vi.fn();
 
@@ -18,6 +18,27 @@ describe(
 
 				expect(words.every(word => typeof word === 'string' && word.length > 0))
 					.toBe(true);
+			}
+		);
+
+		it(
+			'fetchIpa reads IPA from RhymeBrain word info',
+			async () => {
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: async () => ({ word: 'hello', ipa: 'hʌlˈəʊ̯' })
+				});
+
+				const ipa = await fetchIpa('hello');
+
+				expect(ipa)
+					.toBe('hʌlˈəʊ̯');
+				expect(globalThis.fetch)
+					.toHaveBeenCalledTimes(1);
+
+				const [request] = vi.mocked(globalThis.fetch).mock.calls[0]!;
+				expect(request.toString())
+					.toBe('https://rhymebrain.com/talk?function=getWordInfo&word=hello&lang=en');
 			}
 		);
 
@@ -58,7 +79,7 @@ describe(
 					}))
 					.mockResolvedValueOnce({
 						ok: true,
-						json: async () => [{ word: 'dog', phonetic: '/dɒg/' }]
+						json: async () => ({ word: 'dog', ipa: 'dɒg' })
 					});
 
 				const phonetic = await fetchFirstIpa(['cat', 'dog']);
@@ -66,7 +87,7 @@ describe(
 				expect(globalThis.fetch)
 					.toHaveBeenCalledTimes(2);
 				expect(phonetic)
-					.toBe('/dɒg/');
+					.toBe('dɒg');
 
 				resolveFirstRequest!({ ok: false });
 			}

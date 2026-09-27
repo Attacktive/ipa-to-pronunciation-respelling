@@ -1,15 +1,14 @@
 import { generate } from 'random-words';
 
-const URL_PREFIX_TO_IPA_API = 'https://api.dictionaryapi.dev/api/v2/entries/en';
+const URL_TO_IPA_API = 'https://rhymebrain.com/talk';
 const IPA_FETCH_TIMEOUT_MS = 5000;
 
 function fetchWords(count = 8): string[] {
 	return generate({ exactly: count }) as string[];
 }
 
-interface Ipa {
-	word: string;
-	phonetic: string;
+interface RhymeBrainWordInfo {
+	ipa?: string;
 }
 
 async function fetchIpa(word: string, signal?: AbortSignal): Promise<string | undefined> {
@@ -23,9 +22,14 @@ async function fetchIpa(word: string, signal?: AbortSignal): Promise<string | un
 		signal?.addEventListener('abort', abort, { once: true });
 	}
 
+	const url = new URL(URL_TO_IPA_API);
+	url.searchParams.set('function', 'getWordInfo');
+	url.searchParams.set('word', word);
+	url.searchParams.set('lang', 'en');
+
 	try {
 		const response = await fetch(
-			`${URL_PREFIX_TO_IPA_API}/${word}`,
+			url,
 			{ signal: controller.signal }
 		);
 
@@ -33,9 +37,13 @@ async function fetchIpa(word: string, signal?: AbortSignal): Promise<string | un
 			return undefined;
 		}
 
-		const [ipa] = await response.json() as Ipa[];
+		const wordInfo = await response.json() as RhymeBrainWordInfo;
+		const ipa = wordInfo.ipa?.trim();
+		if (!ipa) {
+			return undefined;
+		}
 
-		return ipa?.phonetic;
+		return ipa;
 	} catch {
 		return undefined;
 	} finally {

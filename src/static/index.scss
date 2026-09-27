@@ -17,6 +17,8 @@ h1, h2 {
 #output {
 	@apply bg-gray-200 italic;
 	min-height: 30px;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 label[for=input] {
@@ -31,20 +33,24 @@ label[for=input] {
 
 #toast {
 	display: flex;
-	flex-direction: column;
 	position: fixed;
 	bottom: 1.5rem;
-	left: 30%;
-	horiz-align: center;
-	min-width: fit-content;
-	gap: .5rem;
-	padding: 1rem;
-	background-color: rgba(128, 128, 128, 0.5);
+	left: 50%;
+	z-index: 50;
+	justify-content: center;
+	width: max-content;
+	max-width: calc(100vw - 2rem);
+	transform: translateX(-50%);
+	padding: .75rem 1rem;
+	color: white;
+	background-color: rgb(31 41 55 / 95%);
+	border-radius: .75rem;
+	box-shadow: 0 10px 25px rgb(0 0 0 / 20%);
 }
 
 #toast-body {
-	animation-duration: .5s;
-	animation-timing-function: ease-in-out;
+	text-align: center;
+	overflow-wrap: anywhere;
 }
 
 #toast.hidden {

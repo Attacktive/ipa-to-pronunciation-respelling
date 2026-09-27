@@ -94,21 +94,18 @@ function copy() {
 
 	navigator.clipboard.writeText(output.textContent)
 		.then(() => {
-			const message = `"${output.textContent}" is successfully copied to the clipboard. 😁`;
-
-			console.debug(message);
-			showToast(message);
+			showToast('Copied to clipboard.');
 		})
 		.catch(error => {
 			console.error(error);
-			showToast('Failed to copy to the clipboard.');
+			showToast('Could not copy to the clipboard.');
 		});
 }
 
 let toastTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
 function showToast(message: string) {
-	const toast = document.querySelector<HTMLSpanElement>('#toast')!;
+	const toast = document.querySelector<HTMLDivElement>('#toast')!;
 	toast.classList.remove('hidden');
 
 	if (toastTimeoutId !== undefined) {
@@ -159,18 +156,18 @@ async function generateRandomInput() {
 	randomIpaStatus.classList.remove('hidden');
 
 	try {
-		const words = await fetchWords();
+		const words = fetchWords(1);
 		const ipa = await fetchFirstIpa(words, controller.signal);
 		if (ipa) {
 			input.value = ipa;
 			input.dispatchEvent(new Event('input'));
 		} else {
-			showToast('No phonetic available for the fetched words. Try again?');
+			showToast('Could not find an IPA for the random word. Try again.');
 		}
 	} catch (err) {
 		if (!controller.signal.aborted) {
 			console.error(err);
-			showToast('Failed to fetch a random IPA.');
+			showToast('Could not fetch a random IPA. Try again.');
 		}
 	} finally {
 		if (input.value) {
