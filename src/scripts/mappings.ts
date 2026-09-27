@@ -133,6 +133,7 @@ const vowelSymbols = [
 	vowel('ər', 'er'),
 	vowel('y', 'ue', [], 'reference-foreign'),
 	vowel('œ', 'eu', [], 'reference-foreign'),
+	vowel('ɘ', 'uh', [], 'safe-alias'),
 	vowel('ɜ', 'uh'),
 	vowel('ɐ', 'uh'),
 	vowel('ɚ', 'er'),

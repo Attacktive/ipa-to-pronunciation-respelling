@@ -99,6 +99,8 @@ describe(
 					.toBe('safe-alias');
 				expect(symbolByIpa.get('ʧ')?.support)
 					.toBe('safe-alias');
+				expect(symbolByIpa.get('ɘ')?.support)
+					.toBe('safe-alias');
 			}
 		);
 
@@ -127,7 +129,7 @@ describe(
 		it(
 			'rejects unsupported foreign vowel approximations',
 			() => {
-				for (const ipa of ['ø', 'ɶ', 'ɨ', 'ʉ', 'ɯ', 'ɘ', 'ɵ', 'ɤ', 'ɞ']) {
+				for (const ipa of ['ø', 'ɶ', 'ɨ', 'ʉ', 'ɯ', 'ɵ', 'ɤ', 'ɞ']) {
 					expect(() => convert(ipa))
 						.toThrow();
 				}
@@ -389,8 +391,8 @@ describe(
 		);
 
 		it(
-			'keeps ç mapped after NFD key normalization ("ç")',
-			() => expect(convert('ç')).toBe('ch')
+			'rejects unsupported palatal fricatives after NFD ("ç")',
+			() => expect(() => convert('ç')).toThrow()
 		);
 
 		it(
