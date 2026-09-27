@@ -43,6 +43,39 @@ describe(
 		);
 
 		it(
+			'fetchIpa returns undefined for unsuccessful responses',
+			async () => {
+				globalThis.fetch = vi.fn().mockResolvedValue({ ok: false });
+
+				await expect(fetchIpa('missing'))
+					.resolves.toBeUndefined();
+			}
+		);
+
+		it(
+			'fetchIpa returns undefined for missing IPA data',
+			async () => {
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: async () => ({ word: 'missing', ipa: '   ' })
+				});
+
+				await expect(fetchIpa('missing'))
+					.resolves.toBeUndefined();
+			}
+		);
+
+		it(
+			'fetchIpa returns undefined when the request fails',
+			async () => {
+				globalThis.fetch = vi.fn().mockRejectedValue(new TypeError('Network error'));
+
+				await expect(fetchIpa('hello'))
+					.resolves.toBeUndefined();
+			}
+		);
+
+		it(
 			'aborts every pending lookup when random IPA fetching is canceled',
 			async () => {
 				const controller = new AbortController();
