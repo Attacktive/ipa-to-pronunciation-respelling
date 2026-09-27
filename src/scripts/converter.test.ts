@@ -154,7 +154,6 @@ describe(
 	}
 );
 
-
 describe(
 	'rhotic vowel respellings',
 	() => {

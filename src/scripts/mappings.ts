@@ -39,15 +39,15 @@ const defineSymbol = (category: Category) =>
 	});
 
 const vowel = defineSymbol('vowel');
-
-/** Builds ordinary vowel-plus-r respellings from the canonical base-vowel spelling. */
-const rhoticVowel = (ipa: string, baseRespelling: string) => vowel(ipa, `${baseRespelling}r`);
 const glide = defineSymbol('glide');
 const liquid = defineSymbol('liquid');
 const nasal = defineSymbol('nasal');
 const fricative = defineSymbol('fricative');
 const affricate = defineSymbol('affricate');
 const stop = defineSymbol('stop');
+
+/** Builds ordinary vowel-plus-r respellings from the canonical base-vowel spelling. */
+const rhoticVowel = (ipa: string, baseRespelling: string) => vowel(ipa, `${baseRespelling}r`);
 
 const consonantSymbols = [
 	stop('b', 'b'),
