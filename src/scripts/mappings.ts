@@ -39,6 +39,9 @@ const defineSymbol = (category: Category) =>
 	});
 
 const vowel = defineSymbol('vowel');
+
+/** Builds ordinary vowel-plus-r respellings from the canonical base-vowel spelling. */
+const rhoticVowel = (ipa: string, baseRespelling: string) => vowel(ipa, `${baseRespelling}r`);
 const glide = defineSymbol('glide');
 const liquid = defineSymbol('liquid');
 const nasal = defineSymbol('nasal');
@@ -92,9 +95,9 @@ const vowelSymbols = [
 	vowel('ɑ', 'ah'),
 	vowel('ɑː', 'ah'),
 	vowel('ɛər', 'air'),
-	vowel('ɑːr', 'ar'),
-	vowel('ɑr', 'ar'),
-	vowel('ær', 'arr'),
+	rhoticVowel('ɑːr', 'ah'),
+	rhoticVowel('ɑr', 'ah'),
+	rhoticVowel('ær', 'a'),
 	vowel('ɔː', 'aw'),
 	vowel('eɪ', 'ay'),
 	vowel('e', 'eh', ['e']),
@@ -102,13 +105,13 @@ const vowelSymbols = [
 	vowel('iː', 'ee'),
 	vowel('i', 'ee'),
 	vowel('ɪər', 'eer'),
-	vowel('ɛr', 'err'),
+	rhoticVowel('ɛr', 'eh'),
 	vowel('juː', 'ew'),
 	vowel('ju', 'ew'),
 	vowel('aɪ', 'eye', ['y']),
 	vowel('ɪ', 'ih', ['i']),
 	vowel('aɪər', 'ire'),
-	vowel('ɪr', 'irr'),
+	rhoticVowel('ɪr', 'ih'),
 	vowel('ɒ', 'o'),
 	vowel('oʊ', 'oh'),
 	vowel('əʊ', 'oh'),
@@ -116,9 +119,9 @@ const vowelSymbols = [
 	vowel('uː', 'oo'),
 	vowel('u', 'oo'),
 	vowel('ʊər', 'oor'),
-	vowel('ɔːr', 'or'),
-	vowel('ɔr', 'or'),
-	vowel('ɒr', 'orr'),
+	rhoticVowel('ɔːr', 'aw'),
+	rhoticVowel('ɔr', 'aw'),
+	rhoticVowel('ɒr', 'o'),
 	vowel('aʊər', 'our'),
 	vowel('aʊ', 'ow'),
 	vowel('ɔɪ', 'oy'),
@@ -126,9 +129,9 @@ const vowelSymbols = [
 	vowel('ɜːr', 'ur'),
 	vowel('ɜr', 'ur'),
 	vowel('jʊər', 'ure'),
-	vowel('ʌr', 'urr'),
+	rhoticVowel('ʌr', 'uh'),
 	vowel('ʊ', 'uu'),
-	vowel('ʊr', 'uurr'),
+	rhoticVowel('ʊr', 'uu'),
 	vowel('ə', 'uh'),
 	vowel('ər', 'er'),
 	vowel('y', 'ue', [], 'reference-foreign'),

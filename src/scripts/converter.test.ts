@@ -154,6 +154,78 @@ describe(
 	}
 );
 
+
+describe(
+	'rhotic vowel respellings',
+	() => {
+		it(
+			'derives ordinary vowel-plus-r spellings from the base vowel',
+			() => {
+				expect([
+					['ɑr', convert('ɑr')],
+					['ær', convert('ær')],
+					['ɛr', convert('ɛr')],
+					['ɪr', convert('ɪr')],
+					['ɔr', convert('ɔr')],
+					['ɒr', convert('ɒr')],
+					['ʌr', convert('ʌr')],
+					['ʊr', convert('ʊr')]
+				])
+					.toEqual([
+						['ɑr', 'ahr'],
+						['ær', 'ar'],
+						['ɛr', 'ehr'],
+						['ɪr', 'ihr'],
+						['ɔr', 'awr'],
+						['ɒr', 'or'],
+						['ʌr', 'uhr'],
+						['ʊr', 'uur']
+					]);
+			}
+		);
+
+		it(
+			'keeps conventional fused rhotic spellings',
+			() => {
+				expect([
+					['ɛər', convert('ɛər')],
+					['ɪər', convert('ɪər')],
+					['aɪər', convert('aɪər')],
+					['ɔɪər', convert('ɔɪər')],
+					['ʊər', convert('ʊər')],
+					['aʊər', convert('aʊər')],
+					['ɜr', convert('ɜr')],
+					['jʊər', convert('jʊər')],
+					['ər', convert('ər')]
+				])
+					.toEqual([
+						['ɛər', 'air'],
+						['ɪər', 'eer'],
+						['aɪər', 'ire'],
+						['ɔɪər', 'oir'],
+						['ʊər', 'oor'],
+						['aʊər', 'our'],
+						['ɜr', 'ur'],
+						['jʊər', 'ure'],
+						['ər', 'er']
+					]);
+			}
+		);
+
+		it(
+			'matches readable whole-word rhotic examples',
+			() => {
+				expect(convert('/kɑr/'))
+					.toBe('/kahr/');
+				expect(convert('/stɔr/'))
+					.toBe('/stawr/');
+				expect(convert('/pʊər/'))
+					.toBe('/poor/');
+			}
+		);
+	}
+);
+
 describe(
 	'syllabification tests',
 	() => {
