@@ -89,6 +89,66 @@ describe(
 					.toThrow('ʕ contains unsupported symbol(s) around: "ʕ".');
 			}
 		);
+
+		it(
+			'marks safe aliases explicitly',
+			() => {
+				expect(symbolByIpa.get('ɫ')?.support)
+					.toBe('safe-alias');
+				expect(symbolByIpa.get('ɱ')?.support)
+					.toBe('safe-alias');
+				expect(symbolByIpa.get('ʧ')?.support)
+					.toBe('safe-alias');
+			}
+		);
+
+		it(
+			'marks supported foreign-reference sounds explicitly',
+			() => {
+				expect(symbolByIpa.get('x')?.support)
+					.toBe('reference-foreign');
+				expect(symbolByIpa.get('œ')?.support)
+					.toBe('reference-foreign');
+				expect(symbolByIpa.get('ɑ̃')?.support)
+					.toBe('reference-foreign');
+			}
+		);
+
+		it(
+			'rejects lossy foreign consonant approximations',
+			() => {
+				for (const ipa of ['q', 'ɢ', 'ɟ', 'χ', 'ʁ', 'ħ', 'ʎ', 'ɳ', 'ɴ', 'ɾ', 'ɽ', 'ɥ', 'ɰ', 'ʝ', 'ç', 'ʈ']) {
+					expect(() => convert(ipa))
+						.toThrow();
+				}
+			}
+		);
+
+		it(
+			'rejects unsupported foreign vowel approximations',
+			() => {
+				for (const ipa of ['ø', 'ɶ', 'ɨ', 'ʉ', 'ɯ', 'ɘ', 'ɵ', 'ɤ', 'ɞ']) {
+					expect(() => convert(ipa))
+						.toThrow();
+				}
+			}
+		);
+
+		it(
+			'keeps explicit foreign-reference mappings',
+			() => {
+				expect(convert('x'))
+					.toBe('kh');
+				expect(convert('y'))
+					.toBe('ue');
+				expect(convert('œ'))
+					.toBe('eu');
+				expect(convert('a'))
+					.toBe('ah');
+				expect(convert('ɑ̃'))
+					.toBe('on');
+			}
+		);
 	}
 );
 

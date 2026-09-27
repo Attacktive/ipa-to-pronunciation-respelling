@@ -1,5 +1,8 @@
 type Category = 'vowel' | 'glide' | 'liquid' | 'nasal' | 'fricative' | 'affricate' | 'stop';
 
+/** Describes why an IPA symbol is safe to accept in the English-facing respelling scheme. */
+type Support = 'english' | 'safe-alias' | 'reference-foreign';
+
 // Sonority rankings (higher = more sonorous)
 const CATEGORY_SONORITY: Record<Category, number> = {
 	vowel: 8,
@@ -17,15 +20,23 @@ interface IpaSymbol {
 	alternativeRespellings: string[];
 	category: Category;
 	sonority: number;
+	support: Support;
 }
 
-const defineSymbol = (category: Category) => (ipa: string, canonicalRespelling: string, alternativeRespellings: string[] = []): IpaSymbol => ({
-	ipa,
-	canonicalRespelling,
-	alternativeRespellings,
-	category,
-	sonority: CATEGORY_SONORITY[category]
-});
+const defineSymbol = (category: Category) =>
+	(
+		ipa: string,
+		canonicalRespelling: string,
+		alternativeRespellings: string[] = [],
+		support: Support = 'english'
+	): IpaSymbol => ({
+		ipa,
+		canonicalRespelling,
+		alternativeRespellings,
+		category,
+		sonority: CATEGORY_SONORITY[category],
+		support
+	});
 
 const vowel = defineSymbol('vowel');
 const glide = defineSymbol('glide');
@@ -43,53 +54,36 @@ const consonantSymbols = [
 	fricative('f', 'f'),
 	stop('ɡ', 'g', ['gh']),
 	fricative('h', 'h'),
-	fricative('ɦ', 'h'),
+	fricative('ɦ', 'h', [], 'safe-alias'),
 	affricate('dʒ', 'j'),
 	stop('k', 'k'),
-	fricative('x', 'kh'),
+	fricative('x', 'kh', [], 'reference-foreign'),
 	liquid('l', 'l'),
-	liquid('ɫ', 'l'),
-	liquid('ʎ', 'ly'),
+	liquid('ɫ', 'l', [], 'safe-alias'),
 	nasal('m', 'm'),
-	nasal('ɱ', 'm'),
+	nasal('ɱ', 'm', [], 'safe-alias'),
 	nasal('n', 'n'),
-	nasal('ɳ', 'n'),
 	nasal('ŋ', 'ng'),
-	nasal('ɴ', 'ng'),
 	// Nasal+stop clusters take the stop category since they pattern as codas.
 	stop('ŋk', 'nk'),
 	stop('p', 'p'),
 	liquid('r', 'r'),
 	liquid('ɹ', 'r'),
-	liquid('ɾ', 'r'),
-	liquid('ɽ', 'r'),
 	fricative('s', 's', ['ss']),
 	fricative('ʃ', 'sh'),
 	stop('t', 't'),
-	stop('ʈ', 't'),
 	fricative('θ', 'th'),
 	fricative('v', 'v'),
 	fricative('ʍ', 'wh'),
 	glide('w', 'w'),
-	glide('ɥ', 'w'),
-	glide('ɰ', 'w'),
-	glide('hw', 'wh'),
+	glide('hw', 'wh', [], 'safe-alias'),
 	glide('j', 'y'),
-	fricative('ʝ', 'y'),
 	fricative('z', 'z'),
 	fricative('ʒ', 'zh'),
-	fricative('ç', 'ch'),
-	affricate('ʣ', 'dz'),
-	affricate('ʤ', 'j'),
-	affricate('ʦ', 'ts'),
-	affricate('ʧ', 'ch'),
-	stop('ɢ', 'g'),
-	stop('c', 'k'),
-	stop('ɟ', 'g'),
-	stop('q', 'k'),
-	fricative('χ', 'kh'),
-	fricative('ʁ', 'r'),
-	fricative('ħ', 'h')
+	affricate('ʣ', 'dz', [], 'safe-alias'),
+	affricate('ʤ', 'j', [], 'safe-alias'),
+	affricate('ʦ', 'ts', [], 'safe-alias'),
+	affricate('ʧ', 'ch', [], 'safe-alias')
 ];
 
 // Length-marked entries populate the IPA buttons while the parser retains length as token metadata.
@@ -137,29 +131,20 @@ const vowelSymbols = [
 	vowel('ʊr', 'uurr'),
 	vowel('ə', 'uh'),
 	vowel('ər', 'er'),
-	vowel('y', 'ue'),
-	vowel('ø', 'eu'),
-	vowel('œ', 'eu'),
-	vowel('ɶ', 'a'),
-	vowel('ɨ', 'i'),
-	vowel('ʉ', 'u'),
-	vowel('ɯ', 'u'),
-	vowel('ɘ', 'uh'),
-	vowel('ɵ', 'uh'),
-	vowel('ɤ', 'uh'),
+	vowel('y', 'ue', [], 'reference-foreign'),
+	vowel('œ', 'eu', [], 'reference-foreign'),
 	vowel('ɜ', 'uh'),
-	vowel('ɞ', 'uh'),
 	vowel('ɐ', 'uh'),
 	vowel('ɚ', 'er'),
 	vowel('ɝ', 'ur'),
 	vowel('ɔ', 'aw'),
 	vowel('o', 'aw'),
 	vowel('oː', 'aw'),
-	vowel('a', 'ah'),
-	vowel('ɑ̃', 'on'),
-	vowel('ɛ̃', 'an'),
-	vowel('ɔ̃', 'on'),
-	vowel('œ̃', 'un')
+	vowel('a', 'ah', [], 'reference-foreign'),
+	vowel('ɑ̃', 'on', [], 'reference-foreign'),
+	vowel('ɛ̃', 'an', [], 'reference-foreign'),
+	vowel('ɔ̃', 'on', [], 'reference-foreign'),
+	vowel('œ̃', 'un', [], 'reference-foreign')
 ];
 
 const symbols = [...consonantSymbols, ...vowelSymbols];
@@ -177,4 +162,4 @@ const phonemeChunks = [...new Set([...consonants, ...vowels].map(chunk => chunk.
 const ignoredSymbols = ['\u0361', '\u035C', '-'];
 
 export { symbolByIpa, STRESS_MARK, SECONDARY_STRESS_MARK, consonants, vowels, phonemeChunks, ignoredSymbols };
-export type { IpaSymbol, Category };
+export type { IpaSymbol, Category, Support };
