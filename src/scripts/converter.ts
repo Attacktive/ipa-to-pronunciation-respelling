@@ -1,7 +1,7 @@
 import { symbolByIpa } from './mappings';
 import { parseIpa } from './parser';
 import { findSyllableBoundaries } from './syllabifier';
-import type { PhonemeToken } from './parser';
+import type { ParsedToken, PhonemeToken } from './parser';
 
 const convertToken = (token: PhonemeToken) => {
 	const symbol = symbolByIpa.get(token.ipa);
@@ -13,6 +13,8 @@ const convertToken = (token: PhonemeToken) => {
 };
 
 const normalizeOptionalGroups = (value: string) => value.replaceAll('()', '');
+
+const isSyllabicConsonant = (token: ParsedToken | undefined) => token?.kind === 'phoneme' && token.syllabic === true && symbolByIpa.get(token.ipa)?.category !== 'vowel';
 
 const convert = (ipa: string) => {
 	const tokens = parseIpa(ipa);
@@ -66,7 +68,11 @@ const convert = (ipa: string) => {
 
 		if (token.kind === 'boundary') {
 			flushSyllable();
-			result.push(' ');
+
+			if (!isSyllabicConsonant(tokens[i + 1])) {
+				result.push(' ');
+			}
+
 			continue;
 		}
 
