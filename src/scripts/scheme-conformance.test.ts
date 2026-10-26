@@ -44,7 +44,7 @@ const CONFORMANCE_CASES: ConformanceCase[] = [
 	{ family: 'syllabicity', label: 'a space before a syllabic consonant is omitted', ipa: '/ˈsʌd n̩/', respelling: '/SUHDn/' },
 	{ family: 'syllabicity', label: 'alternate syllabic mark is respected', ipa: '/ˈsʌd.n̍/', respelling: '/SUHDn/' },
 	{ family: 'syllabicity', label: 'an explicit boundary before a non-syllabic consonant remains', ipa: '/ˈsʌd.n/', respelling: '/SUHD n/' },
-	{ family: 'syllabicity', label: 'an explicit boundary before a marked syllabic vowel remains', ipa: '/ˈkæt.i̩/', respelling: '/KAT ee/' }
+	{ family: 'syllabicity', label: 'an explicit boundary before a marked syllabic vowel remains', ipa: '/ˈkæt.i̩/', respelling: '/KAT ee/' },
 	{ family: 'syllabicity', label: 'non-syllabic adjacent vowel stays in the stressed nucleus', ipa: 'ˈɛə̯', respelling: 'EHUH' },
 	{ family: 'syllabicity', label: 'unmarked adjacent vowel starts a new nucleus', ipa: 'ˈɛə', respelling: 'EHuh' },
 	{ family: 'nasal vowels', label: 'open back nasal vowel', ipa: 'ɑ̃', respelling: 'on' },
