@@ -14,7 +14,7 @@ Primary stress (`ˈ`) uppercases the following syllable. For example, `ˈstrɪkt
 
 Secondary stress (`ˌ`) ends any pending primary-stress capitalization but has no visible marker of its own. For example, `ˈæbˌstrækt` becomes `ABstrakt`.
 
-Explicit syllable boundaries written as a period or space become a space in the output. Inferred syllable boundaries affect syllable structure and stress, but do not insert spaces. For example, `kæt.ər.pɪl.ər` becomes `kat er pihl er`.
+Explicit syllable boundaries written as a period or space become a space in the output, except immediately before a syllabic consonant, when no space is emitted. Inferred syllable boundaries affect syllable structure and stress, but do not insert spaces. For example, `kæt.ər.pɪl.ər` becomes `kat er pihl er`.
 
 Literal IPA wrappers `/`, `[`, and `]` are preserved.
 
@@ -116,6 +116,8 @@ Syllabicity is structural, not decorative.
 
 The syllabic marks U+030D and U+0329 can turn a consonant into a syllable nucleus. For example, `/ˈɹiːd͡ʒn̩/` becomes `/REEjn/`.
 
+When a period or space directly precedes a syllabic consonant, the consonant is joined to the preceding respelling without a space. For example, `/ˈɹɪð.m̩/` becomes `/RIHDHm/` and `/ˈsʌd.n̩/` becomes `/SUHDn/`. Other explicit syllable boundaries retain their spaces.
+
 The non-syllabic mark U+032F keeps a marked vowel component inside the preceding nucleus. This can affect stress propagation. For example, `ˈɛə̯` becomes `EHUH`, while the unmarked `ˈɛə` becomes `EHuh`.
 
 ## Nasal vowels and limited foreign support
@@ -169,6 +171,7 @@ An unsupported input reports the offending symbol, for example:
 | `kæt.ər.pɪl.ər` | `kat er pihl er` | Explicit syllable spacing |
 | `/səˈl(j)uːʃən/` | `/suhL(Y)OOshuhn/` | Optional segment |
 | `/ˈɹiːd͡ʒn̩/` | `/REEjn/` | Syllabic consonant |
+| `/ˈɹɪð.m̩/` | `/RIHDHm/` | Boundary suppressed before syllabic consonant |
 | `ˈɛə̯` | `EHUH` | Non-syllabic vowel component |
 | `ɑ̃` | `on` | Supported nasal vowel |
 | `tʰ` | `t` | Deliberately ignored aspiration |
