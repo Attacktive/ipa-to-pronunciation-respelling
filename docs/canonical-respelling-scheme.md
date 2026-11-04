@@ -151,7 +151,7 @@ Some phonetic detail is deliberately ignored because the canonical scheme does n
 
 Tie bars are normalized so affricates such as `d͡ʒ` and `t͡ʃ` resolve to their canonical chunks. Hyphens are treated as formatting and ignored.
 
-Other meaningful distinctions are not silently discarded. Unsupported marks or phonemes cause conversion to fail. Examples include generic nasalization such as `ẽ`, voicelessness such as `n̥`, labialization such as `tʷ`, and unsupported phonemes such as `ʔ` or `q`. Unexpected errors, including malformed optional groups, still fail conversion.
+Other meaningful distinctions are not silently discarded. Unsupported marks or phonemes cause conversion to fail. Examples include generic nasalization such as `ẽ`, voicelessness such as `n̥`, labialization such as `tʷ`, and unsupported phonemes such as `ʔ` or `q`. The smoke test logs these intentional rejections but does not classify them as converter regressions or append them to the failure issue. Unexpected errors, including malformed optional groups, still fail the smoke test.
 
 The same rule applies to lossy foreign approximations. Distinct sounds such as `ɾ`, `ç`, `χ`, `ʁ`, `ɥ`, `ɯ`, or `ø` are rejected rather than silently rewritten as a different English phoneme.
 

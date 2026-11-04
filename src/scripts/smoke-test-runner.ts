@@ -1,4 +1,5 @@
 import { convert } from './converter';
+import { UnsupportedIpaSymbolError } from './parser';
 
 const testConversions = (inputs: ConversionInput[]) => {
 	const results: ConversionResult[] = [];
@@ -8,7 +9,7 @@ const testConversions = (inputs: ConversionInput[]) => {
 		try {
 			results.push({ ...input, respelling: convert(input.ipa) });
 		} catch (error) {
-			errors.push({ ...input, error: (error as Error).message });
+			errors.push({ ...input, error: error instanceof Error ? error.message : String(error), kind: error instanceof UnsupportedIpaSymbolError ? 'unsupported' : 'unexpected' });
 		}
 	}
 
@@ -28,6 +29,7 @@ interface ConversionResult extends ConversionInput {
 
 interface ConversionError extends ConversionInput {
 	error: string;
+	kind: 'unsupported' | 'unexpected';
 }
 
 export { testConversions, testIpaNotations };

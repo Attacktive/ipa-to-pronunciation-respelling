@@ -3,9 +3,19 @@ import { testConversions, testIpaNotations } from './smoke-test-runner';
 import type { ConversionError } from './smoke-test-runner';
 
 const printFailures = (errors: ConversionError[], total: number, subject: string) => {
-	console.log(`${errors.length}/${total} ${subject} failed to convert:`);
+	const unsupported = errors.filter(error => error.kind === 'unsupported');
+	const unexpected = errors.filter(error => error.kind === 'unexpected');
+	if (unsupported.length > 0) {
+		console.log(`${unsupported.length}/${total} ${subject} contain intentionally unsupported IPA symbols; excluding them from failure reports.`);
+	}
 
-	for (const { word, ipa, error } of errors) {
+	if (unexpected.length === 0) {
+		return;
+	}
+
+	console.log(`${unexpected.length}/${total} ${subject} failed unexpectedly:`);
+
+	for (const { word, ipa, error } of unexpected) {
 		if (word !== undefined) {
 			console.log(`  - ${word} [${ipa}]: ${error}`);
 		} else {
@@ -13,7 +23,8 @@ const printFailures = (errors: ConversionError[], total: number, subject: string
 		}
 	}
 
-	process.stderr.write(`${JSON.stringify(errors)}\n`);
+	process.stderr.write(`${JSON.stringify(unexpected)}\n`);
+	process.exit(1);
 };
 
 function smokeTestIpaNotations(ipaNotations: string[]) {
@@ -25,14 +36,8 @@ function smokeTestIpaNotations(ipaNotations: string[]) {
 		console.log(`  - ${ipa} -> ${respelling}`);
 	}
 
-	if (errors.length === 0) {
-		console.log(`All ${ipaNotations.length} IPA notations converted successfully.`);
-		return;
-	}
-
 	printFailures(errors, ipaNotations.length, 'IPA notations');
-
-	process.exit(1);
+	console.log(`All ${results.length} supported IPA notations converted successfully.`);
 }
 
 async function smokeTestRandomWords() {
@@ -52,14 +57,8 @@ async function smokeTestRandomWords() {
 
 	const { errors } = testConversions(wordsWithIpa);
 
-	if (errors.length === 0) {
-		console.log(`All ${wordsWithIpa.length} words converted successfully.`);
-		return;
-	}
-
 	printFailures(errors, wordsWithIpa.length, 'words');
-
-	process.exit(1);
+	console.log(`All ${wordsWithIpa.length - errors.length} supported words converted successfully.`);
 }
 
 async function smokeTest() {

@@ -34,7 +34,17 @@ describe(
 				expect(errors)
 					.toHaveLength(1);
 				expect(errors[0])
-					.toMatchObject({ ipa: '💩' });
+					.toMatchObject({ ipa: '💩', kind: 'unsupported' });
+			}
+		);
+
+		it(
+			'keeps malformed input as an unexpected error rather than an unsupported symbol',
+			() => {
+				const { errors } = testIpaNotations(['/ˈkæt(ə/']);
+
+				expect(errors)
+					.toMatchObject([{ kind: 'unexpected' }]);
 			}
 		);
 
@@ -54,7 +64,7 @@ describe(
 				expect(errors)
 					.toHaveLength(1);
 				expect(errors[0])
-					.toMatchObject({ word: 'invalid', ipa: '💩' });
+					.toMatchObject({ word: 'invalid', ipa: '💩', kind: 'unsupported' });
 			}
 		);
 	}
