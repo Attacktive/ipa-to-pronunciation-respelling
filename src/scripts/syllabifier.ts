@@ -106,13 +106,44 @@ const findConsonantIndexes = (tokens: ParsedToken[], previousNucleus: number[], 
 	return result;
 };
 
-const findBoundaryBetweenNuclei = (tokens: ParsedToken[], previousNucleus: number[], nextNucleus: number[]) => {
-	const consonantIndexes = findConsonantIndexes(tokens, previousNucleus, nextNucleus);
-	if (consonantIndexes.length === 0) {
-		return nextNucleus[0];
+const PRICE_RHOTIC_CODAS = new Set(['t', 'd']);
+
+const isSyllabicConsonantNucleus = (token: ParsedToken) => token.kind === 'phoneme' && token.syllabic === true && !isVowel(token);
+
+const startsOptionalSchwa = (preceding: ParsedToken | undefined, next: ParsedToken) => next.kind === 'phoneme' && next.ipa === 'ə' && preceding?.kind === 'optional' && preceding.boundary === 'start';
+
+const isPhoneme = (token: ParsedToken, ipa: string) => token.kind === 'phoneme' && token.ipa === ipa;
+
+const endsPriceCodaBeforeRhotic = (tokens: ParsedToken[], previousNucleusIndex: number, nextNucleusIndex: number, consonantIndexes: number[]) => {
+	if (consonantIndexes.length !== 1) {
+		return false;
 	}
 
-	return findBoundaryBefore(tokens, consonantIndexes, nextNucleus[0]);
+	const coda = tokens[consonantIndexes[0]];
+
+	return isPhoneme(tokens[previousNucleusIndex], 'aɪ')
+		&& isPhoneme(tokens[nextNucleusIndex], 'ɚ')
+		&& coda.kind === 'phoneme'
+		&& PRICE_RHOTIC_CODAS.has(coda.ipa);
+};
+
+const findBoundaryBetweenNuclei = (tokens: ParsedToken[], previousNucleus: number[], nextNucleus: number[]) => {
+	const nextNucleusIndex = nextNucleus[0];
+	const next = tokens[nextNucleusIndex];
+	if (isSyllabicConsonantNucleus(next) || startsOptionalSchwa(tokens[nextNucleusIndex - 1], next)) {
+		return nextNucleusIndex;
+	}
+
+	const consonantIndexes = findConsonantIndexes(tokens, previousNucleus, nextNucleus);
+	if (endsPriceCodaBeforeRhotic(tokens, previousNucleus[previousNucleus.length - 1], nextNucleusIndex, consonantIndexes)) {
+		return nextNucleusIndex;
+	}
+
+	if (consonantIndexes.length === 0) {
+		return nextNucleusIndex;
+	}
+
+	return findBoundaryBefore(tokens, consonantIndexes, nextNucleusIndex);
 };
 
 const findRegionBoundaries = (tokens: ParsedToken[], start: number, end: number) => {

@@ -1,5 +1,12 @@
 import { ignoredSymbols, phonemeChunks, SECONDARY_STRESS_MARK, STRESS_MARK, vowels } from './mappings';
 
+class UnsupportedIpaSymbolError extends Error {
+	constructor(ipa: string, symbol: string) {
+		super(`${ipa} contains unsupported symbol(s) around: "${symbol}".`);
+		this.name = 'UnsupportedIpaSymbolError';
+	}
+}
+
 const LENGTH_MARK = 'ː';
 const SYLLABICITY_BY_DIACRITIC = new Map<string, boolean>([
 	['\u030D', true],
@@ -236,7 +243,7 @@ const parseIpa = (ipa: string) => {
 	while (context.index < context.cleanedIpa.length) {
 		const consumed = TOKEN_CONSUMERS.some(consumer => consumer(context));
 		if (!consumed) {
-			throw Error(`${ipa} contains unsupported symbol(s) around: "${context.cleanedIpa.charAt(context.index)}".`);
+			throw new UnsupportedIpaSymbolError(ipa, context.cleanedIpa.charAt(context.index));
 		}
 	}
 
@@ -293,5 +300,5 @@ interface ParserContext {
 
 type TokenConsumer = (context: ParserContext) => boolean;
 
-export { parseIpa };
+export { parseIpa, UnsupportedIpaSymbolError };
 export type { ParsedToken, PhonemeToken };

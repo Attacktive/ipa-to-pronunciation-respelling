@@ -8,7 +8,7 @@ The executable contract lives in [`scheme-conformance.test.ts`](../src/scripts/s
 
 ## Core output rules
 
-Each accepted IPA phoneme or supported phoneme chunk has one canonical respelling. Common English consonants usually keep their familiar letter, while vowels, affricates, and other ambiguous sounds use explicit spellings.
+Each accepted IPA phoneme or supported phoneme chunk has a canonical default respelling. Common English consonants usually keep their familiar letter, while vowels, affricates, and other ambiguous sounds use explicit spellings. The PRICE vowel `/aɪ/` additionally uses context-sensitive surface spellings, because concatenating `eye` with consonants makes familiar pronunciations difficult to read.
 
 Primary stress (`ˈ`) uppercases the following syllable. For example, `ˈstrɪkt` becomes `STRIHKT`.
 
@@ -52,6 +52,8 @@ The scheme intentionally favors readable, stable spellings over preserving every
 | `ɔɪ` | `oy` |
 | `oʊ`, `əʊ` | `oh` |
 | `ju`, `juː` | `ew` |
+
+The canonical standalone mapping for `aɪ` remains `eye`. When it follows a consonant in an open syllable, the vowel uses `y` or a familiar equivalent (`ˈmaɪ → MY`, `ˈhaɪ → HIGH`). Common closed syllables use conventional rimes: `ˈlaɪn → LINE`, `ˈnaɪt → NIGHT`, and `ˈɹaɪd → RIDE`. For `/aɪld/`, the general `iled` ending keeps the PRICE vowel readable (`ˈfaɪld → FILED`); familiar `ild` forms such as `ˈtʃaɪld → CHILD`, `ˈmaɪld → MILD`, and `ˈwaɪld → WILD` have explicit exceptions. Safe consonant aliases participate in the same coda rule, so `ˈmaɪɫ` and `ˈmaɪl` both become `MILE`. Ignored marks inside an otherwise empty optional group are discarded before choosing a PRICE spelling, so `ˈhaɪ(ː)` remains `HIGH`. These spellings represent phonemes, not a dictionary lookup or a promise to reconstruct a word's original spelling. An adjacent rhotic schwa, optionally divided by a period, is normalized to the existing `aɪər → ire` chunk, so `ˈwaɪ.ɚ → WIRE`. This is a deliberate exception to explicit-boundary spacing for a rhotic vowel sequence.
 
 Vowel length is not encoded in the respelling. A standalone length mark (`ː`) is accepted but does not change the canonical output, so pairs such as `i`/`iː` and `u`/`uː` share `ee` and `oo`.
 
@@ -114,9 +116,9 @@ Some narrow or legacy symbols are accepted as safe aliases when they collapse to
 
 Syllabicity is structural, not decorative.
 
-The syllabic marks U+030D and U+0329 can turn a consonant into a syllable nucleus. For example, `/ˈɹiːd͡ʒn̩/` becomes `/REEjn/`.
+The syllabic marks U+030D and U+0329 can turn a consonant into a syllable nucleus. English-facing respellings give syllabic consonants a readable `uh` nucleus: `/ˈɹiːd͡ʒn̩/` becomes `/REEJuhn/`.
 
-When a period or space directly precedes a syllabic consonant, the consonant is joined to the preceding respelling without a space. For example, `/ˈɹɪð.m̩/` becomes `/RIHDHm/` and `/ˈsʌd.n̩/` becomes `/SUHDn/`. Other explicit syllable boundaries retain their spaces.
+When a period or space directly precedes a syllabic consonant, the syllabic ending is joined to the preceding respelling without a space. For example, `/ˈɹɪð.m̩/` becomes `/RIHDHuhm/` and `/ˈsʌd.n̩/` becomes `/SUHDuhn/`. Inferred syllable boundaries keep the consonants before syllabic nuclei in the preceding stressed syllable, matching explicit-boundary casing. Other explicit syllable boundaries retain their spaces.
 
 The non-syllabic mark U+032F keeps a marked vowel component inside the preceding nucleus. This can affect stress propagation. For example, `ˈɛə̯` becomes `EHUH`, while the unmarked `ˈɛə` becomes `EHuh`.
 
@@ -149,7 +151,7 @@ Some phonetic detail is deliberately ignored because the canonical scheme does n
 
 Tie bars are normalized so affricates such as `d͡ʒ` and `t͡ʃ` resolve to their canonical chunks. Hyphens are treated as formatting and ignored.
 
-Other meaningful distinctions are not silently discarded. Unsupported marks or phonemes cause conversion to fail. Examples include generic nasalization such as `ẽ`, voicelessness such as `n̥`, labialization such as `tʷ`, and unsupported phonemes such as `ʔ` or `q`.
+Other meaningful distinctions are not silently discarded. Unsupported marks or phonemes cause conversion to fail. Examples include generic nasalization such as `ẽ`, voicelessness such as `n̥`, labialization such as `tʷ`, and unsupported phonemes such as `ʔ` or `q`. Unexpected errors, including malformed optional groups, still fail conversion.
 
 The same rule applies to lossy foreign approximations. Distinct sounds such as `ɾ`, `ç`, `χ`, `ʁ`, `ɥ`, `ɯ`, or `ø` are rejected rather than silently rewritten as a different English phoneme.
 
@@ -170,8 +172,8 @@ An unsupported input reports the offending symbol, for example:
 | `ˈæbˌstrækt` | `ABstrakt` | Secondary stress ends primary capitalization |
 | `kæt.ər.pɪl.ər` | `kat er pihl er` | Explicit syllable spacing |
 | `/səˈl(j)uːʃən/` | `/suhL(Y)OOshuhn/` | Optional segment |
-| `/ˈɹiːd͡ʒn̩/` | `/REEjn/` | Syllabic consonant |
-| `/ˈɹɪð.m̩/` | `/RIHDHm/` | Boundary suppressed before syllabic consonant |
+| `/ˈɹiːd͡ʒn̩/` | `/REEJuhn/` | Syllabic consonant |
+| `/ˈɹɪð.m̩/` | `/RIHDHuhm/` | Boundary suppressed before syllabic consonant |
 | `ˈɛə̯` | `EHUH` | Non-syllabic vowel component |
 | `ɑ̃` | `on` | Supported nasal vowel |
 | `tʰ` | `t` | Deliberately ignored aspiration |

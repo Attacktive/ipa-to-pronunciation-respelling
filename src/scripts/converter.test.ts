@@ -226,6 +226,46 @@ describe(
 );
 
 describe(
+	'readable PRICE-vowel syllables',
+	() => {
+		it.each([
+			{ ipa: '/ˈaʊ̯t.saɪd/', respelling: '/OWT side/' },
+			{ ipa: '/ˌoʊ.vɚˈɹaɪd/', respelling: '/oh verRIDE/' },
+			{ ipa: '/ˈnaɪtˌlaɪt/', respelling: '/NIGHTlight/' },
+			{ ipa: '/ˈmaɪ.kɹəˌskoʊp/', respelling: '/MY kruhskohp/' },
+			{ ipa: '/ˈhaɪˌweɪ/', respelling: '/HIGHway/' },
+			{ ipa: '/ˈwaɪ.ɚ/', respelling: '/WIRE/' },
+			{ ipa: '/ˈfaɪɚˌflaɪ/', respelling: '/FIREfly/' },
+			{ ipa: '/ˈfaɪɚˌfaɪtɚ/', respelling: '/FIREfighter/' },
+			{ ipa: '/ˈt͡ʃaɪldˌhʊd/', respelling: '/CHILDhuud/' },
+			{ ipa: '/ˈt͡ʃaɪld/', respelling: '/CHILD/' },
+			{ ipa: '/ˈmaɪld/', respelling: '/MILD/' },
+			{ ipa: '/ˈwaɪld/', respelling: '/WILD/' },
+			{ ipa: '/ˈfaɪld/', respelling: '/FILED/' },
+			{ ipa: '/ˈpaɪld/', respelling: '/PILED/' },
+			{ ipa: '/ˈstaɪld/', respelling: '/STYLED/' },
+			{ ipa: '/ˈmaɪl/', respelling: '/MILE/' },
+			{ ipa: '/ˈmaɪɫ/', respelling: '/MILE/' },
+			{ ipa: '/ˈtaɪm/', respelling: '/TIME/' },
+			{ ipa: '/ˈtaɪɱ/', respelling: '/TIME/' },
+			{ ipa: '/ˈhaɪ(ː)/', respelling: '/HIGH/' },
+			{ ipa: '/ˈnaɪt(ː)/', respelling: '/NIGHT/' },
+			{ ipa: '/ˈhaɪ((ː))/', respelling: '/HIGH/' },
+			{ ipa: '/ˈwaɪ̯tˌbɔɹd/', respelling: '/WHITEbawrd/' },
+			{ ipa: '/ˈɡaɪd/', respelling: '/GUIDE/' },
+			{ ipa: '/ˌʌn.aɪˈdɛn.tə.faɪd/', respelling: '/uhn eyeDEHN tuh fied/' },
+			{ ipa: '/ˈkwaɪ.ət/', respelling: '/KWYE uht/' }
+		])(
+			'$ipa -> $respelling',
+			({ ipa, respelling }) => {
+				expect(convert(ipa))
+					.toBe(respelling);
+			}
+		);
+	}
+);
+
+describe(
 	'syllabification tests',
 	() => {
 		it(
@@ -355,12 +395,12 @@ describe(
 
 		it(
 			'splits adjacent syllabic vowels into separate nuclei',
-			() => expect(convert('ˈbaɪoʊ')).toBe('BEYEoh')
+			() => expect(convert('ˈbaɪoʊ')).toBe('BYoh')
 		);
 
 		it(
 			'handles tie bar affricate with syllabic consonant ("region")',
-			() => expect(convert('/ˈɹiːd͡ʒn̩/')).toBe('/REEjn/')
+			() => expect(convert('/ˈɹiːd͡ʒn̩/')).toBe('/REEJuhn/')
 		);
 
 		it(
