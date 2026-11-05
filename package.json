@@ -35,7 +35,7 @@
 		"@types/node": "^24.19.2",
 		"eslint": "^10.14.0",
 		"gh-pages": "^6.3.0",
-		"globals": "^17.13.0",
+		"globals": "^17.14.0",
 		"sass": "^1.107.1",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^6.0.3",
