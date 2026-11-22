@@ -37,11 +37,13 @@ describe(
 			() => {
 				const syllabicConsonant = parseIpa('/n̩/')
 					.find(token => token.kind === 'phoneme');
+
 				const nonSyllabicVowel = parseIpa('/ə̯/')
 					.find(token => token.kind === 'phoneme');
 
 				expect(syllabicConsonant)
 					.toMatchObject({ ipa: 'n', syllabic: true });
+
 				expect(nonSyllabicVowel)
 					.toMatchObject({ ipa: 'ə', syllabic: false });
 			}

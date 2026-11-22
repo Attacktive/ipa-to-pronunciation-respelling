@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { fetchWords, fetchIpa, fetchFirstIpa } from './random-words';
+import { describe, expect, it, vi } from 'vitest';
+import { fetchFirstIpa, fetchIpa, fetchWords } from './random-words';
 
 globalThis.fetch = globalThis.fetch || vi.fn();
 
@@ -13,6 +13,7 @@ describe(
 
 				expect(Array.isArray(words))
 					.toBe(true);
+
 				expect(words.length)
 					.toBe(5);
 
@@ -33,10 +34,12 @@ describe(
 
 				expect(ipa)
 					.toBe('hʌlˈəʊ̯');
+
 				expect(globalThis.fetch)
 					.toHaveBeenCalledTimes(1);
 
 				const [request] = vi.mocked(globalThis.fetch).mock.calls[0]!;
+
 				expect(request.toString())
 					.toBe('https://rhymebrain.com/talk?function=getWordInfo&word=hello&lang=en');
 			}
@@ -48,7 +51,8 @@ describe(
 				globalThis.fetch = vi.fn().mockResolvedValue({ ok: false });
 
 				await expect(fetchIpa('missing'))
-					.resolves.toBeUndefined();
+					.resolves
+					.toBeUndefined();
 			}
 		);
 
@@ -61,7 +65,8 @@ describe(
 				});
 
 				await expect(fetchIpa('missing'))
-					.resolves.toBeUndefined();
+					.resolves
+					.toBeUndefined();
 			}
 		);
 
@@ -71,7 +76,8 @@ describe(
 				globalThis.fetch = vi.fn().mockRejectedValue(new TypeError('Network error'));
 
 				await expect(fetchIpa('hello'))
-					.resolves.toBeUndefined();
+					.resolves
+					.toBeUndefined();
 			}
 		);
 
@@ -94,7 +100,9 @@ describe(
 				controller.abort();
 
 				await expect(phonetic)
-					.rejects.toMatchObject({ name: 'AbortError' });
+					.rejects
+					.toMatchObject({ name: 'AbortError' });
+
 				expect(globalThis.fetch)
 					.toHaveBeenCalledTimes(2);
 			}
@@ -119,6 +127,7 @@ describe(
 
 				expect(globalThis.fetch)
 					.toHaveBeenCalledTimes(2);
+
 				expect(phonetic)
 					.toBe('dɒg');
 

@@ -33,6 +33,7 @@ describe(
 
 				expect(errors)
 					.toHaveLength(1);
+
 				expect(errors[0])
 					.toMatchObject({ ipa: '💩', kind: 'unsupported' });
 			}
@@ -63,6 +64,7 @@ describe(
 
 				expect(errors)
 					.toHaveLength(1);
+
 				expect(errors[0])
 					.toMatchObject({ word: 'invalid', ipa: '💩', kind: 'unsupported' });
 			}

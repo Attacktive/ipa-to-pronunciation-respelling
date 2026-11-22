@@ -39,6 +39,7 @@ const cleanVowel = (vowel: string) => vowel.normalize('NFD')
 
 const normalizedVowels = [...new Set(vowels.map(cleanVowel))]
 	.sort((left, right) => right.length - left.length);
+
 const vowelChunks = new Set(normalizedVowels);
 const rColoredVowels = new Set(normalizedVowels.filter(vowel => vowel.endsWith('r')));
 

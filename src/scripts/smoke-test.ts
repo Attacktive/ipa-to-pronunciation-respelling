@@ -1,4 +1,4 @@
-import { fetchWords, fetchIpa } from './random-words.ts';
+import { fetchIpa, fetchWords } from './random-words.ts';
 import { testConversions, testIpaNotations } from './smoke-test-runner';
 import type { ConversionError } from './smoke-test-runner';
 
@@ -48,9 +48,7 @@ async function smokeTestRandomWords() {
 	const ipaResults = await Promise.allSettled(ipaPromises);
 
 	const wordsWithIpa = ipaResults
-		.filter((result): result is PromiseFulfilledResult<{ word: string; ipa: string }> =>
-			result.status === 'fulfilled' && result.value.ipa !== undefined,
-		)
+		.filter((result): result is PromiseFulfilledResult<{ word: string; ipa: string }> => result.status === 'fulfilled' && result.value.ipa !== undefined)
 		.map(({ value }) => value);
 
 	console.log(`Got IPA for ${wordsWithIpa.length}/${words.length} words. Testing converter...`);
@@ -65,6 +63,7 @@ async function smokeTest() {
 	const ipaNotations = process.argv.slice(2);
 	if (ipaNotations.length > 0) {
 		smokeTestIpaNotations(ipaNotations);
+
 		return;
 	}
 

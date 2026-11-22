@@ -1,6 +1,6 @@
 import { convert } from './converter';
-import { consonants, vowels, STRESS_MARK } from './mappings';
-import { fetchWords, fetchFirstIpa } from './random-words';
+import { consonants, STRESS_MARK, vowels } from './mappings';
+import { fetchFirstIpa, fetchWords } from './random-words';
 
 function onWindowLoaded() {
 	drawInputButtons();
@@ -119,7 +119,6 @@ function showToast(message: string) {
 }
 
 addEventListener('load', onWindowLoaded);
-
 
 const forms = document.querySelectorAll('form');
 for (const form of forms) {

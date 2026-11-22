@@ -1,9 +1,4 @@
-/*
- * It might have to be
- * @import "tailwindcss/index"
- * as instructed https://tailwindcss.com/blog/tailwindcss-v4#simplified-installation
- * but it raises a SASS warning.
- */
+/* It might have to be @import "tailwindcss/index" as instructed https://tailwindcss.com/blog/tailwindcss-v4#simplified-installation but it raises a SASS warning. */
 @import 'tailwindcss/index.css';
 
 h1, h2 {

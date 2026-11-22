@@ -24,36 +24,44 @@ Optional segments inside parentheses stay optional and are respelled normally. F
 
 The scheme intentionally favors readable, stable spellings over preserving every narrow phonetic distinction.
 
-| IPA | Canonical respelling | Notes |
-| --- | --- | --- |
-| `æ` | `a` | TRAP-like vowel |
-| `ɑ`, `ɑː`, `a` | `ah` | Open vowel family |
-| `ɔ`, `ɔː`, `o`, `oː` | `aw` | THOUGHT-like family |
-| `e`, `ɛ` | `eh` | DRESS-like family |
-| `i`, `iː` | `ee` | FLEECE-like family |
-| `ɪ` | `ih` | KIT-like vowel |
-| `ɒ` | `o` | LOT-like vowel |
-| `u`, `uː` | `oo` | GOOSE-like family |
-| `ʊ` | `uu` | FOOT-like vowel |
-| `ʌ` | `uh` | STRUT-like vowel |
-| `ə`, `ɘ`, `ɜ`, `ɐ` | `uh` | Reduced/central vowel family |
-| `ɚ` | `er` | Rhotic schwa |
-| `ɝ` | `ur` | Stressed rhotic central vowel |
-| `y` | `ue` | Limited foreign-reference mapping |
-| `œ` | `eu` | Limited foreign-reference mapping |
+| IPA                  | Canonical respelling | Notes                             |
+| -------------------- | -------------------- | --------------------------------- |
+| `æ`                  | `a`                  | TRAP-like vowel                   |
+| `ɑ`, `ɑː`, `a`       | `ah`                 | Open vowel family                 |
+| `ɔ`, `ɔː`, `o`, `oː` | `aw`                 | THOUGHT-like family               |
+| `e`, `ɛ`             | `eh`                 | DRESS-like family                 |
+| `i`, `iː`            | `ee`                 | FLEECE-like family                |
+| `ɪ`                  | `ih`                 | KIT-like vowel                    |
+| `ɒ`                  | `o`                  | LOT-like vowel                    |
+| `u`, `uː`            | `oo`                 | GOOSE-like family                 |
+| `ʊ`                  | `uu`                 | FOOT-like vowel                   |
+| `ʌ`                  | `uh`                 | STRUT-like vowel                  |
+| `ə`, `ɘ`, `ɜ`, `ɐ`   | `uh`                 | Reduced/central vowel family      |
+| `ɚ`                  | `er`                 | Rhotic schwa                      |
+| `ɝ`                  | `ur`                 | Stressed rhotic central vowel     |
+| `y`                  | `ue`                 | Limited foreign-reference mapping |
+| `œ`                  | `eu`                 | Limited foreign-reference mapping |
 
 ### Diphthongs and vowel sequences
 
-| IPA | Canonical respelling |
-| --- | --- |
-| `eɪ` | `ay` |
-| `aɪ` | `eye` |
-| `aʊ` | `ow` |
-| `ɔɪ` | `oy` |
-| `oʊ`, `əʊ` | `oh` |
-| `ju`, `juː` | `ew` |
+| IPA         | Canonical respelling |
+| ----------- | -------------------- |
+| `eɪ`        | `ay`                 |
+| `aɪ`        | `eye`                |
+| `aʊ`        | `ow`                 |
+| `ɔɪ`        | `oy`                 |
+| `oʊ`, `əʊ`  | `oh`                 |
+| `ju`, `juː` | `ew`                 |
 
-The canonical standalone mapping for `aɪ` remains `eye`. When it follows a consonant in an open syllable, the vowel uses `y` or a familiar equivalent (`ˈmaɪ → MY`, `ˈhaɪ → HIGH`). Common closed syllables use conventional rimes: `ˈlaɪn → LINE`, `ˈnaɪt → NIGHT`, and `ˈɹaɪd → RIDE`. For `/aɪld/`, the general `iled` ending keeps the PRICE vowel readable (`ˈfaɪld → FILED`); familiar `ild` forms such as `ˈtʃaɪld → CHILD`, `ˈmaɪld → MILD`, and `ˈwaɪld → WILD` have explicit exceptions. Safe consonant aliases participate in the same coda rule, so `ˈmaɪɫ` and `ˈmaɪl` both become `MILE`. Ignored marks inside an otherwise empty optional group are discarded before choosing a PRICE spelling, so `ˈhaɪ(ː)` remains `HIGH`. These spellings represent phonemes, not a dictionary lookup or a promise to reconstruct a word's original spelling. An adjacent rhotic schwa, optionally divided by a period, is normalized to the existing `aɪər → ire` chunk, so `ˈwaɪ.ɚ → WIRE`. This is a deliberate exception to explicit-boundary spacing for a rhotic vowel sequence.
+The canonical standalone mapping for `aɪ` remains `eye`.
+When it follows a consonant in an open syllable, the vowel uses `y` or a familiar equivalent (`ˈmaɪ → MY`, `ˈhaɪ → HIGH`).
+Common closed syllables use conventional rimes: `ˈlaɪn → LINE`, `ˈnaɪt → NIGHT`, and `ˈɹaɪd → RIDE`.
+For `/aɪld/`, the general `iled` ending keeps the PRICE vowel readable (`ˈfaɪld → FILED`); familiar `ild` forms such as `ˈtʃaɪld → CHILD`, `ˈmaɪld → MILD`, and `ˈwaɪld → WILD` have explicit exceptions.
+Safe consonant aliases participate in the same coda rule, so `ˈmaɪɫ` and `ˈmaɪl` both become `MILE`.
+Ignored marks inside an otherwise empty optional group are discarded before choosing a PRICE spelling, so `ˈhaɪ(ː)` remains `HIGH`.
+These spellings represent phonemes, not a dictionary lookup or a promise to reconstruct a word's original spelling.
+An adjacent rhotic schwa, optionally divided by a period, is normalized to the existing `aɪər → ire` chunk, so `ˈwaɪ.ɚ → WIRE`.
+This is a deliberate exception to explicit-boundary spacing for a rhotic vowel sequence.
 
 Vowel length is not encoded in the respelling. A standalone length mark (`ː`) is accepted but does not change the canonical output, so pairs such as `i`/`iː` and `u`/`uː` share `ee` and `oo`.
 
@@ -61,30 +69,30 @@ Vowel length is not encoded in the respelling. A standalone length mark (`ː`) i
 
 Ordinary vowel-plus-`r` forms are compositional: use the canonical base-vowel spelling and append `r`.
 
-| IPA | Canonical respelling |
-| --- | --- |
-| `ɑr`, `ɑːr` | `ahr` |
-| `ær` | `ar` |
-| `ɛr` | `ehr` |
-| `ɪr` | `ihr` |
-| `ɔr`, `ɔːr` | `awr` |
-| `ɒr` | `or` |
-| `ʌr` | `uhr` |
-| `ʊr` | `uur` |
+| IPA         | Canonical respelling |
+| ----------- | -------------------- |
+| `ɑr`, `ɑːr` | `ahr`                |
+| `ær`        | `ar`                 |
+| `ɛr`        | `ehr`                |
+| `ɪr`        | `ihr`                |
+| `ɔr`, `ɔːr` | `awr`                |
+| `ɒr`        | `or`                 |
+| `ʌr`        | `uhr`                |
+| `ʊr`        | `uur`                |
 
 Familiar fused rhotic spellings remain explicit rather than being derived:
 
-| IPA | Canonical respelling |
-| --- | --- |
-| `ɛər` | `air` |
-| `ɪər` | `eer` |
-| `aɪər` | `ire` |
-| `ɔɪər` | `oir` |
-| `ʊər` | `oor` |
-| `aʊər` | `our` |
-| `ɜr`, `ɜːr` | `ur` |
-| `jʊər` | `ure` |
-| `ər` | `er` |
+| IPA         | Canonical respelling |
+| ----------- | -------------------- |
+| `ɛər`       | `air`                |
+| `ɪər`       | `eer`                |
+| `aɪər`      | `ire`                |
+| `ɔɪər`      | `oir`                |
+| `ʊər`       | `oor`                |
+| `aʊər`      | `our`                |
+| `ɜr`, `ɜːr` | `ur`                 |
+| `jʊər`      | `ure`                |
+| `ər`        | `er`                 |
 
 For example, `/kɑr/` becomes `/kahr/`, `/stɔr/` becomes `/stawr/`, and `/pʊər/` becomes `/poor/`.
 
@@ -94,21 +102,21 @@ Most familiar English consonants keep a direct spelling, including `b`, `d`, `f`
 
 The main explicit consonant spellings are:
 
-| IPA | Canonical respelling |
-| --- | --- |
-| `tʃ`, `ʧ` | `ch` |
-| `dʒ`, `ʤ` | `j` |
-| `ʣ` | `dz` |
-| `ʦ` | `ts` |
-| `ð` | `dh` |
-| `θ` | `th` |
-| `ʃ` | `sh` |
-| `ʒ` | `zh` |
-| `ŋ` | `ng` |
-| `ŋk` | `nk` |
-| `ʍ`, `hw` | `wh` |
-| `j` | `y` |
-| `x` | `kh` |
+| IPA       | Canonical respelling |
+| --------- | -------------------- |
+| `tʃ`, `ʧ` | `ch`                 |
+| `dʒ`, `ʤ` | `j`                  |
+| `ʣ`       | `dz`                 |
+| `ʦ`       | `ts`                 |
+| `ð`       | `dh`                 |
+| `θ`       | `th`                 |
+| `ʃ`       | `sh`                 |
+| `ʒ`       | `zh`                 |
+| `ŋ`       | `ng`                 |
+| `ŋk`      | `nk`                 |
+| `ʍ`, `hw` | `wh`                 |
+| `j`       | `y`                  |
+| `x`       | `kh`                 |
 
 Some narrow or legacy symbols are accepted as safe aliases when they collapse to the same unambiguous respelling: `ɦ → h`, `ɫ → l`, `ɱ → m`, `hw → wh`, `ʣ → dz`, `ʤ → j`, `ʦ → ts`, `ʧ → ch`, and `ɘ → uh`.
 
@@ -129,11 +137,11 @@ This converter is not a general IPA transliterator. It supports the English inve
 The supported nasal-vowel chunks are:
 
 | IPA | Canonical respelling |
-| --- | --- |
-| `ɑ̃` | `on` |
-| `ɛ̃` | `an` |
-| `ɔ̃` | `on` |
-| `œ̃` | `un` |
+| --- | -------------------- |
+| `ɑ̃` | `on`                 |
+| `ɛ̃` | `an`                 |
+| `ɔ̃` | `on`                 |
+| `œ̃` | `un`                 |
 
 Other explicit foreign-reference mappings include `x → kh`, `y → ue`, `œ → eu`, and `a → ah`.
 
@@ -143,11 +151,11 @@ These mappings are deliberate exceptions. A foreign or narrow phoneme is not acc
 
 Some phonetic detail is deliberately ignored because the canonical scheme does not encode it:
 
-| Mark | Treatment |
-| --- | --- |
-| `ː` | Vowel length is accepted but not encoded |
-| `ʰ` | Aspiration is ignored |
-| `ˑ` | Half-length is ignored |
+| Mark | Treatment                                |
+| ---- | ---------------------------------------- |
+| `ː`  | Vowel length is accepted but not encoded |
+| `ʰ`  | Aspiration is ignored                    |
+| `ˑ`  | Half-length is ignored                   |
 
 Tie bars are normalized so affricates such as `d͡ʒ` and `t͡ʃ` resolve to their canonical chunks. Hyphens are treated as formatting and ignored.
 
@@ -163,20 +171,20 @@ An unsupported input reports the offending symbol, for example:
 
 ## Representative examples
 
-| IPA | Canonical respelling | Rule illustrated |
-| --- | --- | --- |
-| `/ʍɛn/` | `/whehn/` | Consonant spelling |
-| `/d͡ʒʌd͡ʒ/` | `/juhj/` | Tie-bar affricates |
-| `/kɑr/` | `/kahr/` | Ordinary rhotic vowel |
-| `ˈstrɪkt` | `STRIHKT` | Primary stress |
-| `ˈæbˌstrækt` | `ABstrakt` | Secondary stress ends primary capitalization |
-| `kæt.ər.pɪl.ər` | `kat er pihl er` | Explicit syllable spacing |
-| `/səˈl(j)uːʃən/` | `/suhL(Y)OOshuhn/` | Optional segment |
-| `/ˈɹiːd͡ʒn̩/` | `/REEJuhn/` | Syllabic consonant |
-| `/ˈɹɪð.m̩/` | `/RIHDHuhm/` | Boundary suppressed before syllabic consonant |
-| `ˈɛə̯` | `EHUH` | Non-syllabic vowel component |
-| `ɑ̃` | `on` | Supported nasal vowel |
-| `tʰ` | `t` | Deliberately ignored aspiration |
+| IPA              | Canonical respelling | Rule illustrated                              |
+| ---------------- | -------------------- | --------------------------------------------- |
+| `/ʍɛn/`          | `/whehn/`            | Consonant spelling                            |
+| `/d͡ʒʌd͡ʒ/`        | `/juhj/`             | Tie-bar affricates                            |
+| `/kɑr/`          | `/kahr/`             | Ordinary rhotic vowel                         |
+| `ˈstrɪkt`        | `STRIHKT`            | Primary stress                                |
+| `ˈæbˌstrækt`     | `ABstrakt`           | Secondary stress ends primary capitalization  |
+| `kæt.ər.pɪl.ər`  | `kat er pihl er`     | Explicit syllable spacing                     |
+| `/səˈl(j)uːʃən/` | `/suhL(Y)OOshuhn/`   | Optional segment                              |
+| `/ˈɹiːd͡ʒn̩/`      | `/REEJuhn/`          | Syllabic consonant                            |
+| `/ˈɹɪð.m̩/`       | `/RIHDHuhm/`         | Boundary suppressed before syllabic consonant |
+| `ˈɛə̯`            | `EHUH`               | Non-syllabic vowel component                  |
+| `ɑ̃`              | `on`                 | Supported nasal vowel                         |
+| `tʰ`             | `t`                  | Deliberately ignored aspiration               |
 
 ## Maintaining the scheme
 

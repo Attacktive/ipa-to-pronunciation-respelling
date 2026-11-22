@@ -18,7 +18,7 @@ const config = [
 	{
 		files: ['**/*.js', '**/*.ts'],
 		rules: {
-			indent: ['warn', 'tab']
+			indent: ['warn', 'tab', { SwitchCase: 1 }]
 		}
 	}
 ];
