@@ -118,8 +118,8 @@ const combinePriceRhotic = (tokens: ParsedToken[]) => {
 	return combined;
 };
 
-/** Treat safe IPA consonant aliases as their canonical spellings for PRICE-coda matching. */
-const normalizePriceCodaPhoneme = (part: PhonemeToken) => {
+/** Treat safe IPA consonant aliases as their canonical spellings for coda matching. */
+const normalizeCodaPhoneme = (part: PhonemeToken) => {
 	const symbol = symbolByIpa.get(part.ipa);
 	if (symbol?.support === 'safe-alias') {
 		return symbol.canonicalRespelling;
@@ -128,13 +128,28 @@ const normalizePriceCodaPhoneme = (part: PhonemeToken) => {
 	return part.ipa;
 };
 
+const readCoda = (parts: SyllablePart[], start: number) => {
+	let coda = '';
+
+	for (let i = start; i < parts.length; i++) {
+		const part = parts[i];
+		if (typeof part === 'string') {
+			return undefined;
+		}
+
+		coda += normalizeCodaPhoneme(part);
+	}
+
+	return coda;
+};
+
 /** Returns a full PRICE-vowel rime when all remaining phonemes form a supported coda. */
 const renderPriceCoda = (onset: string, tail: SyllablePart[]) => {
-	if (tail.length === 0 || !tail.every((part): part is PhonemeToken => typeof part !== 'string')) {
+	const coda = readCoda(tail, 0);
+	if (coda === undefined) {
 		return undefined;
 	}
 
-	const coda = tail.map(normalizePriceCodaPhoneme).join('');
 	const spelling = PRICE_CODA_SPELLINGS.get(coda);
 	if (spelling === undefined) {
 		return undefined;
@@ -170,8 +185,22 @@ const renderPhoneme = (token: PhonemeToken) => {
 	return convertToken(token);
 };
 
-/** Choose conventional, readable PRICE-vowel spellings instead of concatenating eye. */
-const renderSyllable = (parts: SyllablePart[]) => {
+const renderMouthVowel = (parts: SyllablePart[], vowelIndex: number) => {
+	switch (readCoda(parts, vowelIndex + 1)) {
+		case '':
+		case 's':
+			return 'au';
+		case 'n':
+		case 'nd':
+		case 't':
+		case 'ts':
+			return 'ou';
+		default:
+			return undefined;
+	}
+};
+
+const renderSyllable = (parts: SyllablePart[], isStandaloneMouth: boolean) => {
 	let rendered = '';
 
 	for (let i = 0; i < parts.length; i++) {
@@ -191,6 +220,16 @@ const renderSyllable = (parts: SyllablePart[]) => {
 			continue;
 		}
 
+		if (!isStandaloneMouth && part.ipa === 'aʊ') {
+			rendered += renderMouthVowel(parts, i) ?? renderPhoneme(part);
+			continue;
+		}
+
+		if (!isStandaloneMouth && part.ipa === 'aʊər') {
+			rendered += 'auer';
+			continue;
+		}
+
 		rendered += renderPhoneme(part);
 	}
 
@@ -204,6 +243,9 @@ const OPTIONAL_DELIMITERS = {
 
 const convert = (ipa: string) => {
 	const tokens = combinePriceRhotic(removeEmptyOptionalGroups(parseIpa(ipa)));
+	const firstPhoneme = tokens.find(token => token.kind === 'phoneme');
+	const isStandaloneMouth = (firstPhoneme?.ipa === 'aʊ' || firstPhoneme?.ipa === 'aʊər')
+		&& !tokens.some(token => token.kind === 'phoneme' && token !== firstPhoneme);
 	const syllableBoundaries = findSyllableBoundaries(tokens);
 	const result: string[] = [];
 	let currentSyllable: SyllablePart[] = [];
@@ -214,7 +256,7 @@ const convert = (ipa: string) => {
 			return;
 		}
 
-		const syllableText = renderSyllable(currentSyllable);
+		const syllableText = renderSyllable(currentSyllable, isStandaloneMouth);
 		if (pendingStress) {
 			result.push(syllableText.toUpperCase());
 		} else {

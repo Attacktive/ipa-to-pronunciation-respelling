@@ -249,7 +249,7 @@ describe(
 	'readable PRICE-vowel syllables',
 	() => {
 		it.each([
-			{ ipa: '/ˈaʊ̯t.saɪd/', respelling: '/OWT side/' },
+			{ ipa: '/ˈaʊ̯t.saɪd/', respelling: '/OUT side/' },
 			{ ipa: '/ˌoʊ.vɚˈɹaɪd/', respelling: '/oh verRIDE/' },
 			{ ipa: '/ˈnaɪtˌlaɪt/', respelling: '/NIGHTlight/' },
 			{ ipa: '/ˈmaɪ.kɹəˌskoʊp/', respelling: '/MY kruhskohp/' },
@@ -277,6 +277,31 @@ describe(
 			{ ipa: '/ˈkwaɪ.ət/', respelling: '/KWYE uht/' }
 		])(
 			'$ipa -> $respelling',
+			({ ipa, respelling }) => {
+				expect(convert(ipa))
+					.toBe(respelling);
+			}
+		);
+	}
+);
+
+describe(
+	'readable MOUTH-vowel syllables',
+	() => {
+		it.each([
+			{ ipa: '/ˈaʊ̯/', respelling: '/OW/' },
+			{ ipa: '/ˈaʊ.ɚ/', respelling: '/AU er/' },
+			{ ipa: '/ˈpaʊ ər/', respelling: '/PAU er/' },
+			{ ipa: '/ˈpaʊɚ/', respelling: '/PAUer/' },
+			{ ipa: '/ˈlaʊd/', respelling: '/LOWD/' },
+			{ ipa: '/ˈhaʊz/', respelling: '/HOWZ/' },
+			{ ipa: '/ˈloʊ/', respelling: '/LOH/' },
+			{ ipa: '/ˈfloʊ/', respelling: '/FLOH/' },
+			{ ipa: '/ˈboʊt/', respelling: '/BOHT/' },
+			{ ipa: '/ˈɡɹoʊn/', respelling: '/GROHN/' },
+			{ ipa: '/ˈfɔn/', respelling: '/FAWN/' }
+		])(
+			'renders $ipa as $respelling',
 			({ ipa, respelling }) => {
 				expect(convert(ipa))
 					.toBe(respelling);
@@ -435,7 +460,7 @@ describe(
 		it(
 			'keeps a marked component inside a diphthong nucleus',
 			() => expect(convert('/ˈaʊ̯tɪŋ/'))
-				.toBe('/OWtihng/')
+				.toBe('/AUtihng/')
 		);
 
 		it(
@@ -478,7 +503,7 @@ describe(
 			'infers the coda and onset between vowel nuclei ("household")',
 			() => {
 				expect(convert('/ˈhaʊshəʊld/'))
-					.toBe('/HOWShohld/');
+					.toBe('/HAUShohld/');
 			}
 		);
 	}

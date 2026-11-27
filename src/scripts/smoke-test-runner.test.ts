@@ -14,7 +14,7 @@ describe(
 
 				expect(results)
 					.toEqual([
-						{ ipa: '/ˈaʊ̯tɪŋ/', respelling: '/OWtihng/' },
+						{ ipa: '/ˈaʊ̯tɪŋ/', respelling: '/AUtihng/' },
 						{ ipa: 'ˈbaɪoʊ', respelling: 'BYoh' }
 					]);
 			}
