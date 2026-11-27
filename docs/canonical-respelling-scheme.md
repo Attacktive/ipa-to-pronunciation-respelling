@@ -8,7 +8,7 @@ The executable contract lives in [`scheme-conformance.test.ts`](../src/scripts/s
 
 ## Core output rules
 
-Each accepted IPA phoneme or supported phoneme chunk has a canonical default respelling. Common English consonants usually keep their familiar letter, while vowels, affricates, and other ambiguous sounds use explicit spellings. The PRICE vowel `/aɪ/` and the MOUTH vowel `/aʊ/` additionally use context-sensitive spellings for readability.
+Each accepted IPA phoneme or supported phoneme chunk has a canonical default respelling. Common English consonants usually keep their familiar letter, while vowels, affricates, and other ambiguous sounds use explicit spellings. The PRICE vowel `/aɪ/` additionally uses context-sensitive surface spellings, because concatenating `eye` with consonants makes familiar pronunciations difficult to read.
 
 Primary stress (`ˈ`) uppercases the following syllable. For example, `ˈstrɪkt` becomes `STRIHKT`.
 
@@ -48,7 +48,7 @@ The scheme intentionally favors readable, stable spellings over preserving every
 | ----------- | -------------------- |
 | `eɪ`        | `ay`                 |
 | `aɪ`        | `eye`                |
-| `aʊ`        | `ow`                 |
+| `aʊ`        | `au`                 |
 | `ɔɪ`        | `oy`                 |
 | `oʊ`, `əʊ`  | `oh`                 |
 | `ju`, `juː` | `ew`                 |
@@ -63,9 +63,8 @@ These spellings represent phonemes, not a dictionary lookup or a promise to reco
 An adjacent rhotic schwa, optionally divided by a period, is normalized to the existing `aɪər → ire` chunk, so `ˈwaɪ.ɚ → WIRE`.
 This is a deliberate exception to explicit-boundary spacing for a rhotic vowel sequence.
 
-The standalone MOUTH vowel `/aʊ/` remains `ow`. In a larger input, an open syllable uses `au`, as in `ˈflaʊ.ɚ.ɪŋ → FLAU er ihng`, following the vowel spelling in [Dictionary.com's entry for *flowering*](https://www.dictionary.com/browse/flowering).
-The closed rimes `/aʊn/`, `/aʊnd/`, `/aʊt/`, and `/aʊts/` use `oun`, `ound`, `out`, and `outs`; for example, `ˈfaʊn.dɚ → FOUN der` avoids the misleading `FAUN` spelling.
-The `/aʊs/` rime uses `aus`, as in `ˈɡɹiːnˌhaʊs → GREENhaus`, with the ordinary `s` spelling retained. Other codas keep `ow`.
+The MOUTH vowel `/aʊ/` uses `au` in every context, including standalone inputs, following the vowel spelling shown in Dictionary.com's entries for [*flowering*](https://www.dictionary.com/browse/flowering) and [*out*](https://www.dictionary.com/browse/out).
+For example, `ˈflaʊ.ɚ.ɪŋ → FLAU er ihng` and `ˈaʊ̯tˌbaʊnd → AUTbaund`.
 
 Vowel length is not encoded in the respelling. A standalone length mark (`ː`) is accepted but does not change the canonical output, so pairs such as `i`/`iː` and `u`/`uː` share `ee` and `oo`.
 
@@ -93,14 +92,14 @@ Familiar fused rhotic spellings remain explicit rather than being derived:
 | `aɪər`      | `ire`                |
 | `ɔɪər`      | `oir`                |
 | `ʊər`       | `oor`                |
-| `aʊər`      | `our`                |
+| `aʊər`      | `auer`               |
 | `ɜr`, `ɜːr` | `ur`                 |
 | `jʊər`      | `ure`                |
 | `ər`        | `er`                 |
 
 For example, `/kɑr/` becomes `/kahr/`, `/stɔr/` becomes `/stawr/`, and `/pʊər/` becomes `/poor/`.
 
-The standalone `/aʊər/` chunk remains `our`, but in a larger input it uses `auer` to avoid the vowel in *pour*: `ˈpaʊər.fəl → PAUER fuhl`.
+The fused `/aʊər/` chunk uses `auer` whether standalone or part of a larger input, as in `ˈpaʊər.fəl → PAUER fuhl`.
 When the input marks a boundary before `/ɚ/` or `/ər/`, MOUTH retains that boundary, as in `ˈflaʊ.ɚ → FLAU er`.
 
 ## Consonants and affricates

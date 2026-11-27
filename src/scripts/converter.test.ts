@@ -221,7 +221,7 @@ describe(
 						['aɪər', 'ire'],
 						['ɔɪər', 'oir'],
 						['ʊər', 'oor'],
-						['aʊər', 'our'],
+						['aʊər', 'auer'],
 						['ɜr', 'ur'],
 						['jʊər', 'ure'],
 						['ər', 'er']
@@ -249,7 +249,7 @@ describe(
 	'readable PRICE-vowel syllables',
 	() => {
 		it.each([
-			{ ipa: '/ˈaʊ̯t.saɪd/', respelling: '/OUT side/' },
+			{ ipa: '/ˈaʊ̯t.saɪd/', respelling: '/AUT side/' },
 			{ ipa: '/ˌoʊ.vɚˈɹaɪd/', respelling: '/oh verRIDE/' },
 			{ ipa: '/ˈnaɪtˌlaɪt/', respelling: '/NIGHTlight/' },
 			{ ipa: '/ˈmaɪ.kɹəˌskoʊp/', respelling: '/MY kruhskohp/' },
@@ -286,15 +286,21 @@ describe(
 );
 
 describe(
-	'readable MOUTH-vowel syllables',
+	'consistent MOUTH-vowel spelling',
 	() => {
 		it.each([
-			{ ipa: '/ˈaʊ̯/', respelling: '/OW/' },
+			{ ipa: '/ˈaʊ̯/', respelling: '/AU/' },
+			{ ipa: '/aʊ/', respelling: '/au/' },
+			{ ipa: '/aʊ/ /i/', respelling: '/au/ /ee/' },
+			{ ipa: '[aʊər]', respelling: '[auer]' },
+			{ ipa: '[aʊər] [i]', respelling: '[auer] [ee]' },
 			{ ipa: '/ˈaʊ.ɚ/', respelling: '/AU er/' },
 			{ ipa: '/ˈpaʊ ər/', respelling: '/PAU er/' },
 			{ ipa: '/ˈpaʊɚ/', respelling: '/PAUer/' },
-			{ ipa: '/ˈlaʊd/', respelling: '/LOWD/' },
-			{ ipa: '/ˈhaʊz/', respelling: '/HOWZ/' },
+			{ ipa: '/ˈnaʊ/', respelling: '/NAU/' },
+			{ ipa: '/ˈtaʊn/', respelling: '/TAUN/' },
+			{ ipa: '/ˈlaʊd/', respelling: '/LAUD/' },
+			{ ipa: '/ˈhaʊz/', respelling: '/HAUZ/' },
 			{ ipa: '/ˈloʊ/', respelling: '/LOH/' },
 			{ ipa: '/ˈfloʊ/', respelling: '/FLOH/' },
 			{ ipa: '/ˈboʊt/', respelling: '/BOHT/' },
