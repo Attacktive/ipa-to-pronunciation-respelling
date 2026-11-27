@@ -177,14 +177,6 @@ const renderPriceVowel = (onset: string, tail: SyllablePart[]): PriceSpelling =>
 	return { text: 'eye', consumesCoda: false };
 };
 
-const renderPhoneme = (token: PhonemeToken) => {
-	if (isSyllabicConsonant(token)) {
-		return `uh${convertToken(token)}`;
-	}
-
-	return convertToken(token);
-};
-
 const renderMouthVowel = (parts: SyllablePart[], vowelIndex: number) => {
 	switch (readCoda(parts, vowelIndex + 1)) {
 		case '':
@@ -198,6 +190,23 @@ const renderMouthVowel = (parts: SyllablePart[], vowelIndex: number) => {
 		default:
 			return undefined;
 	}
+};
+
+const renderPhoneme = (token: PhonemeToken, parts: SyllablePart[], index: number, isStandaloneMouth: boolean) => {
+	if (!isStandaloneMouth) {
+		switch (token.ipa) {
+			case 'aʊ':
+				return renderMouthVowel(parts, index) ?? convertToken(token);
+			case 'aʊər':
+				return 'auer';
+		}
+	}
+
+	if (isSyllabicConsonant(token)) {
+		return `uh${convertToken(token)}`;
+	}
+
+	return convertToken(token);
 };
 
 const renderSyllable = (parts: SyllablePart[], isStandaloneMouth: boolean) => {
@@ -220,17 +229,7 @@ const renderSyllable = (parts: SyllablePart[], isStandaloneMouth: boolean) => {
 			continue;
 		}
 
-		if (!isStandaloneMouth && part.ipa === 'aʊ') {
-			rendered += renderMouthVowel(parts, i) ?? renderPhoneme(part);
-			continue;
-		}
-
-		if (!isStandaloneMouth && part.ipa === 'aʊər') {
-			rendered += 'auer';
-			continue;
-		}
-
-		rendered += renderPhoneme(part);
+		rendered += renderPhoneme(part, parts, i, isStandaloneMouth);
 	}
 
 	return rendered;
